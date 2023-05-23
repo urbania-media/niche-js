@@ -1,0 +1,99 @@
+{
+    "name": "@niche/core",
+    "version": "0.0.1",
+    "description": "",
+    "keywords": [
+        "javascript"
+    ],
+    "homepage": "https://github.com/urbania-media/niche-js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/urbania-media/niche-js.git"
+    },
+    "author": {
+        "name": "Folklore",
+        "email": "info@folklore.email"
+    },
+    "contributors": [
+        {
+            "name": "David Mongeau-Petitpas",
+            "email": "dmp@folklore.email"
+        },
+        {
+            "name": "Nicolas Roy-Bourdages",
+            "email": "nrb@folklore.email"
+        }
+    ],
+    "license": "ISC",
+    "main": "lib/index.js",
+    "module": "es/index.js",
+    "exports": {
+        ".": "./lib/index.js",
+        "./components": "./lib/components.js",
+        "./contexts": "./lib/contexts.js",
+        "./hooks": "./lib/hooks.js",
+        "./utils": "./lib/utils.js",
+        "./scss/mixins": "./scss/_mixins.scss",
+        "./scss/mixins.scss": "./scss/_mixins.scss",
+        "./scss/placeholders": "./scss/_placeholders.scss",
+        "./scss/placeholders.scss": "./scss/_placeholders.scss",
+        "./scss/theme": "./scss/_theme.scss",
+        "./scss/theme.scss": "./scss/_theme.scss",
+        "./scss/variables": "./scss/_variables.scss",
+        "./scss/variables.scss": "./scss/_variables.scss",
+        "./scss/styles": "./scss/styles.scss",
+        "./scss/styles.scss": "./scss/styles.scss",
+        "./scss/upload": "./scss/upload.scss",
+        "./scss/upload.scss": "./scss/upload.scss",
+        "./scss/vendor": "./scss/vendor.scss",
+        "./scss/vendor.scss": "./scss/vendor.scss",
+        "./assets/css/styles.css": "./assets/css/styles.css"
+    },
+    "browser": {
+        ".": "./es/index.js",
+        "./components": "./es/components.js",
+        "./contexts": "./es/contexts.js",
+        "./hooks": "./es/hooks.js",
+        "./utils": "./es/utils.js"
+    },
+    "files": [
+        "lib",
+        "es",
+        "assets",
+        "scss",
+        "components.js",
+        "contexts.js",
+        "hooks.js",
+        "utils.js"
+    ],
+    "scripts": {
+        "vendor": "./scripts/build-sass.js ./src/styles/vendor.scss ./assets/css/vendor.css",
+        "prepare": "../../scripts/prepare-package.sh --scss && npm run vendor"
+    },
+    "devDependencies": {
+        "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
+    },
+    "peerDependencies": {
+        "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
+    },
+    "tasks": {
+        "build": "rollup --config ./rollup.config.mjs"
+    },
+    "dependencies": {
+        "@babel/runtime": "^7.13.10",
+        "@folklore/fetch": "^0.1.15",
+        "@folklore/services": "^0.1.24",
+        "@folklore/size": "^0.1.20",
+        "@folklore/tracking": "^0.0.9",
+        "bootstrap": "^5.3.0-alpha1",
+        "change-case": "^4.1.2",
+        "classnames": "^2.2.6",
+        "lodash": "^4.17.21",
+        "prop-types": "^15.8.1",
+        "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0",
+        "react-intl": "^6.3.0"
+    }
+}

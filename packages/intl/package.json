@@ -1,0 +1,71 @@
+{
+    "name": "@niche/intl",
+    "version": "0.0.1",
+    "description": "",
+    "keywords": [
+        "javascript"
+    ],
+    "homepage": "https://github.com/urbania-media/niche-js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/urbania-media/niche-js.git"
+    },
+    "author": {
+        "name": "Folklore",
+        "email": "info@folklore.email"
+    },
+    "contributors": [
+        {
+            "name": "David Mongeau-Petitpas",
+            "email": "dmp@folklore.email"
+        },
+        {
+            "name": "Nicolas Roy-Bourdages",
+            "email": "nrb@folklore.email"
+        }
+    ],
+    "license": "ISC",
+    "main": "lib/index.js",
+    "module": "es/index.js",
+    "exports": {
+        ".": "./lib/index.js",
+        "./locale": "./locale",
+        "./locale/*": "./locale/*.cjs.js"
+    },
+    "files": [
+        "locale",
+        "lib",
+        "es",
+        "scripts",
+        "assets"
+    ],
+    "scripts": {
+        "intl": "./scripts/build-intl.sh",
+        "extract": "./scripts/extract.js '../../!(node_modules)/!(intl)/src/**/*.+(js|jsx)' ./lang/messages.json",
+        "prepare": "rm -rf ./locale && npm run intl && ../../scripts/prepare-package.sh"
+    },
+    "devDependencies": {
+        "react": "^18.0.0",
+        "react-dom": "^18.0.0"
+    },
+    "peerDependencies": {
+        "react": "^18.0.0",
+        "react-dom": "^18.0.0"
+    },
+    "dependencies": {
+        "@babel/runtime": "^7.21.0",
+        "@formatjs/cli-lib": "^6.0.3",
+        "@niche/core": "^0.0.1",
+        "commander": "^10.0.0",
+        "fs-extra": "^11.1.0",
+        "gettext-parser": "^4.0.4",
+        "glob": "^9.3.0",
+        "lodash": "^4.17.21",
+        "prop-types": "^15.8.1",
+        "react-intl": "^6.3.0"
+    },
+    "lang": "locale",
+    "publishConfig": {
+        "access": "public"
+    }
+}

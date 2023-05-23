@@ -1,0 +1,61 @@
+{
+    "name": "@niche/data",
+    "version": "0.3.342",
+    "description": "",
+    "keywords": [
+        "javascript"
+    ],
+    "homepage": "https://github.com/urbania-media/niche-js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/urbania-media/niche-js.git"
+    },
+    "author": {
+        "name": "Folklore",
+        "email": "info@folklore.email"
+    },
+    "contributors": [
+        {
+            "name": "David Mongeau-Petitpas",
+            "email": "dmp@folklore.email"
+        },
+        {
+            "name": "Nicolas Roy-Bourdages",
+            "email": "nrb@folklore.email"
+        },
+        {
+            "name": "Julien Carignan",
+            "email": "jc@folklore.email"
+        }
+    ],
+    "license": "ISC",
+    "main": "lib/index.js",
+    "module": "es/index.js",
+    "files": [
+        "lib",
+        "es",
+        "assets"
+    ],
+    "scripts": {
+        "prepare": "../../scripts/prepare-package.sh"
+    },
+    "devDependencies": {
+        "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
+    },
+    "peerDependencies": {
+        "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
+    },
+    "dependencies": {
+        "@folklore/fetch": "^0.1.15",
+        "@niche/core": "^0.3.332",
+        "lodash": "^4.17.21",
+        "prop-types": "^15.7.2",
+        "query-string": "^8.1.0",
+        "react-router": "^6.9.0"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}
