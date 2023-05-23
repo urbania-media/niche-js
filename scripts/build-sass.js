@@ -4,32 +4,27 @@ const fs = require('fs');
 const mkdirp = require('mkdirp');
 const { program } = require('commander');
 const sass = require('sass');
+const tildeImporter = require('node-sass-tilde-importer');
 const postcss = require('postcss');
-const tildeImporter = require('./import-tilde');
-const postcssConfig = require('../../../postcss.config');
+const postcssConfig = require('../postcss.config');
 
 let srcFile = null;
 let outFile = null;
 
-program
-    .argument('<src>')
-    .argument('<out>')
-    .action((src, out) => {
-        srcFile = path.join(process.cwd(), src);
-        outFile = path.join(process.cwd(), out);
-    });
+program.arguments('<src> <out>').action((src, out) => {
+    srcFile = path.join(process.cwd(), src);
+    outFile = path.join(process.cwd(), out);
+});
 
 program.parse(process.argv);
 
-const result = sass.compile(srcFile, {
+const result = sass.renderSync({
+    file: srcFile,
     outFile,
     importer: tildeImporter,
-    // outputStyle: 'compressed',
+    outputStyle: 'compressed',
     sourceMap: true,
-    loadPaths: [
-        path.join(process.cwd(), 'node_modules'),
-        path.join(process.cwd(), '../../node_modules'),
-    ],
+    includePaths: [path.join(process.cwd(), 'node_modules')],
 });
 
 postcss(postcssConfig.plugins)
@@ -40,5 +35,5 @@ postcss(postcssConfig.plugins)
     .then((postCssResult) => {
         mkdirp.sync(path.dirname(outFile));
         fs.writeFileSync(outFile, postCssResult.css);
-        console.log(`Generated ${outFile} from ${srcFile}`);
+        console.log(`Generated ${outFile} from ${result.stats.entry} in ${result.stats.duration}s`);
     });

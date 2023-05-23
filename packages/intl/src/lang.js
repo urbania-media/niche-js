@@ -1,5 +1,5 @@
 /* eslint-disable */
-import manager from '@niche/intl';
+import manager from '@niche-js/intl';
 
 import messages from '../locale/REPLACE_LOCALE.json';
 

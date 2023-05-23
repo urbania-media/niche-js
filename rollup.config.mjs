@@ -11,6 +11,7 @@ import replace from '@rollup/plugin-replace';
 import terser from '@rollup/plugin-terser';
 import babelPluginFormatJs from 'babel-plugin-formatjs';
 import cssnano from 'cssnano';
+import tildeImporter from 'node-sass-tilde-importer';
 import path from 'path';
 import postcss from 'rollup-plugin-postcss';
 import sass from 'sass';
@@ -121,11 +122,13 @@ export const createConfig = ({
             }),
             !withoutPostCss
                 ? postcss({
-                      preprocessor: (content, id) =>
-                          new Promise((res) => {
-                              const result = sass.compile({ file: id });
+                      preprocessor: (content, id) => {
+                          console.log(id);
+                          return new Promise((res) => {
+                              const result = sass.compile({ file: id, importers: [tildeImporter] });
                               res({ code: result.css.toString() });
-                          }),
+                          });
+                      },
                       extensions: ['.css', '.scss'],
                       modules: {
                           generateScopedName,

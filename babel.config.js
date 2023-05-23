@@ -5,7 +5,7 @@ module.exports = (api) => {
     if (api.env('node')) {
         console.log('Babel env NODE');
         return {
-            ignore: [/node_modules\/(?!@niche)/],
+            ignore: [/node_modules\/(?!@niche-js)/],
             presets: [
                 [
                     require('@babel/preset-env'),

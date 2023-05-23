@@ -1,5 +1,5 @@
 {
-    "name": "@niche/intl",
+    "name": "@niche-js/intl",
     "version": "0.0.1",
     "description": "",
     "keywords": [
@@ -55,7 +55,7 @@
     "dependencies": {
         "@babel/runtime": "^7.21.0",
         "@formatjs/cli-lib": "^6.0.3",
-        "@niche/core": "^0.0.1",
+        "@niche-js/core": "^0.0.1",
         "commander": "^10.0.0",
         "fs-extra": "^11.1.0",
         "gettext-parser": "^4.0.4",

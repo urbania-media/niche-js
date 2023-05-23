@@ -24,11 +24,11 @@ const files = {
                 entries: [
                     {
                         find: /^(\.\.\/)*\.\.\/\.\.\/(contexts|utils|hooks)\/?$/,
-                        replacement: '@niche/core/$2',
+                        replacement: '@niche-js/core/$2',
                     },
                     {
                         find: /(\.\.\/)*\.\.\/\.\.\/lib\/?$/,
-                        replacement: '@niche/core',
+                        replacement: '@niche-js/core',
                     },
                 ],
             }),
@@ -48,11 +48,11 @@ const files = {
                 entries: [
                     {
                         find: /\.\.\/(hooks|utils|contexts)\/?$/,
-                        replacement: '@niche/core/$1',
+                        replacement: '@niche-js/core/$1',
                     },
                     {
                         find: /\.\.\/lib\/?$/,
-                        replacement: '@niche/core',
+                        replacement: '@niche-js/core',
                     },
                 ],
             }),
@@ -74,11 +74,11 @@ const files = {
                 entries: [
                     {
                         find: /\.\.\/(contexts|utils)\/?$/,
-                        replacement: '@niche/core/$1',
+                        replacement: '@niche-js/core/$1',
                     },
                     {
                         find: /\.\.\/lib\/?$/,
-                        replacement: '@niche/core',
+                        replacement: '@niche-js/core',
                     },
                 ],
             }),

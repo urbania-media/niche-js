@@ -1,5 +1,5 @@
 {
-    "name": "@niche/core",
+    "name": "@niche-js/core",
     "version": "0.0.1",
     "description": "",
     "keywords": [
@@ -67,7 +67,7 @@
         "utils.js"
     ],
     "scripts": {
-        "vendor": "./scripts/build-sass.js ./src/styles/vendor.scss ./assets/css/vendor.css",
+        "vendor": "../../scripts/build-sass.js ./src/styles/vendor.scss ./assets/css/vendor.css",
         "prepare": "../../scripts/prepare-package.sh --scss && npm run vendor"
     },
     "devDependencies": {
