@@ -19,8 +19,6 @@ const defaultProps = {
 
 const EditorMotion = ({ body, className }) => {
     
-    console.log('EditorMotion')
-
     const [open, toggle] = useState(false)
     const [ref, { width }] = useMeasure()
     const props = useSpring({ width: open ? width : 0 })
