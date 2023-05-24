@@ -1,0 +1,20 @@
+
+
+
+
+
+function EditorComponent() {
+  const editorRef = useRef(null);
+
+  useEffect(() => {
+    if (editorRef.current) {
+      const quill = new Quill(editorRef.current, {
+        theme: 'snow',
+      });
+    }
+  }, []);
+
+  return <div ref={editorRef}></div>;
+}
+
+export default EditorComponent;

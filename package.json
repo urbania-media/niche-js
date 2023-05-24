@@ -6,7 +6,8 @@
   "workspaces": [
     "blocks/*",
     "elements/*",
-    "packages/*"
+    "packages/*",
+    "editors/*"
   ],
   "author": "",
   "license": "ISC",
