@@ -10,8 +10,7 @@ import Quill from 'quill';
 import React, { useRef, useEffect } from 'react';
 
 import styles from './styles.module.scss';
-
-import './quill.scss'
+import './quill.scss';
 
 const propTypes = {
     body: PropTypes.string,
@@ -24,10 +23,10 @@ const defaultProps = {
 };
 
 const EditorArticle = ({ body, className }) => {
-    
+
 // const EditorArticle = ({}) => {
 
-   
+
 
     // console.log('hello world', styles.container);
     // return (
@@ -35,7 +34,7 @@ const EditorArticle = ({ body, className }) => {
     //         className={classNames([styles.container, { [className]: className !== null }])}
     //         dangerouslySetInnerHTML={{ __html: body }}
     //     />
-    // ); 
+    // );
 
     const editorRef = useRef(null);
 
@@ -57,11 +56,11 @@ const EditorArticle = ({ body, className }) => {
 
 
     // return (
-    //     <div 
+    //     <div
     //         className={classNames([styles.container, { [className]: className !== null }])}
     //         dangerouslySetInnerHTML={{ __html: body }}
     //     />
-    // ); 
+    // );
 
     // return <div ref={editorRef}></div>;
 
