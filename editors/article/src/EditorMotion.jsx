@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import useMeasure from 'react-use-measure'
 import { useSpring, animated } from '@react-spring/web'
 
-import styles from './motion.module.scss';
+import styles from './styles_motion.module.scss';
 
 const propTypes = {
     body: PropTypes.string,

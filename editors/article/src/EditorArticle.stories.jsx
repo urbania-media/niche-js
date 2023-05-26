@@ -8,4 +8,4 @@ export default {
 };
 
 export const normal = () => <EditorArticle className={styles.container} />;
-export const test = () => <EditorArticle className={styles.container} />;
+

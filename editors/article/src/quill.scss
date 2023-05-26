@@ -1,1 +1,26 @@
-@import '~quill/dist/quill.snow.css';
+@import '~quill/dist/quill.bubble.css';
+
+ .ql-container {
+    height: auto;
+    padding-top: 16px;
+}
+
+.ql-bubble .ql-tooltip {
+    background-color: white;
+    border: 1px solid grey;
+    box-shadow: 2px 2px 2px -2px grey;
+    margin-top: 0px;
+    border-radius: 0px;
+}
+
+.ql-bubble .ql-tooltip-arrow {
+    display: none;
+}
+
+.ql-bubble .ql-stroke {
+    stroke: grey; 
+}
+
+.ql-bubble .ql-fill, .ql-bubble .ql-stroke.ql-fill {
+    fill: grey;
+}
