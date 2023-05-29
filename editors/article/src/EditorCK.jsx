@@ -1,13 +1,11 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import Quill from 'quill';
-import React, { useRef, useEffect, Component } from 'react';
-
+import React, { useRef, useEffect } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import BalloonEditor from '@ckeditor/ckeditor5-build-balloon';
 
-// import EditorText from './EditorText';
-
+import data from './article.json';
 import styles from './styles.module.scss';
 import './quill.scss';
 
@@ -22,14 +20,25 @@ const defaultProps = {
 };
 
 const EditorCK = ({ body, className }) => {
+
+    let htmlContent = ''
+
+    function parseData(array){   
+        array.forEach(obj => {
+            if (obj.type === 'text') {
+                htmlContent += obj.body;
+            }
+        });
+    }
+
+    parseData(data.components)
+
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>  
-
-            <div>
-                <h2>Using CKEditor 5 build in React</h2>
+            <div contentEditable="false">
                 <CKEditor
-                    editor={ ClassicEditor }
-                    data="<p>Hello from CKEditor 5!</p>"
+                    editor={ BalloonEditor }
+                    data= { htmlContent }
                     onReady={ editor => {
                         // You can store the "editor" and use when it is needed.
                         console.log( 'Editor is ready to use!', editor );
@@ -46,8 +55,6 @@ const EditorCK = ({ body, className }) => {
                     } }
                 />
             </div>
-
-
         </div>
     );
 

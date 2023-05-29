@@ -2,8 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import Quill from 'quill';
 import React, { useRef, useEffect } from 'react';
-import data from './article.json';
-import each from 'lodash/each';     
+import data from './article.json';  
 
 import styles from './styles_text.module.scss';
 import './quill.scss';
@@ -22,11 +21,14 @@ const EditorQuill = ({ body, className }) => {
 
     const editorRef = useRef(null);
     let htmlContent = '' 
+
     function parseData(array){   
-        each(array, obj => {
-            if(obj.type == 'text')
-                htmlContent += obj.body
+        array.forEach(obj => {
+            if (obj.type === 'text') {
+                htmlContent += obj.body;
+            }
         });
+
     }
 
     function updateJson(html){
