@@ -41,6 +41,8 @@
         "react-dom": "^18.0.0"
     },
     "dependencies": {
+        "@ckeditor/ckeditor5-build-classic": "^38.0.1",
+        "@ckeditor/ckeditor5-react": "^6.0.0",
         "@niche-js/core": "^0.0.1",
         "classnames": "^2.2.6",
         "prop-types": "^15.7.2",

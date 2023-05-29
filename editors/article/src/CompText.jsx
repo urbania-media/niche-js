@@ -17,8 +17,6 @@ const defaultProps = {
 const CompText = ({ body, className }) => {
 
    
-
-
     const ref = useRef(null);
 
     useEffect(() => {
