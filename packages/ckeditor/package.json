@@ -67,7 +67,8 @@
         "@ckeditor/ckeditor5-highlight": "^37.1.0",
         "@ckeditor/ckeditor5-link": "^37.1.0",
         "@ckeditor/ckeditor5-paragraph": "^37.1.0",
-        "@ckeditor/ckeditor5-react": "^6.0.0"
+        "@ckeditor/ckeditor5-react": "^6.0.0",
+        "@ckeditor/ckeditor5-theme-lark": "^38.0.1"
     },
     "publishConfig": {
         "access": "public"

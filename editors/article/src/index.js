@@ -1,1 +1,3 @@
-export { default } from './EditorArticle';
+import EditorArticle from './EditorArticle';
+
+export default EditorArticle;

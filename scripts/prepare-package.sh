@@ -2,7 +2,7 @@
 
 # Help
 usage() {
-    echo "Usage: $0 [--scss|-s]"
+    echo "Usage: $0 [--styles|-s]"
 }
 
 # Transform long options to short ones
@@ -10,20 +10,20 @@ for arg in "$@"; do
     shift
     case "$arg" in
         "--help") set -- "$@" "-h" ;;
-        "--scss") set -- "$@" "-s" ;;
+        "--styles") set -- "$@" "-s" ;;
         *)        set -- "$@" "$arg"
     esac
 done
 
 # Set defaults
-scss=false
+styles=false
 languages="en fr"
 
 # Get options
 while getopts 'is?h' c
 do
     case $c in
-        s) scss=true ;;
+        s) styles=true ;;
         h) usage; exit 0 ;;
         ?) usage >&2; exit 1 ;;
     esac
@@ -32,7 +32,7 @@ done
 # Build methods
 clean() {
     echo "Cleaning..."
-    rm -rf scss
+    rm -rf css
     rm -rf assets
     rm -rf lib
     rm -rf es
@@ -55,10 +55,10 @@ copy_css() {
     rm -f lib/styles.css
 }
 
-copy_scss() {
-    echo "Copying scss..."
-    mkdir -p ./scss/
-    find ./src -type f -name "*.scss" ! -name "*.module.scss" ! -name "*.global.scss" -exec cp {} ./scss/ \;
+copy_styles() {
+    echo "Copying styles..."
+    mkdir -p ./css/
+    find ./src -type f -name "*.css" ! -name "*.module.css" ! -name "*.global.css" -exec cp {} ./css/ \;
 }
 
 # Build
@@ -66,4 +66,4 @@ export NODE_ENV=production
 clean
 build_rollup
 if [ -f ./es/styles.css ]; then copy_css; fi
-if [ "$scss" = true ]; then copy_scss; fi
+if [ "$styles" = true ]; then copy_styles; fi

@@ -4,7 +4,7 @@ import { pkgUpSync } from 'pkg-up';
 import slugify from 'slugify';
 
 const generateScopedName = (localName, filePath) => {
-    if (!filePath.match(/\.module\.scss$/)) {
+    if (!filePath.match(/\.module\.css$/)) {
         return localName;
     }
     const packageJsonPath = pkgUpSync({

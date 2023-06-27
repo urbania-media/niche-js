@@ -11,10 +11,8 @@ import replace from '@rollup/plugin-replace';
 import terser from '@rollup/plugin-terser';
 import babelPluginFormatJs from 'babel-plugin-formatjs';
 import cssnano from 'cssnano';
-import tildeImporter from 'node-sass-tilde-importer';
 import path from 'path';
 import postcss from 'rollup-plugin-postcss';
-import sass from 'sass';
 
 import generateScopedName from './scripts/build/generateScopedName.mjs';
 import imageAssets from './scripts/build/imageAssets.mjs';
@@ -28,7 +26,7 @@ export const createConfig = ({
     format = null,
     withoutPostCss = false,
     withoutPostCssExtract = false,
-    withoutMinification = false,
+    withoutMinification = true,
     resolveOptions = null,
     prependPlugins = [],
     appendPlugins = [],
@@ -83,7 +81,7 @@ export const createConfig = ({
             babel({
                 extensions: ['.mjs', '.js', '.jsx', '.json', '.node'],
                 exclude: 'node_modules/**',
-                // rootMode: 'upward',
+                rootMode: 'upward',
                 babelHelpers: 'runtime',
                 presets: [
                     [
@@ -122,25 +120,13 @@ export const createConfig = ({
             }),
             !withoutPostCss
                 ? postcss({
-                      preprocessor: (content, id) => {
-                          console.log(id);
-                          return new Promise((res) => {
-                              const result = sass.compile({ file: id, importers: [tildeImporter] });
-                              res({ code: result.css.toString() });
-                          });
-                      },
-                      extensions: ['.css', '.scss'],
+                      extensions: ['.css'],
                       modules: {
                           generateScopedName,
                       },
                       autoModules: true,
                       extract: !withoutPostCssExtract ? 'styles.css' : false,
                       inject: false,
-                      plugins: [
-                          cssnano({
-                              preset: 'default',
-                          }),
-                      ],
                   })
                 : false,
             // url({ include: ['**/*.mp4'] }),

@@ -47,8 +47,7 @@ module.exports = (api) => {
                 [
                     require.resolve('babel-plugin-css-modules-transform'),
                     {
-                        preprocessCss: path.join(__dirname, './scripts/process-scss.js'),
-                        extensions: ['.scss'],
+                        extensions: ['.module.css'],
                         generateScopedName: path.resolve(
                             __dirname,
                             './scripts/lib/generateScopedName.js',
@@ -58,7 +57,7 @@ module.exports = (api) => {
                 [
                     path.join(__dirname, './scripts/babel-plugin-transform-require-ignore'),
                     {
-                        extensions: ['.global.scss'],
+                        extensions: ['.css'],
                     },
                 ],
                 [
