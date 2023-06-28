@@ -11,7 +11,4 @@ export default {
     },
 };
 
-//
 export const Normal = () => <Image src="test.png" />;
-
-export const HOHO = () => <div className="cool">Cool article bro</div>;

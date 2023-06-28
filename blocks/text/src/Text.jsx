@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import styles from './styles.module.scss';
+import styles from './styles.module.css';
 
 const propTypes = {
     body: PropTypes.string,
@@ -16,6 +16,7 @@ const defaultProps = {
 
 const Text = ({ body, className }) => {
     console.log('hello world', styles.container);
+
     return (
         <div
             className={classNames([styles.container, { [className]: className !== null }])}
