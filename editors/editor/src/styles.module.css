@@ -1,4 +1,4 @@
 .container {
     position: relative;
-    color: red;
+    color: var(--bs-magic-color);
 }

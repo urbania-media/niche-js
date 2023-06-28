@@ -27,7 +27,7 @@ export const ApiProvider = ({ api: initialApi, baseUrl, children }) => {
             previousApi ||
             new Api({
                 baseUrl,
-                // baseUrl: 'https://micromag.studio.test/api', // for testing
+                // baseUrl: 'https://niche.ca.test/api', // for testing
             }),
         [previousApi, initialApi, baseUrl],
     );

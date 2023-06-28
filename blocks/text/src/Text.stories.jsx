@@ -1,10 +1,15 @@
-import React from 'react';
-
 import Text from './Text';
 
+// More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 export default {
-    component: Text,
     title: 'Blocks/Text',
+    component: Text,
+    tags: ['autodocs'],
+    argTypes: {},
 };
 
-export const normal = () => <Text body="<p>This is a text <strong>with bold</strong></p>" />;
+export const Default = {
+    args: {
+        body: 'Hello',
+    },
+};

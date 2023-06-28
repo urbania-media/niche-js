@@ -1,14 +1,17 @@
-import React from 'react';
-
 import Image from './Image';
 
+import fireKoala from './test/firekoala.png';
+
+// More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 export default {
-    component: Image,
     title: 'Blocks/Image',
-    parameters: {
-        intl: true,
-        // screenDefinition: definition,
-    },
+    component: Image,
+    tags: ['autodocs'],
+    argTypes: {},
 };
 
-export const Normal = () => <Image src="test.png" />;
+export const Default = {
+    args: {
+        media: { src: fireKoala },
+    },
+};

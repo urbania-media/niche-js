@@ -6,7 +6,7 @@
     "semi": true,
     "importOrder": [
         "<THIRD_PARTY_MODULES>",
-        "^@micromag/(.*)$",
+        "^@niche-js/(.*)$",
         "^[./](.*)?/(utils|hooks|lib)",
         "^[./].*(?<!(\\.[a-z]+))$",
         "\\.scss$",

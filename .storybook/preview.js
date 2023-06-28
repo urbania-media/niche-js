@@ -1,77 +1,21 @@
-// import '../packages/core/src/styles/vendor.scss';
 // import withGoogleKeys from './decorators/withGoogleKeys';
 import withIntlProvider from './decorators/withIntlProvider';
 
 // import withArticleDefinition from './decorators/withArticleDefinition';
 // import withScreenSize from './decorators/withScreenSize';
-import './fonts/fonts.scss';
+import '../packages/core/src/styles/styles.css';
 
-export const parameters = {
-    viewport: {
-        viewports: {
-            mobileSmall: {
-                name: 'Very small (iPhone5)',
-                styles: {
-                    width: '320px',
-                    height: '568px',
-                },
-            },
-            mobileMedium: {
-                name: 'Very small (iPhoneX)',
-                styles: {
-                    width: '375px',
-                    height: '632px',
-                },
-            },
-            mobileLarge: {
-                name: 'Small (mobile)',
-                styles: {
-                    width: '500px',
-                    height: '800px',
-                },
-            },
-            tabletSmall: {
-                name: 'Medium (iPad - portrait)',
-                styles: {
-                    width: '768px',
-                    height: '1024px',
-                },
-            },
-            tabletLandscape: {
-                name: 'Medium (iPad - landscape)',
-                styles: {
-                    width: '1024px',
-                    height: '768px',
-                },
-            },
-            desktopSmall: {
-                name: 'Small (desktop)',
-                styles: {
-                    width: '980px',
-                    height: '550px',
-                },
-            },
-            desktopMedium: {
-                name: 'Medium (desktop)',
-                styles: {
-                    width: '1200px',
-                    height: '650px',
-                },
-            },
-            desktopLarge: {
-                name: 'Large (desktop)',
-                styles: {
-                    width: '1600px',
-                    height: '1000px',
-                },
+const preview = {
+    parameters: {
+        actions: { argTypesRegex: '^on[A-Z].*' },
+        controls: {
+            matchers: {
+                color: /(background|color)$/i,
+                date: /Date$/,
             },
         },
     },
+    decorators: [withIntlProvider],
 };
 
-export const decorators = [
-    withIntlProvider,
-    // withScreenSize,
-    // withArticleDefinition,
-    // withGoogleKeys,
-];
+export default preview;

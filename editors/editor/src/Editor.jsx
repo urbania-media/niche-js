@@ -16,7 +16,7 @@ const defaultProps = {
 
 const Editor = ({ body, className }) => (
     <div className={classNames([styles.container, { [className]: className !== null }])}>
-        Editor
+        Base Editor {body}
     </div>
 );
 

@@ -40,7 +40,6 @@ module.exports = {
             },
             {
                 test: /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
-
                 use: [
                     {
                         loader: 'style-loader',
