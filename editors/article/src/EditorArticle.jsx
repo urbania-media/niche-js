@@ -3,6 +3,7 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { useCallback } from 'react';
+import { createRoot } from 'react-dom/client';
 
 import NicheEditor from '@niche-js/ckeditor';
 
@@ -47,6 +48,14 @@ function EditorArticle({ body, className, onChange }) {
             <CKEditor
                 editor={NicheEditor}
                 data={body}
+                config={{
+                    niche: {
+                        blockRenderer: (type, domElement) => {
+                            const root = createRoot(domElement);
+                            root.render(<div>BLOCK</div>);
+                        },
+                    },
+                }}
                 onReady={onEditorReady}
                 onChange={onEditorChange}
                 onFocus={onEditorFocus}
