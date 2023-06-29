@@ -28,10 +28,19 @@ export default class BlocksPluginEditing extends Plugin {
             // isObject: true,
 
             allowAttributes: ['type', 'data'],
-            allowContentOf: '$root',
         });
 
-        schema.register('nicheBlockContent', {
+        schema.register('nicheBlockInline', {
+            isLimit: true,
+
+            allowIn: 'nicheBlock',
+
+            // Allow content which is allowed in the root (e.g. paragraphs).
+            allowContentOf: '$block',
+            attributes: ['tagName'],
+        });
+
+        schema.register('nicheBlockEditable', {
             isLimit: true,
 
             allowIn: 'nicheBlock',
@@ -56,23 +65,32 @@ export default class BlocksPluginEditing extends Plugin {
                 }),
             view: {
                 name: 'div',
-                classes: 'niche-block',
+                attributes: {
+                    'data-block': 'true',
+                },
             },
         });
 
         conversion.for('dataDowncast').elementToElement({
             model: 'nicheBlock',
-            view: {
-                name: 'div',
-                classes: 'niche-block',
+            view: (modelElement, { writer: viewWriter }) => {
+                const block = viewWriter.createContainerElement('div', {
+                    class: 'niche-block',
+                    'data-block': 'true',
+                    'data-block-type': modelElement.getAttribute('type'),
+                });
+
+                return block;
             },
         });
 
         conversion.for('editingDowncast').elementToElement({
             model: 'nicheBlock',
             view: (modelElement, { writer: viewWriter }) => {
-                const section = viewWriter.createContainerElement('div', {
+                const block = viewWriter.createContainerElement('div', {
                     class: 'niche-block',
+                    'data-block': 'true',
+                    'data-block-type': modelElement.getAttribute('type'),
                 });
 
                 const type = modelElement.getAttribute('type');
@@ -89,32 +107,71 @@ export default class BlocksPluginEditing extends Plugin {
                     },
                 );
 
-                viewWriter.insert(viewWriter.createPositionAt(section, 0), reactWrapper);
+                viewWriter.insert(viewWriter.createPositionAt(block, 0), reactWrapper);
 
-                return toWidgetEditable(section, viewWriter, { label: 'simple box widget' });
+                return toWidget(block, viewWriter, { label: 'Block' });
             },
         });
 
         conversion.for('upcast').elementToElement({
-            model: 'nicheBlockContent',
+            model: (viewElement, { writer: modelWriter }) =>
+                modelWriter.createElement('nicheBlockInline', {
+                    tagName: viewElement.name,
+                }),
             view: {
-                name: 'div',
-                classes: 'niche-block-content',
+                attributes: {
+                    'data-block-inline': 'true',
+                },
             },
         });
         conversion.for('dataDowncast').elementToElement({
-            model: 'nicheBlockContent',
-            view: {
-                name: 'div',
-                classes: 'niche-block-content',
+            model: 'nicheBlockInline',
+            view: (modelElement, { writer: viewWriter }) => {
+                // Note: You use a more specialized createEditableElement() method here.
+                const div = viewWriter.createEditableElement(modelElement.getAttribute('tagName'), {
+                    'data-block-inline': 'true',
+                });
+
+                return div;
             },
         });
         conversion.for('editingDowncast').elementToElement({
-            model: 'nicheBlockContent',
+            model: 'nicheBlockInline',
+            view: (modelElement, { writer: viewWriter }) => {
+                // Note: You use a more specialized createEditableElement() method here.
+                const div = viewWriter.createEditableElement(modelElement.getAttribute('tagName'), {
+                    'data-block-inline': 'true',
+                });
+                // return div;
+
+                return toWidgetEditable(div, viewWriter);
+            },
+        });
+
+        conversion.for('upcast').elementToElement({
+            model: 'nicheBlockEditable',
+            view: {
+                name: 'div',
+                attributes: {
+                    'data-block-editable': 'true',
+                },
+            },
+        });
+        conversion.for('dataDowncast').elementToElement({
+            model: 'nicheBlockEditable',
+            view: {
+                name: 'div',
+                attributes: {
+                    'data-block-editable': 'true',
+                },
+            },
+        });
+        conversion.for('editingDowncast').elementToElement({
+            model: 'nicheBlockEditable',
             view: (modelElement, { writer: viewWriter }) => {
                 // Note: You use a more specialized createEditableElement() method here.
                 const div = viewWriter.createEditableElement('div', {
-                    class: 'niche-block-content',
+                    'data-block-editable': 'true',
                 });
 
                 return toWidgetEditable(div, viewWriter);

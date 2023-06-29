@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { useComponentsManager } from '@panneau/core/contexts';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -23,18 +22,22 @@ const defaultProps = {
 
 function ViewerArticle({ document, className }) {
     const { components = null } = document || {};
-    const componentsManager = useComponentsManager();
     const blocksManager = useBlocksComponentsManager();
     const blocks = (components || []).filter(({ role = null }) => role === 'block');
-
-    console.log('componentsManager', componentsManager);
 
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>
             {(blocks || []).map((block) => {
                 const BlockComponent = blocksManager.getComponent(block.type);
-                console.log(blocksManager);
-                return BlockComponent !== null ? <BlockComponent {...block} /> : 'hello';
+                return (
+                    <div
+                        data-block
+                        data-block-type={block.type}
+                        data-block-data={JSON.stringify(block)}
+                    >
+                        {BlockComponent !== null ? <BlockComponent {...block} /> : null}
+                    </div>
+                );
             })}
         </div>
     );

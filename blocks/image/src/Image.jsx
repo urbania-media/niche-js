@@ -16,14 +16,14 @@ const defaultProps = {
     className: null,
 };
 
-const Image = ({ media, className }) => {
+function Image({ media, className }) {
     const { src = null } = media || {};
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>
             {src !== null ? <image src={src} alt="image-alt-text" /> : null}
         </div>
     );
-};
+}
 
 Image.propTypes = propTypes;
 Image.defaultProps = defaultProps;

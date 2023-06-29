@@ -74,8 +74,6 @@ function EditorArticle({ document, className, onChange }) {
         [document, blocksManager],
     );
 
-    console.log(blocksManager);
-
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>
             <CKEditor
@@ -85,8 +83,10 @@ function EditorArticle({ document, className, onChange }) {
                     niche: {
                         blockRenderer: (type, data, domElement) => {
                             // console.log('data', data);
+                            const BlockComponent = blocksManager.getComponent(type);
                             const root = createRoot(domElement);
-                            root.render(<div>BLOCK</div>);
+                            // eslint-disable-next-line react/jsx-props-no-spreading
+                            // root.render(<BlockComponent {...data} />);
                         },
                     },
                 }}

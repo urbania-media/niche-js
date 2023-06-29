@@ -16,15 +16,16 @@ const defaultProps = {
     className: null,
 };
 
-const Heading = ({ size, body, className }) => {
+function Heading({ size, body, className }) {
     const Component = `h${size || 4}`;
     return (
         <Component
+            data-block-inline
             className={classNames([styles.container, { [className]: className !== null }])}
             dangerouslySetInnerHTML={{ __html: body }}
         />
     );
-};
+}
 
 Heading.propTypes = propTypes;
 Heading.defaultProps = defaultProps;

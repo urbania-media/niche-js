@@ -14,16 +14,15 @@ const defaultProps = {
     className: null,
 };
 
-const Text = ({ body, className }) => {
-    console.log('hello world', styles.container);
-
+function Text({ body, className }) {
     return (
         <div
+            data-block-editable
             className={classNames([styles.container, { [className]: className !== null }])}
             dangerouslySetInnerHTML={{ __html: body }}
         />
     );
-};
+}
 
 Text.propTypes = propTypes;
 Text.defaultProps = defaultProps;
