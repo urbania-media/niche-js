@@ -7,13 +7,24 @@
         {
             "type": "image",
             "image": {
-                "url": "https://picsum.photos/600"
+                "url": "https://picsum.photos/1080"
             },
             "caption": "Description de l'image"
         },
         {
             "type": "text",
-            "body": "<p>La météo façonne notre environnement, influe sur notre humeur et même notre économie.</h1><p>Chaque jour, nous nous réveillons et consultons la prévision météorologique pour planifier nos activités. Qu'il s'agisse de faire une randonnée, de pique-niquer ou simplement de faire des courses, le temps dicte souvent notre emploi du temps. Les jours ensoleillés apportent généralement une énergie positive et vivifiante, incitant à sortir et à profiter de l'extérieur. En revanche, une journée pluvieuse peut créer une atmosphère apaisante, parfaite pour se blottir avec un bon livre ou regarder un film.</p><p>Sur le plan environnemental, la météo est cruciale pour la survie de la faune et de la flore. Elle influence le cycle de l'eau, indispensable à la vie sur Terre. Les précipitations nourrissent nos rivières et nos lacs, hydratent les sols et favorisent la croissance des plantes. En revanche, des conditions météorologiques extrêmes, telles que les tempêtes, les sécheresses et les inondations, peuvent avoir des effets dévastateurs sur l'écosystème et l'humanité.</p><p>En outre, la météo a un impact économique significatif. Elle influence le secteur agricole, le tourisme, la construction, l'énergie et même la vente au détail. Un temps doux et favorable peut stimuler la croissance des cultures, attirer les touristes et faciliter les projets de construction. À l'inverse, des conditions météorologiques défavorables peuvent entraîner des récoltes médiocres, dissuader les visiteurs et retarder les projets de construction.</p><p>En conclusion, la météo </p>"
+            "body": "<p>End block...</p>"
+        },
+        {
+            "type": "quote",
+            "body": "Une citation",
+            "cite": "Auteur"
+        },
+        {
+            "type": "embed",
+            "embed": {
+                "url": "https://www.youtube.com/embed/NiS49PYaaAY"
+            }
         }
 	]
 }

@@ -5,14 +5,14 @@
     position: relative;
 }
 
-.header { 
+.header {
     position: relative;
-    width: 100%;
-    background: white;
     display: flex;
+    width: 100%;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    background: white;
     color: black;
 }
 
@@ -26,11 +26,36 @@
 }
 
 .image {
-    
+    overflow: hidden;
     width: 100%;
     height: 45vw;
     background: grey;
-
 }
 
+.image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 
+section {
+    background: white;
+}
+
+h1 {
+    padding: 8px 16px;
+    background: green;
+}
+
+/* stylelint-disable selector-class-pattern */
+:global {
+    .ck.ck-content .block-image-description p {
+        text-align: center;
+    }
+
+    .ck.ck-block-toolbar-button {
+        background: grey;
+        transform: translateX(calc(2.5vw - 1 * var(--ck-spacing-large)));
+    }
+}
+/* stylelint-enable selector-class-pattern */

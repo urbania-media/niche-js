@@ -5,8 +5,8 @@ import React, { useRef, useEffect } from 'react';
 
 import EditorText from './EditorText';
 
-import styles from './styles.module.scss';
 import './quill.scss';
+import styles from './styles.module.scss';
 
 const propTypes = {
     body: PropTypes.string,
@@ -18,22 +18,23 @@ const defaultProps = {
     className: null,
 };
 
-const EditorCustom = ({ body, className }) => {
+function EditorCustom({ body, className }) {
     return (
-        <div className={classNames([styles.container, { [className]: className !== null }])}>  
-            <div className={styles.header} >
+        <div className={classNames([styles.container, { [className]: className !== null }])}>
+            <div className={styles.header}>
                 <h1 className={styles.title}>Les tricheurs du Custom</h1>
-                <h3 className={styles.subtitle}>Réspectrer les règles sanitaires... la plupart du temps</h3>
+                <h3 className={styles.subtitle}>
+                    Réspectrer les règles sanitaires... la plupart du temps
+                </h3>
                 <h5 className={styles.writer}>Par Yop Menier</h5>
             </div>
             <div className={styles.image}>
-                <img/>
+                <img />
             </div>
-            <EditorText />    
+            <EditorText />
         </div>
     );
-
-};
+}
 
 EditorCustom.propTypes = propTypes;
 EditorCustom.defaultProps = defaultProps;

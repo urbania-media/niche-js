@@ -28,8 +28,7 @@ const EditorText = ({ body, className }) => {
     }, [])
 
     const handleKeyPress = useCallback(() => {
-        if (event.key === 'Enter') {
-           
+        if (event.key === 'Enter') {  
             addCompText()
             event.preventDefault(); 
         }
