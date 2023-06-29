@@ -7,6 +7,7 @@ import { createRoot } from 'react-dom/client';
 import { renderToString } from 'react-dom/server';
 
 import NicheEditor from '@niche-js/ckeditor';
+import { useViewerComponent } from '@niche-js/core/contexts';
 
 import styles from './styles.module.css';
 
@@ -23,6 +24,8 @@ const defaultProps = {
 };
 
 function EditorArticle({ document, className, onChange }) {
+    const ArticleComponent = useViewerComponent('article');
+
     const onEditorReady = useCallback((editor) => {
         // You can store the "editor" and use when it is needed.
         console.log('Editor is ready to use!', editor);
@@ -48,7 +51,10 @@ function EditorArticle({ document, className, onChange }) {
         console.log('Blur', event);
     }, []);
 
-    const body = useMemo(() => renderToString(<div>Hello 2</div>), [document]);
+    const body = useMemo(
+        () => renderToString(<ArticleComponent document={document} />),
+        [document],
+    );
 
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>
@@ -58,7 +64,7 @@ function EditorArticle({ document, className, onChange }) {
                 config={{
                     niche: {
                         blockRenderer: (type, data, domElement) => {
-                            console.log(data);
+                            // console.log('data', data);
                             const root = createRoot(domElement);
                             root.render(<div>BLOCK</div>);
                         },

@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 
-import ViewersProvider from '../../../packages/core/src/contexts/ComponentsContext';
+import ViewersProvider from '../../../packages/viewers/src/ViewersProvider';
 import Article from './EditorArticle';
 
 import article from '../../../.storybook/data/articles/1.json';

@@ -1,7 +1,7 @@
 import { useComponentsManager, useComponents, useComponent } from '@panneau/core/contexts';
 
 export const EDITORS_NAMESPACE = 'editors';
-export const VIEWER_NAMESPACE = 'viewers';
+export const VIEWERS_NAMESPACE = 'viewers';
 export const COMPONENTS_NAMESPACE = 'components';
 export const BLOCKS_NAMESPACE = 'components.blocks';
 // export const SCREENS_NAMESPACE = 'components.screens';
@@ -20,13 +20,13 @@ export const useEditorComponent = (name, defaultComponent = null) =>
 /**
  * Viewers hooks
  */
-export const useViewersComponentsManager = () => useComponentsManager(VIEWER_NAMESPACE);
+export const useViewersComponentsManager = () => useComponentsManager(VIEWERS_NAMESPACE);
 
 export const useViewersComponents = (defaultComponents = {}) =>
-    useComponents(VIEWER_NAMESPACE, defaultComponents);
+    useComponents(VIEWERS_NAMESPACE, defaultComponents);
 
 export const useViewerComponent = (name, defaultComponent = null) =>
-    useComponent(name, defaultComponent, VIEWER_NAMESPACE);
+    useComponent(name, defaultComponent, VIEWERS_NAMESPACE);
 
 /**
  * Components hooks

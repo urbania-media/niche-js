@@ -40,7 +40,7 @@ clean() {
 
 build_rollup() {
     echo "Building JS with rollup..."
-    if [ -f ./rollup.config.js ]; then
+    if [ -f ./rollup.config.mjs ]; then
         ../../node_modules/.bin/rollup --config ./rollup.config.mjs
     else
         ../../node_modules/.bin/rollup --config ../../rollup.config.mjs
