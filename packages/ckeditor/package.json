@@ -1,6 +1,6 @@
 {
     "name": "@niche-js/ckeditor",
-    "version": "0.3.378",
+    "version": "0.0.1",
     "description": "",
     "keywords": [
         "javascript"
@@ -62,7 +62,8 @@
         "@ckeditor/ckeditor5-build-inline": "^37.1.0",
         "@ckeditor/ckeditor5-dev-translations": "37.0.1",
         "@ckeditor/ckeditor5-dev-utils": "37.0.1",
-        "@ckeditor/ckeditor5-editor-inline": "^37.1.0",
+        "@ckeditor/ckeditor5-editor-balloon": "^37.1.0",
+        "@ckeditor/ckeditor5-editor-classic": "^37.1.0",
         "@ckeditor/ckeditor5-essentials": "^37.1.0",
         "@ckeditor/ckeditor5-highlight": "^37.1.0",
         "@ckeditor/ckeditor5-link": "^37.1.0",

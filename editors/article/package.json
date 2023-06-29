@@ -29,6 +29,9 @@
     "main": "lib/index.js",
     "module": "es/index.js",
     "style": "assets/css/styles.css",
+    "exports": {
+        "./assets/css/styles.css": "./assets/css/styles.css"
+    },
     "files": [
         "lib",
         "es",
@@ -42,9 +45,24 @@
         "react-dom": "^18.0.0"
     },
     "dependencies": {
+        "@ckeditor/ckeditor5-basic-styles": "^38.0.1",
         "@ckeditor/ckeditor5-build-balloon": "^38.0.1",
         "@ckeditor/ckeditor5-build-classic": "^38.0.1",
+        "@ckeditor/ckeditor5-core": "^38.0.1",
+        "@ckeditor/ckeditor5-dev-utils": "^37.0.1",
+        "@ckeditor/ckeditor5-editor-balloon": "^38.0.1",
+        "@ckeditor/ckeditor5-editor-classic": "^38.0.1",
+        "@ckeditor/ckeditor5-essentials": "^38.0.1",
+        "@ckeditor/ckeditor5-heading": "^38.0.1",
+        "@ckeditor/ckeditor5-image": "^38.0.1",
+        "@ckeditor/ckeditor5-inspector": "^4.1.0",
+        "@ckeditor/ckeditor5-list": "^38.0.1",
+        "@ckeditor/ckeditor5-paragraph": "^38.0.1",
         "@ckeditor/ckeditor5-react": "^6.0.0",
+        "@ckeditor/ckeditor5-style": "^38.0.1",
+        "@ckeditor/ckeditor5-theme-lark": "^38.0.1",
+        "@ckeditor/ckeditor5-ui": "^38.0.1",
+        "@ckeditor/ckeditor5-widget": "^38.0.1",
         "@niche-js/core": "^0.0.1",
         "classnames": "^2.2.6",
         "prop-types": "^15.7.2",
