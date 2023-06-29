@@ -21,6 +21,20 @@ module.exports = {
             path.join(__dirname, '../../node_modules'),
             'node_modules',
         ],
+        extensions: [
+            '.web.mjs',
+            '.mjs',
+            '.web.js',
+            '.js',
+            '.web.ts',
+            '.ts',
+            '.web.tsx',
+            '.tsx',
+            '.json',
+            '.web.jsx',
+            '.jsx',
+            '.cjs',
+        ],
     },
 
     plugins: [
