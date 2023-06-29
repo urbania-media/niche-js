@@ -1,16 +1,55 @@
-// import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
-// import Italic from '@ckeditor/ckeditor5-basic-styles/src/italic';
-import BalloonEditorBase from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
+import { Bold, Italic } from '@ckeditor/ckeditor5-basic-styles';
+// import { ClassicEditor as BaseEditor } from '@ckeditor/ckeditor5-editor-classic';
+import { BalloonEditor as BaseEditor } from '@ckeditor/ckeditor5-editor-balloon';
+import { Essentials } from '@ckeditor/ckeditor5-essentials';
+import { Heading } from '@ckeditor/ckeditor5-heading';
+import {
+    AutoImage,
+    Image,
+    ImageBlock,
+    ImageCaption,
+    ImageResize,
+    ImageStyle,
+    ImageToolbar,
+} from '@ckeditor/ckeditor5-image';
+import { LinkImage } from '@ckeditor/ckeditor5-link';
+import { List } from '@ckeditor/ckeditor5-list';
+import { Paragraph } from '@ckeditor/ckeditor5-paragraph';
+import { BlockToolbar } from '@ckeditor/ckeditor5-ui';
 
-// import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials';
-// import Highlight from '@ckeditor/ckeditor5-highlight/src/highlight';
-// import Link from '@ckeditor/ckeditor5-link/src/link';
-// import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
+class NicheEditor extends BaseEditor {}
 
-console.log('AAAA');
+NicheEditor.builtinPlugins = [
+    Essentials,
+    Paragraph,
+    Bold,
+    Italic,
+    Heading,
+    List,
+    // BlockText,
+    // BlockImage,
+    // SimpleBox,
+    Image,
+    ImageBlock,
+    ImageToolbar,
+    ImageCaption,
+    ImageStyle,
+    ImageResize,
+    LinkImage,
+    AutoImage,
+    BlockToolbar,
+];
 
-class NormalEditor extends BalloonEditorBase {}
+NicheEditor.defaultConfig = {
+    simpleBox: {
+        toolbar: ['bold'],
+    },
+    blockToolbar: ['bold'],
+    toolbar: ['bold', 'italic'],
 
-// // NormalEditor.builtinPlugins = [Essentials, Paragraph, Bold, Italic, Highlight, Link];
+    image: {
+        toolbar: ['toggleImageCaption'],
+    },
+};
 
-export default NormalEditor;
+export default NicheEditor;

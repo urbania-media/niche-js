@@ -1,6 +1,6 @@
 import Image from './Image';
 
-import fireKoala from './test/firekoala.png';
+// import fireKoala from './test/firekoala.png';
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 export default {
@@ -12,6 +12,6 @@ export default {
 
 export const Default = {
     args: {
-        media: { src: fireKoala },
+        // media: { src: fireKoala },
     },
 };

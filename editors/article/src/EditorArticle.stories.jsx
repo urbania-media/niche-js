@@ -10,6 +10,6 @@ export default {
 
 export const Default = {
     args: {
-        body: 'Hello',
+        body: '<p>Hello world</p>',
     },
 };
