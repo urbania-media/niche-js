@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 
+import BlocksProvider from '../../../packages/blocks/src/BlocksProvider';
 import Article from './ViewerArticle';
 
 import article from '../../../.storybook/data/articles/1.json';
@@ -10,6 +11,13 @@ export default {
     component: Article,
     tags: ['autodocs'],
     argTypes: {},
+    decorators: [
+        (Story) => (
+            <BlocksProvider>
+                <Story />
+            </BlocksProvider>
+        ),
+    ],
 };
 
 export const Default = {

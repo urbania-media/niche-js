@@ -1,5 +1,6 @@
 // import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
+import { useComponentsManager, ComponentsProvider } from '@panneau/core/contexts';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { useCallback, useMemo } from 'react';
@@ -7,7 +8,11 @@ import { createRoot } from 'react-dom/client';
 import { renderToString } from 'react-dom/server';
 
 import NicheEditor from '@niche-js/ckeditor';
-import { useViewerComponent } from '@niche-js/core/contexts';
+import {
+    useViewerComponent,
+    useBlocksComponentsManager,
+    BLOCKS_NAMESPACE,
+} from '@niche-js/core/contexts';
 
 import styles from './styles.module.css';
 
@@ -26,6 +31,8 @@ const defaultProps = {
 function EditorArticle({ document, className, onChange }) {
     const ArticleComponent = useViewerComponent('article');
 
+    const blocksManager = useBlocksComponentsManager();
+
     const onEditorReady = useCallback((editor) => {
         // You can store the "editor" and use when it is needed.
         console.log('Editor is ready to use!', editor);
@@ -34,6 +41,9 @@ function EditorArticle({ document, className, onChange }) {
     const onEditorChange = useCallback(
         (event, editor) => {
             const data = editor.getData();
+
+            console.log('newdata', data);
+
             if (onChange !== null) {
                 onChange(data);
             }
@@ -52,9 +62,19 @@ function EditorArticle({ document, className, onChange }) {
     }, []);
 
     const body = useMemo(
-        () => renderToString(<ArticleComponent document={document} />),
-        [document],
+        () =>
+            renderToString(
+                <ComponentsProvider
+                    namespace={BLOCKS_NAMESPACE}
+                    components={blocksManager.getComponents()}
+                >
+                    <ArticleComponent document={document} />
+                </ComponentsProvider>,
+            ),
+        [document, blocksManager],
     );
+
+    console.log(blocksManager);
 
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>

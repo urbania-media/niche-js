@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 
+import BlocksProvider from '../../../packages/blocks/src/BlocksProvider';
 import ViewersProvider from '../../../packages/viewers/src/ViewersProvider';
 import Article from './EditorArticle';
 
@@ -13,11 +14,11 @@ export default {
     argTypes: {},
     decorators: [
         (Story) => (
-            <div style={{ margin: '3em' }}>
+            <BlocksProvider>
                 <ViewersProvider>
                     <Story />
                 </ViewersProvider>
-            </div>
+            </BlocksProvider>
         ),
     ],
 };

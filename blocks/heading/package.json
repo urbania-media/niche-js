@@ -1,8 +1,9 @@
 {
-    "name": "@niche-js/data",
+    "name": "@niche-js/block-heading",
     "version": "0.0.1",
-    "description": "",
+    "description": "Niche block",
     "keywords": [
+        "niche",
         "javascript"
     ],
     "homepage": "https://github.com/urbania-media/niche-js",
@@ -22,10 +23,6 @@
         {
             "name": "Nicolas Roy-Bourdages",
             "email": "nrb@folklore.email"
-        },
-        {
-            "name": "Julien Carignan",
-            "email": "jc@folklore.email"
         }
     ],
     "license": "ISC",
@@ -37,23 +34,17 @@
         "assets"
     ],
     "scripts": {
-        "prepare": "../../scripts/prepare-package.sh"
-    },
-    "devDependencies": {
-        "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
-        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
+        "build": "rollup --config ../../rollup.config.mjs"
     },
     "peerDependencies": {
-        "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
-        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
+        "react": "^18.0.0",
+        "react-dom": "^18.0.0"
     },
     "dependencies": {
-        "@folklore/fetch": "^0.1.15",
         "@niche-js/core": "^0.0.1",
-        "lodash": "^4.17.21",
+        "classnames": "^2.2.6",
         "prop-types": "^15.7.2",
-        "query-string": "^8.1.0",
-        "react-router": "^6.9.0"
+        "react-intl": "^6.4.4"
     },
     "publishConfig": {
         "access": "public"

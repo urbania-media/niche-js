@@ -3,7 +3,8 @@ import { useComponentsManager, useComponents, useComponent } from '@panneau/core
 export const EDITORS_NAMESPACE = 'editors';
 export const VIEWERS_NAMESPACE = 'viewers';
 export const COMPONENTS_NAMESPACE = 'components';
-export const BLOCKS_NAMESPACE = 'components.blocks';
+export const BLOCKS_NAMESPACE = 'blocks';
+
 // export const SCREENS_NAMESPACE = 'components.screens';
 
 /**
