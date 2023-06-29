@@ -27,9 +27,17 @@ const packageJsonPath = path.join(process.cwd(), 'package.json');
 const { dependencies } = fsExtra.readJsonSync(packageJsonPath);
 
 const patternRegExp = new RegExp(`^${pattern.replace('*', '.*')}$`, 'i');
-const packages = Object.keys(dependencies).filter(
-    (it) => patternRegExp.test(it) && fs.existsSync(require.resolve(`${it}/assets/css/styles.css`)),
-);
+const packages = Object.keys(dependencies).filter((it) => {
+    if (!patternRegExp.test(it)) {
+        return false;
+    }
+    try {
+        require.resolve(`${it}/assets/css/styles.css`);
+    } catch (e) {
+        return false;
+    }
+    return true;
+});
 
 const templateStr = fs.readFileSync(templateFile);
 const styles = ejs.render(templateStr.toString('utf-8'), {

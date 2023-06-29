@@ -1,0 +1,67 @@
+{
+    "name": "@niche-js/blocks",
+    "version": "0.0.1",
+    "description": "",
+    "keywords": [
+        "javascript"
+    ],
+    "homepage": "https://github.com/urbania-media/niche-js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/urbania-media/niche-js.git"
+    },
+    "author": {
+        "name": "Folklore",
+        "email": "info@folklore.email"
+    },
+    "contributors": [
+        {
+            "name": "David Mongeau-Petitpas",
+            "email": "dmp@folklore.email"
+        },
+        {
+            "name": "Nicolas Roy-Bourdages",
+            "email": "nrb@folklore.email"
+        }
+    ],
+    "license": "ISC",
+    "main": "lib/index.js",
+    "module": "es/index.js",
+    "exports": {
+        ".": "./lib/index.js",
+        "./css/styles": "./css/styles.css",
+        "./css/styles.css": "./css/styles.css",
+        "./assets/css/styles.css": "./assets/css/styles.css"
+    },
+    "files": [
+        "lib",
+        "es",
+        "assets",
+        "css"
+    ],
+    "scripts": {
+        "styles": "../../scripts/build-packages-styles.js --pattern='@niche-js/block-*' ./src/styles.css.ejs ./css/styles.css",
+        "css": "../../scripts/build-css.js ./css/styles.css ./assets/css/styles.css",
+        "prepare": "../../scripts/prepare-package.sh && npm run styles && npm run css"
+    },
+    "devDependencies": {
+        "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
+    },
+    "peerDependencies": {
+        "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
+    },
+    "dependencies": {
+        "@babel/runtime": "^7.12.5",
+        "@panneau/core": "^3.0.0",
+        "@niche-js/core": "^0.0.1",
+        "@niche-js/block-text": "^0.0.1",
+        "@niche-js/block-image": "^0.0.1",
+        "@niche-js/block-heading": "^0.0.1",
+        "prop-types": "^15.7.2"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}

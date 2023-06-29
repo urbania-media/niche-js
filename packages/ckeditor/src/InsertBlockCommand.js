@@ -1,18 +1,18 @@
-import { Command } from "@ckeditor/ckeditor5-core";
+import { Command } from '@ckeditor/ckeditor5-core';
 
 function createSimpleBox(writer) {
-    const simpleBox = writer.createElement('simpleBox');
-    // const simpleBoxTitle = writer.createElement('simpleBoxTitle');
-    // const simpleBoxDescription = writer.createElement('simpleBoxDescription');
+    const nicheBlock = writer.createElement('nicheBlock');
+    // const nicheBlockTitle = writer.createElement('nicheBlockTitle');
+    const nicheBlockContent = writer.createElement('nicheBlockContent');
 
-    // writer.append(simpleBoxTitle, simpleBox);
-    // writer.append(simpleBoxDescription, simpleBox);
+    // writer.append(nicheBlockTitle, nicheBlock);
+    writer.append(nicheBlockContent, nicheBlock);
 
     // // There must be at least one paragraph for the description to be editable.
     // // See https://github.com/ckeditor/ckeditor5/issues/1464.
-    // writer.appendElement('paragraph', simpleBoxDescription);
+    writer.appendElement('paragraph', nicheBlockContent);
 
-    return simpleBox;
+    return nicheBlock;
 }
 
 export default class InsertBlockCommand extends Command {
@@ -27,7 +27,10 @@ export default class InsertBlockCommand extends Command {
     refresh() {
         const { model } = this.editor;
         const { selection } = model.document;
-        const allowedIn = model.schema.findAllowedParent(selection.getFirstPosition(), 'simpleBox');
+        const allowedIn = model.schema.findAllowedParent(
+            selection.getFirstPosition(),
+            'nicheBlock',
+        );
 
         this.isEnabled = allowedIn !== null;
     }

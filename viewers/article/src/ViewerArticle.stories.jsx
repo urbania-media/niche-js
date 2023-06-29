@@ -1,25 +1,15 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 
-import ViewersProvider from '../../../packages/core/src/contexts/ComponentsContext';
-import Article from './EditorArticle';
+import Article from './ViewerArticle';
 
 import article from '../../../.storybook/data/articles/1.json';
 
 export default {
-    title: 'Editors/Article',
+    title: 'Viewers/Article',
     component: Article,
     tags: ['autodocs'],
     argTypes: {},
-    decorators: [
-        (Story) => (
-            <div style={{ margin: '3em' }}>
-                <ViewersProvider>
-                    <Story />
-                </ViewersProvider>
-            </div>
-        ),
-    ],
 };
 
 export const Default = {

@@ -21,13 +21,23 @@ export default class BlocksPluginEditing extends Plugin {
     _defineSchema() {
         const { schema } = this.editor.model;
 
-        schema.register('simpleBox', {
+        schema.register('nicheBlock', {
             // Behaves like a self-contained block object (e.g. a block image)
             // allowed in places where other blocks are allowed (e.g. directly in the root).
             inheritAllFrom: '$blockObject',
-            isObject: true,
+            // isObject: true,
 
-            allowAttributes: ['type'],
+            allowAttributes: ['type', 'data'],
+            allowContentOf: '$root',
+        });
+
+        schema.register('nicheBlockContent', {
+            isLimit: true,
+
+            allowIn: 'nicheBlock',
+
+            // Allow content which is allowed in the root (e.g. paragraphs).
+            allowContentOf: '$root',
         });
     }
 
@@ -40,29 +50,34 @@ export default class BlocksPluginEditing extends Plugin {
         // <simpleBox> converters
         conversion.for('upcast').elementToElement({
             model: (viewElement, { writer: modelWriter }) =>
-                modelWriter.createElement('simpleBox', {
+                modelWriter.createElement('nicheBlock', {
                     type: viewElement.getAttribute('data-block-type'),
+                    data: viewElement.getAttribute('data-block-data'),
                 }),
             view: {
-                name: 'section',
-                classes: 'simple-box',
+                name: 'div',
+                classes: 'niche-block',
             },
         });
+
         conversion.for('dataDowncast').elementToElement({
-            model: 'simpleBox',
+            model: 'nicheBlock',
             view: {
-                name: 'section',
-                classes: 'simple-box',
+                name: 'div',
+                classes: 'niche-block',
             },
         });
+
         conversion.for('editingDowncast').elementToElement({
-            model: 'simpleBox',
+            model: 'nicheBlock',
             view: (modelElement, { writer: viewWriter }) => {
-                const section = viewWriter.createContainerElement('section', {
-                    class: 'simple-box',
+                const section = viewWriter.createContainerElement('div', {
+                    class: 'niche-block',
                 });
 
                 const type = modelElement.getAttribute('type');
+                const data = modelElement.getAttribute('data');
+                const jsonData = data ? JSON.parse(data) : null;
 
                 const reactWrapper = viewWriter.createRawElement(
                     'div',
@@ -70,13 +85,39 @@ export default class BlocksPluginEditing extends Plugin {
                         class: 'block__react-wrapper',
                     },
                     (domElement) => {
-                        renderBlock(type, domElement);
+                        renderBlock(type, jsonData, domElement);
                     },
                 );
 
                 viewWriter.insert(viewWriter.createPositionAt(section, 0), reactWrapper);
 
-                return toWidget(section, viewWriter, { label: 'simple box widget' });
+                return toWidgetEditable(section, viewWriter, { label: 'simple box widget' });
+            },
+        });
+
+        conversion.for('upcast').elementToElement({
+            model: 'nicheBlockContent',
+            view: {
+                name: 'div',
+                classes: 'niche-block-content',
+            },
+        });
+        conversion.for('dataDowncast').elementToElement({
+            model: 'nicheBlockContent',
+            view: {
+                name: 'div',
+                classes: 'niche-block-content',
+            },
+        });
+        conversion.for('editingDowncast').elementToElement({
+            model: 'nicheBlockContent',
+            view: (modelElement, { writer: viewWriter }) => {
+                // Note: You use a more specialized createEditableElement() method here.
+                const div = viewWriter.createEditableElement('div', {
+                    class: 'niche-block-content',
+                });
+
+                return toWidgetEditable(div, viewWriter);
             },
         });
     }
