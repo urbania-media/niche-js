@@ -17,6 +17,8 @@ import { List } from '@ckeditor/ckeditor5-list';
 import { Paragraph } from '@ckeditor/ckeditor5-paragraph';
 import { BlockToolbar } from '@ckeditor/ckeditor5-ui';
 
+import BlocksPlugin from './BlocksPlugin';
+
 class NicheEditor extends BaseEditor {}
 
 NicheEditor.builtinPlugins = [
@@ -29,6 +31,7 @@ NicheEditor.builtinPlugins = [
     // BlockText,
     // BlockImage,
     // SimpleBox,
+    BlocksPlugin,
     Image,
     ImageBlock,
     ImageToolbar,
@@ -44,7 +47,7 @@ NicheEditor.defaultConfig = {
     simpleBox: {
         toolbar: ['bold'],
     },
-    blockToolbar: ['bold'],
+    blockToolbar: ['bold', 'blocks'],
     toolbar: ['bold', 'italic'],
 
     image: {

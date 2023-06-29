@@ -1,43 +1,10 @@
-/* eslint-disable no-underscore-dangle */
-
-/* eslint-disable max-classes-per-file */
-import { Plugin, Command } from '@ckeditor/ckeditor5-core';
+import { Plugin } from '@ckeditor/ckeditor5-core';
 import { Widget, toWidget, toWidgetEditable } from '@ckeditor/ckeditor5-widget';
 
-function createSimpleBox(writer) {
-    const simpleBox = writer.createElement('simpleBox');
-    const simpleBoxTitle = writer.createElement('simpleBoxTitle');
-    const simpleBoxDescription = writer.createElement('simpleBoxDescription');
+import InsertBlockCommand from './InsertBlockCommand';
 
-    writer.append(simpleBoxTitle, simpleBox);
-    writer.append(simpleBoxDescription, simpleBox);
-
-    // There must be at least one paragraph for the description to be editable.
-    // See https://github.com/ckeditor/ckeditor5/issues/1464.
-    writer.appendElement('paragraph', simpleBoxDescription);
-
-    return simpleBox;
-}
-
-class InsertSimpleBoxCommand extends Command {
-    execute() {
-        this.editor.model.change((writer) => {
-            // Insert <simpleBox>*</simpleBox> at the current selection position
-            // in a way that will result in creating a valid model structure.
-            this.editor.model.insertObject(createSimpleBox(writer));
-        });
-    }
-
-    refresh() {
-        const { model } = this.editor;
-        const { selection } = model.document;
-        const allowedIn = model.schema.findAllowedParent(selection.getFirstPosition(), 'simpleBox');
-
-        this.isEnabled = allowedIn !== null;
-    }
-}
-
-class BlockTextEditing extends Plugin {
+/* eslint-disable no-underscore-dangle */
+export default class BlocksPluginEditing extends Plugin {
     static get requires() {
         return [Widget];
     }
@@ -48,7 +15,7 @@ class BlockTextEditing extends Plugin {
         this._defineSchema();
         this._defineConverters();
 
-        this.editor.commands.add('insertSimpleBox', new InsertSimpleBoxCommand(this.editor));
+        this.editor.commands.add('insertBlock', new InsertBlockCommand(this.editor));
     }
 
     _defineSchema() {
@@ -81,7 +48,7 @@ class BlockTextEditing extends Plugin {
         });
 
         schema.addChildCheck((context, childDefinition) => {
-            if (context.endsWith('simpleBoxDescription') && childDefinition.name == 'simpleBox') {
+            if (context.endsWith('simpleBoxDescription') && childDefinition.name === 'simpleBox') {
                 return false;
             }
         });
@@ -167,46 +134,5 @@ class BlockTextEditing extends Plugin {
                 return toWidgetEditable(div, viewWriter);
             },
         });
-    }
-}
-
-class BlockTextUI extends Plugin {
-    init() {
-        console.log('SimpleBoxUI#init() got called');
-
-        const { editor } = this;
-        const { t } = editor;
-
-        // The "simpleBox" button must be registered among the UI components of the editor
-        // to be displayed in the toolbar.
-        editor.ui.componentFactory.add('simpleBox', (locale) => {
-            // The state of the button will be bound to the widget command.
-            const command = editor.commands.get('insertSimpleBox');
-
-            // The button will be an instance of ButtonView.
-            const buttonView = new ButtonView(locale);
-
-            buttonView.set({
-                // The t() function helps localize the editor. All strings enclosed in t() can be
-                // translated and change when the language of the editor changes.
-                label: t('Simple Box'),
-                withText: true,
-                tooltip: true,
-            });
-
-            // Bind the state of the button to the command.
-            buttonView.bind('isOn', 'isEnabled').to(command, 'value', 'isEnabled');
-
-            // Execute the command when the button is clicked (executed).
-            this.listenTo(buttonView, 'execute', () => editor.execute('insertSimpleBox'));
-
-            return buttonView;
-        });
-    }
-}
-
-export default class BlockTextPlugin extends Plugin {
-    static get requires() {
-        return [BlockTextEditing, BlockTextUI];
     }
 }
