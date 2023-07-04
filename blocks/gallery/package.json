@@ -1,5 +1,5 @@
 {
-    "name": "@niche-js/editor-article",
+    "name": "@niche-js/block-gallery",
     "version": "0.0.1",
     "description": "Niche block",
     "keywords": [
@@ -28,25 +28,19 @@
     "license": "ISC",
     "main": "lib/index.js",
     "module": "es/index.js",
-    "style": "assets/css/styles.css",
-    "exports": {
-        "./assets/css/styles.css": "./assets/css/styles.css"
-    },
     "files": [
         "lib",
         "es",
         "assets"
     ],
     "scripts": {
-        "prepare": "../../scripts/prepare-package.sh"
+        "build": "rollup --config ../../rollup.config.mjs"
     },
     "peerDependencies": {
         "react": "^18.0.0",
         "react-dom": "^18.0.0"
     },
     "dependencies": {
-        "@niche-js/ckeditor": "^0.0.1",
-        "@niche-js/editor-editor": "^0.0.1",
         "@niche-js/core": "^0.0.1",
         "classnames": "^2.2.6",
         "prop-types": "^15.7.2",

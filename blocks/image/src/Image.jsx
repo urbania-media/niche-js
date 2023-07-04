@@ -17,10 +17,10 @@ const defaultProps = {
 };
 
 const Image = ({ media, className }) => {
-    const { src = null } = media || {};
+    const { src = null, alt = 'alt' } = media || {};
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>
-            {src !== null ? <image src={src} alt="image-alt-text" /> : null}
+            {src !== null ? <img src={src} alt={alt} /> : 'Image block'}
         </div>
     );
 };

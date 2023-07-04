@@ -15,11 +15,11 @@ const defaultProps = {
 };
 
 const Text = ({ body, className }) => {
-    console.log('hello world', styles.container);
-
+    console.log('text block', body);
     return (
         <div
             className={classNames([styles.container, { [className]: className !== null }])}
+            data-type="text"
             dangerouslySetInnerHTML={{ __html: body }}
         />
     );

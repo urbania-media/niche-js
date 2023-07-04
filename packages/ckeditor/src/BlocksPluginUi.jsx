@@ -33,5 +33,9 @@ export default class BlocksPluginUi extends Plugin {
 
             return buttonView;
         });
+
+        // editor.ui.focusTracker.on('change:isFocused', (evt, data, isFocused) => {
+        //     console.log(`The editor is focuseddd: ${isFocused}.`);
+        // });
     }
 }

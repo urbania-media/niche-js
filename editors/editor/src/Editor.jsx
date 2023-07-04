@@ -5,18 +5,24 @@ import React from 'react';
 import styles from './styles.module.css';
 
 const propTypes = {
-    body: PropTypes.string,
+    left: PropTypes.node,
+    right: PropTypes.node,
+    children: PropTypes.node,
     className: PropTypes.string,
 };
 
 const defaultProps = {
-    body: null,
+    left: PropTypes.node,
+    right: PropTypes.node,
     className: null,
+    children: null,
 };
 
-const Editor = ({ body, className }) => (
+const Editor = ({ left, right, className, children }) => (
     <div className={classNames([styles.container, { [className]: className !== null }])}>
-        Base Editor {body}
+        <aside className={styles.left}>{left}</aside>
+        <main className={styles.main}>{children}</main>
+        <aside className={styles.right}>{right}</aside>
     </div>
 );
 

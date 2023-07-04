@@ -102,6 +102,7 @@ export default class BlocksPluginEditing extends Plugin {
                 classes: 'niche-block-content',
             },
         });
+
         conversion.for('dataDowncast').elementToElement({
             model: 'nicheBlockContent',
             view: {
@@ -109,6 +110,7 @@ export default class BlocksPluginEditing extends Plugin {
                 classes: 'niche-block-content',
             },
         });
+
         conversion.for('editingDowncast').elementToElement({
             model: 'nicheBlockContent',
             view: (modelElement, { writer: viewWriter }) => {
@@ -116,6 +118,12 @@ export default class BlocksPluginEditing extends Plugin {
                 const div = viewWriter.createEditableElement('div', {
                     class: 'niche-block-content',
                 });
+
+                div.on('change:isFocused', (evt, args) => {
+                    console.log('hella', evt, args);
+                });
+
+                console.log('my div', div);
 
                 return toWidgetEditable(div, viewWriter);
             },

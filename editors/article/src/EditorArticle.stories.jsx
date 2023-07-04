@@ -28,7 +28,7 @@ export const Default = {
         document: article,
     },
     render: (args) => (
-        <div style={{ maxWidth: 300, margin: 'auto ' }}>
+        <div style={{ width: 800, height: 600, margin: 'auto' }}>
             <Article {...args} />
         </div>
     ),

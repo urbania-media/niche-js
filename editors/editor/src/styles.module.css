@@ -1,4 +1,15 @@
 .container {
     position: relative;
-    color: var(--bs-magic-color);
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.main {
+    width: 66%;
+}
+
+.left, .right {
+    flex-grow: 1;
+    background-color: #ededed
 }
