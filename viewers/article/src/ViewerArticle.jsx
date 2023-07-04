@@ -28,10 +28,16 @@ function ViewerArticle({ document, className }) {
         <div className={classNames([styles.container, { [className]: className !== null }])}>
             {(blocks || []).map((block) => {
                 const BlockComponent = blocksManager.getComponent(block.type);
-                // console.log(blocksManager);
-                return BlockComponent !== null ? (
-                    <BlockComponent className="niche-block" {...block} isEditing />
-                ) : null;
+                return (
+                    <div
+                        className="niche-block"
+                        data-block
+                        data-block-type={block.type}
+                        data-block-data={JSON.stringify(block)}
+                    >
+                        {BlockComponent !== null ? <BlockComponent {...block} /> : null}
+                    </div>
+                );
             })}
         </div>
     );

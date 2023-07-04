@@ -1,6 +1,6 @@
 // import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-import { useComponentsManager, ComponentsProvider } from '@panneau/core/contexts';
+import { ComponentsProvider } from '@panneau/core/contexts';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { useCallback, useMemo, useState } from 'react';
@@ -18,7 +18,7 @@ import Editor from '@niche-js/editor-editor';
 import styles from './styles.module.css';
 
 const propTypes = {
-    document: PropTypes.object,
+    document: PropTypes.shape({}),
     className: PropTypes.string,
     onChange: PropTypes.func,
 };
@@ -116,6 +116,8 @@ function EditorArticle({ document, className, onChange }) {
                                 console.log('render data', type, data);
                                 const root = createRoot(domElement);
 
+                                // const BlockComponent = blocksManager.getComponent(type);
+                                // const root = createRoot(domElement);
                                 root.render(<div>BLOCK RENDERER</div>);
                             },
                         },
@@ -129,6 +131,7 @@ function EditorArticle({ document, className, onChange }) {
         </div>
     );
 }
+
 EditorArticle.propTypes = propTypes;
 EditorArticle.defaultProps = defaultProps;
 
