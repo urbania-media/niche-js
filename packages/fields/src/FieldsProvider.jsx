@@ -1,21 +1,30 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import FieldsProvider from '@panneau/fields';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useMemo } from 'react';
 
-import * as components from './components';
+import * as builtInComponents from './components';
 
 const propTypes = {
     children: PropTypes.node,
+    components: PropTypes.objectOf(PropTypes.elementType),
 };
 
 const defaultProps = {
     children: null,
+    components: null,
 };
 
-const BlocksProvider = (props) => (
-    <FieldsProvider components={components} {...props} />
-);
+function BlocksProvider({ components, ...props }) {
+    const finalComponents = useMemo(
+        () => ({
+            ...builtInComponents,
+            ...components,
+        }),
+        [components],
+    );
+    return <FieldsProvider components={finalComponents} {...props} />;
+}
 
 BlocksProvider.propTypes = propTypes;
 BlocksProvider.defaultProps = defaultProps;
