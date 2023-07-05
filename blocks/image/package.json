@@ -28,17 +28,28 @@
     "license": "ISC",
     "main": "lib/index.js",
     "module": "es/index.js",
+    "exports": {
+        ".": "./lib/index.js",
+        "./editor": "./lib/editor.js"
+    },
+    "browser": {
+        ".": "./es/index.js",
+        "./editor": "./es/editor.js"
+    },
     "files": [
         "lib",
         "es",
         "assets"
     ],
     "scripts": {
-        "build": "rollup --config ../../rollup.config.mjs"
+        "build": "rollup --config ./rollup.config.mjs"
     },
     "peerDependencies": {
         "react": "^18.0.0",
-        "react-dom": "^18.0.0"
+        "react-dom": "^18.0.0",
+        "@ckeditor/ckeditor5-core": "^38.1.0",
+        "@ckeditor/ckeditor5-widget": "^38.1.0",
+        "@ckeditor/ckeditor5-ui": "^38.1.0"
     },
     "dependencies": {
         "@niche-js/core": "^0.0.1",

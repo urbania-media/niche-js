@@ -17,7 +17,11 @@ import { List } from '@ckeditor/ckeditor5-list';
 import { Paragraph } from '@ckeditor/ckeditor5-paragraph';
 import { BlockToolbar } from '@ckeditor/ckeditor5-ui';
 
-import BlocksPlugin from './BlocksPlugin';
+import { plugin as ImagePlugin } from '@niche-js/block-image/editor';
+
+import NichePlugin from './NichePlugin';
+
+console.log(ImagePlugin);
 
 class NicheEditor extends BaseEditor {}
 
@@ -28,7 +32,6 @@ NicheEditor.builtinPlugins = [
     Italic,
     Heading,
     List,
-    BlocksPlugin,
     Image,
     ImageBlock,
     ImageToolbar,
@@ -38,6 +41,10 @@ NicheEditor.builtinPlugins = [
     LinkImage,
     AutoImage,
     BlockToolbar,
+    // Custom plugins
+    NichePlugin,
+    // Blocks
+    ImagePlugin,
 ];
 
 NicheEditor.defaultConfig = {

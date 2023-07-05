@@ -1,10 +1,10 @@
 import { Plugin } from '@ckeditor/ckeditor5-core';
 import { Widget, toWidget, toWidgetEditable } from '@ckeditor/ckeditor5-widget';
 
-import InsertBlockCommand from './InsertBlockCommand';
+import InsertImageCommand from './InsertImageCommand';
 
 /* eslint-disable no-underscore-dangle */
-export default class BlocksPluginEditing extends Plugin {
+export default class ImagePluginEditing extends Plugin {
     static get requires() {
         return [Widget];
     }
@@ -12,26 +12,29 @@ export default class BlocksPluginEditing extends Plugin {
     init() {
         console.log('SimpleBoxEditing#init() got called');
 
-        this._defineSchema();
-        this._defineConverters();
+        // const { plugins } = this.editor.config.get('niche') || {};
 
-        this.editor.commands.add('insertBlock', new InsertBlockCommand(this.editor));
+        // this.plugins = plugins.map((it) => new it());
+
+        this.defineSchema();
+        this.defineConverters();
+
+        this.editor.commands.add('insertBlock', new InsertImageCommand(this.editor));
     }
 
-    _defineSchema() {
+    defineSchema() {
         const { schema } = this.editor.model;
 
         schema.register('nicheBlock', {
             // Behaves like a self-contained block object (e.g. a block image)
             // allowed in places where other blocks are allowed (e.g. directly in the root).
-            inheritAllFrom: '$blockObject',
-            // isObject: true,
+            inheritAllFrom: '$block',
 
             allowAttributes: ['type', 'data'],
         });
 
         schema.register('nicheBlockInline', {
-            isLimit: true,
+            isLimit: false,
 
             allowIn: 'nicheBlock',
 
@@ -41,7 +44,7 @@ export default class BlocksPluginEditing extends Plugin {
         });
 
         schema.register('nicheBlockEditable', {
-            isLimit: true,
+            isLimit: false,
 
             allowIn: 'nicheBlock',
 
@@ -50,7 +53,7 @@ export default class BlocksPluginEditing extends Plugin {
         });
     }
 
-    _defineConverters() {
+    defineConverters() {
         const { conversion } = this.editor;
 
         const config = this.editor.config.get('niche') || {};
@@ -93,23 +96,25 @@ export default class BlocksPluginEditing extends Plugin {
                     'data-block-type': modelElement.getAttribute('type'),
                 });
 
-                const type = modelElement.getAttribute('type');
-                const data = modelElement.getAttribute('data');
-                const jsonData = data ? JSON.parse(data) : null;
+                // const type = modelElement.getAttribute('type');
+                // const data = modelElement.getAttribute('data');
+                // const jsonData = data ? JSON.parse(data) : null;
 
-                const reactWrapper = viewWriter.createRawElement(
-                    'div',
-                    {
-                        class: 'block__react-wrapper',
-                    },
-                    (domElement) => {
-                        renderBlock(type, jsonData, domElement);
-                    },
-                );
+                // const reactWrapper = viewWriter.createRawElement(
+                //     'div',
+                //     {
+                //         class: 'block__react-wrapper',
+                //     },
+                //     (domElement) => {
+                //         renderBlock(type, jsonData, domElement);
+                //     },
+                // );
 
-                viewWriter.insert(viewWriter.createPositionAt(block, 0), reactWrapper);
+                // viewWriter.insert(viewWriter.createPositionAt(block, 0), reactWrapper);
 
-                return toWidget(block, viewWriter, { label: 'Block' });
+                // return toWidget(block, viewWriter, { label: 'Block' });
+
+                return block;
             },
         });
 
@@ -144,9 +149,9 @@ export default class BlocksPluginEditing extends Plugin {
                 const div = viewWriter.createEditableElement(modelElement.getAttribute('tagName'), {
                     'data-block-inline': 'true',
                 });
-                // return div;
+                return div;
 
-                return toWidgetEditable(div, viewWriter);
+                // return toWidgetEditable(div, viewWriter);
             },
         });
 
@@ -182,7 +187,9 @@ export default class BlocksPluginEditing extends Plugin {
 
                 console.log('my div', div);
 
-                return toWidgetEditable(div, viewWriter);
+                // return toWidgetEditable(div, viewWriter);
+
+                return div;
             },
         });
     }

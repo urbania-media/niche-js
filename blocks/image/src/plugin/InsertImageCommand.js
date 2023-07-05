@@ -1,6 +1,6 @@
 import { Command } from '@ckeditor/ckeditor5-core';
 
-function createSimpleBox(writer) {
+function createImage(writer) {
     const nicheBlock = writer.createElement('nicheBlock');
     // const nicheBlockTitle = writer.createElement('nicheBlockTitle');
     const nicheBlockContent = writer.createElement('nicheBlockContent');
@@ -20,7 +20,7 @@ export default class InsertBlockCommand extends Command {
         this.editor.model.change((writer) => {
             // Insert <simpleBox>*</simpleBox> at the current selection position
             // in a way that will result in creating a valid model structure.
-            this.editor.model.insertObject(createSimpleBox(writer));
+            this.editor.model.insertObject(createImage(writer));
         });
     }
 

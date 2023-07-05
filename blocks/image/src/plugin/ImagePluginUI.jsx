@@ -1,15 +1,16 @@
 import { Plugin } from '@ckeditor/ckeditor5-core';
 import { ButtonView } from '@ckeditor/ckeditor5-ui';
 
-export default class BlocksPluginUi extends Plugin {
+export default class ImagePluginUI extends Plugin {
     init() {
-        console.log('SimpleBoxUI#init() got called');
+        console.log('ImagePluginUI#init() got called');
 
         const { editor } = this;
         const { t } = editor;
 
         // The "simpleBox" button must be registered among the UI components of the editor
         // to be displayed in the toolbar.
+
         editor.ui.componentFactory.add('blocks', (locale) => {
             // The state of the button will be bound to the widget command.
             const command = editor.commands.get('insertBlock');
@@ -20,7 +21,7 @@ export default class BlocksPluginUi extends Plugin {
             buttonView.set({
                 // The t() function helps localize the editor. All strings enclosed in t() can be
                 // translated and change when the language of the editor changes.
-                label: t('Simple Box'),
+                label: t('Image'),
                 withText: true,
                 tooltip: true,
             });
@@ -33,9 +34,5 @@ export default class BlocksPluginUi extends Plugin {
 
             return buttonView;
         });
-
-        // editor.ui.focusTracker.on('change:isFocused', (evt, data, isFocused) => {
-        //     console.log(`The editor is focuseddd: ${isFocused}.`);
-        // });
     }
 }

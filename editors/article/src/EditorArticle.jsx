@@ -30,6 +30,7 @@ const defaultProps = {
 };
 
 function EditorArticle({ document, className, onChange }) {
+    // const blocksDefinitions = useBlocksDefinitions();
     const ArticleComponent = useViewerComponent('article');
 
     const blocksManager = useBlocksComponentsManager();
@@ -112,6 +113,7 @@ function EditorArticle({ document, className, onChange }) {
                     data={body}
                     config={{
                         niche: {
+                            // blocksPlugins: blocksDefinitions.map({ plugin } => plugin),
                             blockRenderer: (type, data, domElement) => {
                                 console.log('render data', type, data);
                                 const root = createRoot(domElement);

@@ -77,7 +77,7 @@
         "@ckeditor/ckeditor5-theme-lark": "^38.0.1",
         "@ckeditor/ckeditor5-ui": "^38.0.1",
         "@ckeditor/ckeditor5-widget": "^38.0.1",
-        "@niche-js/ckeditor": "^0.0.1"
+        "@niche-js/block-image": "^0.0.1"
     },
     "publishConfig": {
         "access": "public"
