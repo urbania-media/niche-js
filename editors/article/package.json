@@ -46,13 +46,16 @@
     },
     "dependencies": {
         "@niche-js/ckeditor": "^0.0.1",
-        "@niche-js/editor-editor": "^0.0.1",
         "@niche-js/core": "^0.0.1",
+        "@niche-js/editor-editor": "^0.0.1",
         "classnames": "^2.2.6",
         "prop-types": "^15.7.2",
         "react-intl": "^6.4.4"
     },
     "publishConfig": {
         "access": "public"
+    },
+    "devDependencies": {
+        "@ckeditor/ckeditor5-inspector": "^4.1.0"
     }
 }

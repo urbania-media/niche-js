@@ -17,10 +17,16 @@ const defaultProps = {
 };
 
 function Image({ media, className }) {
-    const { src = null, alt = null } = media || {};
+    const { url = null, alt = null } = media || {};
     return (
-        <div className={classNames([styles.container, { [className]: className !== null }])}>
-            {src !== null ? <img src={src} alt={alt} /> : 'Image block'}
+        <div
+            className={classNames([styles.container, { [className]: className !== null }])}
+            data-block-image
+        >
+            {url !== null ? <img className={styles.img} src={url} alt={alt} /> : 'Image block'}
+            <div data-caption className={styles.caption}>
+                {alt} Credits
+            </div>
         </div>
     );
 }

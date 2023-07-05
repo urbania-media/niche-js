@@ -11,11 +11,13 @@ import {
     ImageResize,
     ImageStyle,
     ImageToolbar,
+    ImageInsert,
 } from '@ckeditor/ckeditor5-image';
 import { LinkImage } from '@ckeditor/ckeditor5-link';
 import { List } from '@ckeditor/ckeditor5-list';
 import { Paragraph } from '@ckeditor/ckeditor5-paragraph';
 import { BlockToolbar } from '@ckeditor/ckeditor5-ui';
+import { SimpleUploadAdapter } from '@ckeditor/ckeditor5-upload';
 
 import { plugin as ImagePlugin } from '@niche-js/block-image/editor';
 
@@ -32,30 +34,83 @@ NicheEditor.builtinPlugins = [
     Italic,
     Heading,
     List,
-    Image,
-    ImageBlock,
-    ImageToolbar,
-    ImageCaption,
-    ImageStyle,
-    ImageResize,
-    LinkImage,
+    // Image,
+    // ImageBlock,
+    // ImageToolbar,
+    // ImageCaption,
+    // ImageStyle,
+    // ImageResize,
+    // ImageInsert,
+    // LinkImage,
     AutoImage,
     BlockToolbar,
     // Custom plugins
     NichePlugin,
     // Blocks
     ImagePlugin,
+    SimpleUploadAdapter,
 ];
-
+//
 NicheEditor.defaultConfig = {
-    simpleBox: {
-        toolbar: ['bold'],
-    },
-    blockToolbar: ['bold', 'blocks'],
+    blockToolbar: ['paragraph', 'heading', 'blocks', 'insertImage'],
     toolbar: ['bold', 'italic'],
+    simpleUpload: {
+        // The URL that the images are uploaded to.
+        uploadUrl: 'http://niche.ca.test/panneau/upload',
 
+        // Enable the XMLHttpRequest.withCredentials property.
+        withCredentials: true,
+
+        // Headers sent along with the XMLHttpRequest to the upload server.
+        headers: {
+            'X-CSRF-TOKEN': 'CSRF-Token',
+            Authorization: 'Bearer <JSON Web Token>',
+        },
+    },
     image: {
-        toolbar: ['toggleImageCaption'],
+        toolbar: [
+            'imageStyle:block',
+            'imageStyle:side',
+            '|',
+            'toggleImageCaption',
+            'imageTextAlternative',
+            '|',
+            'linkImage',
+            {
+                // Grouping the buttons for the icon-like image styling
+                // into one drop-down.
+                name: 'imageStyle:icons',
+                title: 'Alignment',
+                items: ['imageStyle:regular', 'imageStyle:blue', 'imageStyle:red'],
+                defaultItem: 'imageStyle:regular',
+            },
+        ],
+        styles: {
+            // A list of completely custom styling options.
+            options: [
+                {
+                    name: 'regular',
+                    modelElements: ['imageBlock', 'imageInline'],
+                    title: 'Regular image',
+                    icon: 'full',
+                    isDefault: true,
+                },
+                {
+                    name: 'blue',
+                    modelElements: ['imageInline', 'imageBlock'],
+                    title: 'Blue image',
+                    icon: 'full',
+                    className: 'image-blue',
+                },
+                {
+                    name: 'red',
+                    modelElements: ['imageBlock'],
+                    title: 'Red image',
+                    icon: 'full',
+                    className: 'image-red',
+                },
+            ],
+        },
     },
 };
 

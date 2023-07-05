@@ -25,31 +25,32 @@ export default class ImagePluginEditing extends Plugin {
     defineSchema() {
         const { schema } = this.editor.model;
 
-        schema.register('nicheBlock', {
+        schema.register('nicheBlockImage', {
             // Behaves like a self-contained block object (e.g. a block image)
             // allowed in places where other blocks are allowed (e.g. directly in the root).
-            inheritAllFrom: '$block',
+            inheritAllFrom: '$blockObject',
 
-            allowAttributes: ['type', 'data'],
+            allowAttributes: ['type', 'data', 'class'],
         });
 
-        schema.register('nicheBlockInline', {
+        schema.register('nicheImage', {
             isLimit: false,
 
-            allowIn: 'nicheBlock',
+            allowIn: 'nicheBlockImage',
+            isObject: true,
+            // Allow content which is allowed in the root (e.g. paragraphs).
+            // allowContentOf: '$block',
+            allowAttributes: ['url', 'alt', 'class'],
+        });
+
+        schema.register('nicheImageCaption', {
+            isLimit: true,
+
+            allowIn: 'nicheBlockImage',
 
             // Allow content which is allowed in the root (e.g. paragraphs).
             allowContentOf: '$block',
-            attributes: ['tagName'],
-        });
-
-        schema.register('nicheBlockEditable', {
-            isLimit: false,
-
-            allowIn: 'nicheBlock',
-
-            // Allow content which is allowed in the root (e.g. paragraphs).
-            allowContentOf: '$root',
+            allowAttributes: ['class'],
         });
     }
 
@@ -62,80 +63,57 @@ export default class ImagePluginEditing extends Plugin {
         // <simpleBox> converters
         conversion.for('upcast').elementToElement({
             model: (viewElement, { writer: modelWriter }) =>
-                modelWriter.createElement('nicheBlock', {
-                    type: viewElement.getAttribute('data-block-type'),
-                    data: viewElement.getAttribute('data-block-data'),
+                modelWriter.createElement('nicheBlockImage', {
+                    class: viewElement.getAttribute('class'),
                 }),
             view: {
                 name: 'div',
                 attributes: {
-                    'data-block': 'true',
+                    'data-block-image': 'true',
                 },
             },
         });
 
         conversion.for('dataDowncast').elementToElement({
-            model: 'nicheBlock',
+            model: 'nicheBlockImage',
             view: (modelElement, { writer: viewWriter }) => {
                 const block = viewWriter.createContainerElement('div', {
-                    class: 'niche-block',
-                    'data-block': 'true',
-                    'data-block-type': modelElement.getAttribute('type'),
+                    'data-block-image': 'true',
+                    class: modelElement.getAttribute('class'),
                 });
-
                 return block;
             },
         });
 
         conversion.for('editingDowncast').elementToElement({
-            model: 'nicheBlock',
+            model: 'nicheBlockImage',
             view: (modelElement, { writer: viewWriter }) => {
                 const block = viewWriter.createContainerElement('div', {
-                    class: 'niche-block',
-                    'data-block': 'true',
-                    'data-block-type': modelElement.getAttribute('type'),
+                    'data-block-image': 'true',
+                    class: modelElement.getAttribute('class'),
                 });
-
-                // const type = modelElement.getAttribute('type');
-                // const data = modelElement.getAttribute('data');
-                // const jsonData = data ? JSON.parse(data) : null;
-
-                // const reactWrapper = viewWriter.createRawElement(
-                //     'div',
-                //     {
-                //         class: 'block__react-wrapper',
-                //     },
-                //     (domElement) => {
-                //         renderBlock(type, jsonData, domElement);
-                //     },
-                // );
-
-                // viewWriter.insert(viewWriter.createPositionAt(block, 0), reactWrapper);
-
-                // return toWidget(block, viewWriter, { label: 'Block' });
-
-                return block;
+                return toWidget(block, viewWriter, { label: 'Block' });
             },
         });
 
         conversion.for('upcast').elementToElement({
             model: (viewElement, { writer: modelWriter }) =>
-                modelWriter.createElement('nicheBlockInline', {
-                    tagName: viewElement.name,
+                modelWriter.createElement('nicheImage', {
+                    url: viewElement.getAttribute('src'),
+                    class: viewElement.getAttribute('class'),
                 }),
             view: {
-                attributes: {
-                    'data-block-inline': 'true',
-                },
+                name: 'img',
             },
         });
 
         conversion.for('dataDowncast').elementToElement({
-            model: 'nicheBlockInline',
+            model: 'nicheImage',
             view: (modelElement, { writer: viewWriter }) => {
                 // Note: You use a more specialized createEditableElement() method here.
-                const div = viewWriter.createEditableElement(modelElement.getAttribute('tagName'), {
-                    'data-block-inline': 'true',
+                const div = viewWriter.createEmptyElement('img', {
+                    src: modelElement.getAttribute('url'),
+                    class: modelElement.getAttribute('class'),
                 });
 
                 return div;
@@ -143,53 +121,53 @@ export default class ImagePluginEditing extends Plugin {
         });
 
         conversion.for('editingDowncast').elementToElement({
-            model: 'nicheBlockInline',
+            model: 'nicheImage',
             view: (modelElement, { writer: viewWriter }) => {
-                // Note: You use a more specialized createEditableElement() method here.
-                const div = viewWriter.createEditableElement(modelElement.getAttribute('tagName'), {
-                    'data-block-inline': 'true',
+                // Note: You use a more specialized createElement() method here.
+                const div = viewWriter.createEmptyElement('img', {
+                    src: modelElement.getAttribute('url'),
+                    class: modelElement.getAttribute('class'),
                 });
-                return div;
-
-                // return toWidgetEditable(div, viewWriter);
+                return toWidgetEditable(div, viewWriter);
             },
         });
 
         conversion.for('upcast').elementToElement({
-            model: 'nicheBlockEditable',
+            model: (viewElement, { writer: modelWriter }) =>
+                modelWriter.createElement('nicheImageCaption', {
+                    class: viewElement.getAttribute('class'),
+                }),
             view: {
                 name: 'div',
                 attributes: {
-                    'data-block-editable': 'true',
+                    'data-caption': 'true',
                 },
             },
         });
+
         conversion.for('dataDowncast').elementToElement({
-            model: 'nicheBlockEditable',
-            view: {
-                name: 'div',
-                attributes: {
-                    'data-block-editable': 'true',
-                },
+            model: 'nicheImageCaption',
+            view: (modelElement, { writer: viewWriter }) => {
+                // Note: You use a more specialized createEditableElement() method here.
+                const div = viewWriter.createContainerElement('div', {
+                    'data-caption': 'true',
+                    class: modelElement.getAttribute('class'),
+                });
+
+                return div;
             },
         });
+
         conversion.for('editingDowncast').elementToElement({
-            model: 'nicheBlockEditable',
+            model: 'nicheImageCaption',
             view: (modelElement, { writer: viewWriter }) => {
                 // Note: You use a more specialized createEditableElement() method here.
                 const div = viewWriter.createEditableElement('div', {
-                    'data-block-editable': 'true',
+                    'data-caption': 'true',
+                    class: modelElement.getAttribute('class'),
                 });
 
-                div.on('change:isFocused', (evt, args) => {
-                    console.log('hella', evt, args);
-                });
-
-                console.log('my div', div);
-
-                // return toWidgetEditable(div, viewWriter);
-
-                return div;
+                return toWidgetEditable(div, viewWriter);
             },
         });
     }
