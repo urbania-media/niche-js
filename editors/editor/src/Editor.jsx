@@ -18,13 +18,16 @@ const defaultProps = {
     children: null,
 };
 
-const Editor = ({ left, right, className, children }) => (
-    <div className={classNames([styles.container, { [className]: className !== null }])}>
-        <aside className={styles.left}>{left}</aside>
-        <main className={styles.main}>{children}</main>
-        <aside className={styles.right}>{right}</aside>
-    </div>
-);
+function Editor({ left, right, className, children }) {
+    console.log('editor', left, right, children);
+    return (
+        <div className={classNames([styles.container, { [className]: className !== null }])}>
+            <aside className={styles.left}>{left}</aside>
+            <main className={styles.main}>{children}</main>
+            <aside className={styles.right}>{right}</aside>
+        </div>
+    );
+}
 
 Editor.propTypes = propTypes;
 Editor.defaultProps = defaultProps;

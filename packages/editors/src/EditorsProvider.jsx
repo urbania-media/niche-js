@@ -1,8 +1,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { EDITORS_NAMESPACE } from '@niche-js/core/contexts';
 import { ComponentsProvider } from '@panneau/core/contexts';
 import PropTypes from 'prop-types';
 import React from 'react';
+
+import { EDITORS_NAMESPACE } from '@niche-js/core/contexts';
 
 import * as components from './components';
 

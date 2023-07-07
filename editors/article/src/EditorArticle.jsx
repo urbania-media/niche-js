@@ -1,5 +1,5 @@
 // import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
-import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
+// import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { ComponentsProvider } from '@panneau/core/contexts';
 import classNames from 'classnames';
@@ -39,7 +39,7 @@ function EditorArticle({ document, className, onChange }) {
     const onEditorReady = useCallback((editor) => {
         // You can store the "editor" and use when it is needed.
         console.log('Editor is ready!', editor);
-        CKEditorInspector.attach(editor);
+        // CKEditorInspector.attach(editor);
     }, []);
 
     const onEditorChange = useCallback(
@@ -85,6 +85,9 @@ function EditorArticle({ document, className, onChange }) {
 
     // console.log('current body', body);
     console.log('current document', document);
+    console.log('body', body);
+    console.log('components', components);
+    console.log('focusedBlock', focusedBlock);
 
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>
