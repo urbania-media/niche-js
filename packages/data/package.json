@@ -1,6 +1,6 @@
 {
     "name": "@niche-js/data",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "",
     "keywords": [
         "javascript"
@@ -49,7 +49,7 @@
     },
     "dependencies": {
         "@folklore/fetch": "^0.1.15",
-        "@niche-js/core": "^0.0.2",
+        "@niche-js/core": "^0.0.3",
         "lodash": "^4.17.21",
         "prop-types": "^15.7.2",
         "query-string": "^8.1.0",

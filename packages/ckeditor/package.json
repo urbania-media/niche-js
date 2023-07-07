@@ -1,6 +1,6 @@
 {
     "name": "@niche-js/ckeditor",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "",
     "keywords": [
         "javascript"
@@ -78,7 +78,7 @@
         "@ckeditor/ckeditor5-ui": "^38.0.1",
         "@ckeditor/ckeditor5-upload": "^38.0.1",
         "@ckeditor/ckeditor5-widget": "^38.0.1",
-        "@niche-js/block-image": "^0.0.2"
+        "@niche-js/block-image": "^0.0.3"
     },
     "publishConfig": {
         "access": "public"
