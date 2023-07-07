@@ -10,7 +10,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'ckeditor.js',
-        library: 'MicromagEditor',
+        library: 'NicheEditor',
         libraryTarget: 'umd',
         libraryExport: 'default',
     },
@@ -42,7 +42,6 @@ module.exports = {
             // See https://ckeditor.com/docs/ckeditor5/latest/features/ui-language.html
             language: 'fr',
             additionalLanguages: ['en'],
-            //
         }),
     ],
 

@@ -25,5 +25,9 @@ export default {
 
 export const Default = {
     args: {},
-    render: (args) => <Editor {...args} opened className={styles.menu} />,
+    render: (args) => (
+        <div style={{ width: 800, height: 600, margin: 'auto' }}>
+            <Editor {...args} opened className={styles.menu} />,
+        </div>
+    ),
 };

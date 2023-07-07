@@ -26,10 +26,11 @@ function ViewerArticle({ document, className }) {
     const blocks = (components || []).filter(({ role = null }) => role === 'block');
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>
-            {(blocks || []).map((block) => {
-                const BlockComponent = blocksManager.getComponent(block.type);
+            {(blocks || []).map((block, i) => {
+                const { type = null } = block || {};
+                const BlockComponent = blocksManager.getComponent(type);
                 return (
-                    <div data-block-type={block.type}>
+                    <div key={`block-${i + 1}-${type}`} data-block-type={type}>
                         {BlockComponent !== null ? <BlockComponent {...block} /> : null}
                     </div>
                 );

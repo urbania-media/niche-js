@@ -12,15 +12,14 @@ const propTypes = {
 };
 
 const defaultProps = {
-    left: PropTypes.node,
-    right: PropTypes.node,
+    left: null,
+    right: null,
     className: null,
     children: null,
 };
 
 function Editor({ left, right, className, children }) {
-    console.log('editor', left, right, children);
-
+    console.log('editor render', left, right, children);
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>
             <aside className={styles.left}>{left}</aside>

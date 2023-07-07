@@ -84,6 +84,7 @@ function EditorArticle({ document, className, onChange }) {
     });
 
     console.log('Editor', Editor);
+    console.log('NicheEditor', NicheEditor);
     console.log('current document', document);
     console.log('body', body);
     console.log('components', components);
@@ -95,8 +96,9 @@ function EditorArticle({ document, className, onChange }) {
                 left={
                     <div>
                         <p>Outline</p>
-                        {(components || []).map((it) => (
+                        {(components || []).map((it, i) => (
                             <button
+                                key={`outline-${i + 1}-${it.type}`}
                                 type="button"
                                 className={styles.button}
                                 onClick={() => scrollTo(it)}

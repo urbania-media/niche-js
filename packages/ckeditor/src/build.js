@@ -23,8 +23,6 @@ import { plugin as ImagePlugin } from '@niche-js/block-image/editor';
 
 import NichePlugin from './NichePlugin';
 
-console.log(ImagePlugin);
-
 class NicheEditor extends BaseEditor {}
 
 NicheEditor.builtinPlugins = [
@@ -34,14 +32,14 @@ NicheEditor.builtinPlugins = [
     Italic,
     Heading,
     List,
-    // Image,
-    // ImageBlock,
-    // ImageToolbar,
-    // ImageCaption,
-    // ImageStyle,
-    // ImageResize,
-    // ImageInsert,
-    // LinkImage,
+    Image,
+    ImageBlock,
+    ImageToolbar,
+    ImageCaption,
+    ImageStyle,
+    ImageResize,
+    ImageInsert,
+    LinkImage,
     AutoImage,
     BlockToolbar,
     // Custom plugins
@@ -50,9 +48,9 @@ NicheEditor.builtinPlugins = [
     ImagePlugin,
     SimpleUploadAdapter,
 ];
-//
+
 NicheEditor.defaultConfig = {
-    blockToolbar: ['paragraph', 'heading', 'blocks', 'insertImage'],
+    blockToolbar: ['heading', 'blocks', 'insertImage'],
     toolbar: ['bold', 'italic'],
     simpleUpload: {
         // The URL that the images are uploaded to.
@@ -85,32 +83,32 @@ NicheEditor.defaultConfig = {
                 defaultItem: 'imageStyle:regular',
             },
         ],
-        styles: {
-            // A list of completely custom styling options.
-            options: [
-                {
-                    name: 'regular',
-                    modelElements: ['imageBlock', 'imageInline'],
-                    title: 'Regular image',
-                    icon: 'full',
-                    isDefault: true,
-                },
-                {
-                    name: 'blue',
-                    modelElements: ['imageInline', 'imageBlock'],
-                    title: 'Blue image',
-                    icon: 'full',
-                    className: 'image-blue',
-                },
-                {
-                    name: 'red',
-                    modelElements: ['imageBlock'],
-                    title: 'Red image',
-                    icon: 'full',
-                    className: 'image-red',
-                },
-            ],
-        },
+        // styles: {
+        //     // A list of completely custom styling options.
+        //     options: [
+        //         {
+        //             name: 'regular',
+        //             modelElements: ['imageBlock', 'imageInline'],
+        //             title: 'Regular image',
+        //             icon: 'full',
+        //             isDefault: true,
+        //         },
+        //         {
+        //             name: 'blue',
+        //             modelElements: ['imageInline', 'imageBlock'],
+        //             title: 'Blue image',
+        //             icon: 'full',
+        //             className: 'image-blue',
+        //         },
+        //         {
+        //             name: 'red',
+        //             modelElements: ['imageBlock'],
+        //             title: 'Red image',
+        //             icon: 'full',
+        //             className: 'image-red',
+        //         },
+        //     ],
+        // },
     },
 };
 
