@@ -31,6 +31,11 @@
     "module": "es/index.js",
     "style": "assets/css/styles.css",
     "exports": {
+        ".": "./lib/index.js",
+        "./assets/css/styles.css": "./assets/css/styles.css"
+    },
+    "browser": {
+        ".": "./es/index.js",
         "./assets/css/styles.css": "./assets/css/styles.css"
     },
     "files": [

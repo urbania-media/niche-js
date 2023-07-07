@@ -33,6 +33,11 @@
         "./locale": "./locale",
         "./locale/*": "./locale/*.cjs.js"
     },
+    "browser": {
+        ".": "./es/index.js",
+        "./locale": "./locale",
+        "./locale/*": "./locale/*.cjs.js"
+    },
     "files": [
         "locale",
         "lib",

@@ -43,7 +43,10 @@
         "./components": "./es/components.js",
         "./contexts": "./es/contexts.js",
         "./hooks": "./es/hooks.js",
-        "./utils": "./es/utils.js"
+        "./utils": "./es/utils.js",
+        "./css/styles": "./css/styles.css",
+        "./css/styles.css": "./css/styles.css",
+        "./assets/css/styles.css": "./assets/css/styles.css"
     },
     "files": [
         "lib",
