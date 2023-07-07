@@ -83,7 +83,7 @@ function EditorArticle({ document, className, onChange }) {
         console.log('scrollTo', block);
     });
 
-    // console.log('current body', body);
+    console.log('Editor', Editor);
     console.log('current document', document);
     console.log('body', body);
     console.log('components', components);
