@@ -1,6 +1,7 @@
 {
     "name": "@niche-js/editor-editor",
     "version": "0.0.3",
+    "private": false,
     "description": "Niche block",
     "keywords": [
         "niche",
@@ -50,5 +51,5 @@
     "publishConfig": {
         "access": "public"
     },
-    "gitHead": "a732bd6eb74e25d9ea5e6b520c3bedf5a5a6068f"
+    "gitHead": "300f119ed045b9c2356fca3cbeaf96fedb29cba4"
 }

@@ -99,5 +99,8 @@
     },
     "dependencies": {
         "cssnano": "^5.1.15"
+    },
+    "publishConfig": {
+        "access": "restricted"
     }
 }
