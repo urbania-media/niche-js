@@ -1,6 +1,6 @@
 {
     "name": "@niche-js/blocks",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "private": false,
     "description": "",
     "keywords": [
@@ -61,11 +61,11 @@
     },
     "dependencies": {
         "@babel/runtime": "^7.12.5",
-        "@niche-js/block-gallery": "^0.0.7",
-        "@niche-js/block-heading": "^0.0.7",
-        "@niche-js/block-image": "^0.0.7",
-        "@niche-js/block-text": "^0.0.7",
-        "@niche-js/core": "^0.0.7",
+        "@niche-js/block-gallery": "^0.0.8",
+        "@niche-js/block-heading": "^0.0.8",
+        "@niche-js/block-image": "^0.0.8",
+        "@niche-js/block-text": "^0.0.8",
+        "@niche-js/core": "^0.0.8",
         "@panneau/core": "^3.0.0",
         "prop-types": "^15.7.2"
     },
