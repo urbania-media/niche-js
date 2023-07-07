@@ -11,8 +11,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 3.2.0\n"
 
-# Block label
-#: sTRXTg
-msgctxt "sTRXTg"
-msgid "Credits"
+# Field label
+#: 0aV7v8
+msgctxt "0aV7v8"
+msgid "Image label"
 msgstr ""

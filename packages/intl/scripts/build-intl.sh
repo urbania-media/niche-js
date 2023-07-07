@@ -1,6 +1,10 @@
 #!/bin/bash
 export NODE_ENV=production
 
+echo "Building intl..."
+
+echo "$PWD"
+
 languages=$(jq -r '.supportedLocales | join(" ")' ./package.json)
 languages_pattern=$(jq -r '.supportedLocales | join("|")' ./package.json)
 

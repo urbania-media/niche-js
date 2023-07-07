@@ -17,7 +17,7 @@
         "server": "npm run storybook",
         "intl:tx-config": "./scripts/tx-config.js",
         "output-static": "NODE_ENV=node BABEL_ENV=node babel-node ./scripts/output-static.js",
-        "intl": "npm run intl -w @niche-js/intl",
+        "intl": "npm run intl --workspace=@niche-js/intl",
         "build": "npm run build:all",
         "build:all": "nx run-many --target=prepare",
         "build:nocache": "nx run-many --target=prepare --skip-nx-cache",
