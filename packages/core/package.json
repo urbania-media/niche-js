@@ -87,5 +87,9 @@
         "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0",
         "react-intl": "^6.3.0"
     },
-    "gitHead": "300f119ed045b9c2356fca3cbeaf96fedb29cba4"
+    "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+    },
+    "gitHead": "15dcd53798591c5d95571ff04f470ae07ae561e1"
 }

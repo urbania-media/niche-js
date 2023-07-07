@@ -54,10 +54,11 @@
         "react-intl": "^6.4.4"
     },
     "publishConfig": {
-        "access": "public"
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
     },
     "devDependencies": {
         "@ckeditor/ckeditor5-inspector": "^4.1.0"
     },
-    "gitHead": "300f119ed045b9c2356fca3cbeaf96fedb29cba4"
+    "gitHead": "15dcd53798591c5d95571ff04f470ae07ae561e1"
 }
