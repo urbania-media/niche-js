@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import FieldsProvider from '@panneau/fields';
+import PanneauFieldsProvider from '@panneau/fields';
 import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 
@@ -15,7 +15,7 @@ const defaultProps = {
     components: null,
 };
 
-function BlocksProvider({ components, ...props }) {
+function FieldsProvider({ components, ...props }) {
     const finalComponents = useMemo(
         () => ({
             ...builtInComponents,
@@ -23,10 +23,10 @@ function BlocksProvider({ components, ...props }) {
         }),
         [components],
     );
-    return <FieldsProvider components={finalComponents} {...props} />;
+    return <PanneauFieldsProvider components={finalComponents} {...props} />;
 }
 
-BlocksProvider.propTypes = propTypes;
-BlocksProvider.defaultProps = defaultProps;
+FieldsProvider.propTypes = propTypes;
+FieldsProvider.defaultProps = defaultProps;
 
-export default BlocksProvider;
+export default FieldsProvider;
