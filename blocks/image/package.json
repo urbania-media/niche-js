@@ -1,6 +1,6 @@
 {
     "name": "@niche-js/block-image",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Niche block",
     "keywords": [
         "niche",
@@ -45,14 +45,14 @@
         "build": "rollup --config ./rollup.config.mjs"
     },
     "peerDependencies": {
-        "react": "^18.0.0",
-        "react-dom": "^18.0.0",
         "@ckeditor/ckeditor5-core": "^38.1.0",
+        "@ckeditor/ckeditor5-ui": "^38.1.0",
         "@ckeditor/ckeditor5-widget": "^38.1.0",
-        "@ckeditor/ckeditor5-ui": "^38.1.0"
+        "react": "^18.0.0",
+        "react-dom": "^18.0.0"
     },
     "dependencies": {
-        "@niche-js/core": "^0.0.1",
+        "@niche-js/core": "^0.0.2",
         "classnames": "^2.2.6",
         "prop-types": "^15.7.2",
         "react-intl": "^6.4.4"

@@ -1,6 +1,6 @@
 {
     "name": "@niche-js/core",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "",
     "keywords": [
         "javascript"
@@ -59,9 +59,9 @@
         "prepare": "../../scripts/prepare-package.sh --styles && npm run vendor"
     },
     "devDependencies": {
+        "@rollup/plugin-alias": "^4.0.3",
         "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
-        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0",
-        "@rollup/plugin-alias": "^4.0.3"
+        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
     },
     "peerDependencies": {
         "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
