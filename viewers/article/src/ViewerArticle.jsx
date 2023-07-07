@@ -29,12 +29,7 @@ function ViewerArticle({ document, className }) {
             {(blocks || []).map((block) => {
                 const BlockComponent = blocksManager.getComponent(block.type);
                 return (
-                    <div
-                        className="niche-block"
-                        data-block
-                        data-block-type={block.type}
-                        data-block-data={JSON.stringify(block)}
-                    >
+                    <div data-block-type={block.type}>
                         {BlockComponent !== null ? <BlockComponent {...block} /> : null}
                     </div>
                 );
