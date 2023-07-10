@@ -71,9 +71,6 @@
         "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
         "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
     },
-    "tasks": {
-        "build": "rollup --config ./rollup.config.mjs"
-    },
     "dependencies": {
         "@babel/runtime": "^7.13.10",
         "@folklore/fetch": "^0.1.15",

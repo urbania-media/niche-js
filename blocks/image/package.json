@@ -29,6 +29,7 @@
     "license": "ISC",
     "main": "lib/index.js",
     "module": "es/index.js",
+    "style": "assets/css/styles.css",
     "exports": {
         ".": "./lib/index.js",
         "./editor": "./lib/editor.js"
@@ -43,7 +44,7 @@
         "assets"
     ],
     "scripts": {
-        "build": "rollup --config ./rollup.config.mjs"
+        "prepare": "../../scripts/prepare-package.sh"
     },
     "peerDependencies": {
         "@ckeditor/ckeditor5-core": "^38.1.0",
