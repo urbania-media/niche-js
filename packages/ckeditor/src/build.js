@@ -21,11 +21,13 @@ import { SimpleUploadAdapter } from '@ckeditor/ckeditor5-upload';
 
 import { plugin as ImagePlugin } from '@niche-js/block-image/editor';
 
+import NicheDPPlugin from './NicheDataProcessorPlugin';
 import NichePlugin from './NichePlugin';
 
 class NicheEditor extends BaseEditor {}
 
 NicheEditor.builtinPlugins = [
+    NicheDPPlugin,
     Essentials,
     Paragraph,
     Bold,

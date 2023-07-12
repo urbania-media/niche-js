@@ -20,21 +20,20 @@ function Text({ body, className }) {
             // data-block-editable
             className={classNames([styles.container, { [className]: className !== null }])}
             data-type="text"
+            // data-niche-block="true"
+            dangerouslySetInnerHTML={{ __html: body }}
         >
-            <div dangerouslySetInnerHTML={{ __html: body }} />
-            <div>Helloo</div>
+            {/* <div data-niche-inline-editable="true" data-niche-key="lettrine">
+                L
+            </div>
+            <div
+                data-niche-block-editable="true"
+                data-niche-key="body"
+                dangerouslySetInnerHTML={{ __html: body }}
+            /> */}
         </div>
     );
 }
-
-// return (
-//     <div
-//         // data-block-editable
-//         className={classNames([styles.container, { [className]: className !== null }])}
-//         data-type="text"
-//         dangerouslySetInnerHTML={{ __html: body }}
-//     />
-// );
 
 Text.propTypes = propTypes;
 Text.defaultProps = defaultProps;

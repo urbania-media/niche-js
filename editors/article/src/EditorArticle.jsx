@@ -1,5 +1,6 @@
 // import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
 // import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
+import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { ComponentsProvider } from '@panneau/core/contexts';
 import classNames from 'classnames';
@@ -20,32 +21,37 @@ import styles from './styles.module.css';
 
 const propTypes = {
     document: PropTypes.shape({}),
+    viewer: PropTypes.string,
     className: PropTypes.string,
     onChange: PropTypes.func,
 };
 
 const defaultProps = {
     document: null,
+    viewer: null,
     className: null,
     onChange: null,
 };
 
-function EditorArticle({ document, className, onChange }) {
+function EditorArticle({ document, viewer, className, onChange }) {
+    const { type = 'article' } = document || {};
     // const blocksDefinitions = useBlocksDefinitions();
-    const ArticleComponent = useViewerComponent('article');
+    const ViewerComponent = useViewerComponent(viewer || type || 'article');
 
     const blocksManager = useBlocksComponentsManager();
 
     const onEditorReady = useCallback((editor) => {
         // You can store the "editor" and use when it is needed.
         console.log('Editor is ready!', editor);
-        // CKEditorInspector.attach(editor);
+        CKEditorInspector.attach(editor);
     }, []);
 
     const onEditorChange = useCallback(
         (event, editor) => {
             const data = editor.getData();
-            console.log('newdata', event, data);
+            console.log(data);
+            // console.log('newdata', event, data);
+            // console.log('change', data);
             if (onChange !== null) {
                 onChange(data);
             }
@@ -60,21 +66,8 @@ function EditorArticle({ document, className, onChange }) {
 
     const onEditorBlur = useCallback((event, editor) => {
         // You can store the "editor" and use when it is needed.
-        // console.log('Blur', event);
+        console.log('Blur', event);
     }, []);
-
-    const body = useMemo(
-        () =>
-            renderToString(
-                <ComponentsProvider
-                    namespace={BLOCKS_NAMESPACE}
-                    components={blocksManager.getComponents()}
-                >
-                    <ArticleComponent document={document} />
-                </ComponentsProvider>,
-            ),
-        [document, blocksManager],
-    );
 
     const [focusedBlock, setFocusedBlock] = useState(null);
     const { components = [] } = document || [];
@@ -83,10 +76,22 @@ function EditorArticle({ document, className, onChange }) {
         console.log('scrollTo', block);
     });
 
+    const body = useMemo(
+        () =>
+            renderToString(
+                <ComponentsProvider
+                    namespace={BLOCKS_NAMESPACE}
+                    components={blocksManager.getComponents()}
+                >
+                    <ViewerComponent document={document} />
+                </ComponentsProvider>,
+            ),
+        [document],
+    );
+
     console.log('Editor', Editor);
     console.log('NicheEditor', NicheEditor);
     console.log('current document', document);
-    console.log('body', body);
     console.log('components', components);
     console.log('focusedBlock', focusedBlock);
 
@@ -121,14 +126,13 @@ function EditorArticle({ document, className, onChange }) {
                     config={{
                         niche: {
                             // blocksPlugins: blocksDefinitions.map({ plugin } => plugin),
-                            blockRenderer: (type, data, domElement) => {
-                                console.log('render data', type, data);
-                                const root = createRoot(domElement);
-
-                                // const BlockComponent = blocksManager.getComponent(type);
-                                // const root = createRoot(domElement);
-                                root.render(<div>BLOCK RENDERER</div>);
-                            },
+                            // blockRenderer: (type, data, domElement) => {
+                            //     console.log('render data', type, data);
+                            //     const root = createRoot(domElement);
+                            //     // const BlockComponent = blocksManager.getComponent(type);
+                            //     // const root = createRoot(domElement);
+                            //     root.render(<div>BLOCK RENDERER</div>);
+                            // },
                         },
                     }}
                     onReady={onEditorReady}

@@ -30,7 +30,11 @@ function ViewerArticle({ document, className }) {
                 const { type = null } = block || {};
                 const BlockComponent = blocksManager.getComponent(type);
                 return (
-                    <div key={`block-${i + 1}-${type}`} data-block-type={type}>
+                    <div
+                        key={`block-${i + 1}-${type}`}
+                        data-block-type={type}
+                        data-block-data={JSON.stringify(block)}
+                    >
                         {BlockComponent !== null ? <BlockComponent {...block} /> : null}
                     </div>
                 );
