@@ -21,7 +21,7 @@ function Image({ media, className }) {
     return (
         <div
             className={classNames([styles.container, { [className]: className !== null }])}
-            data-niche-block
+            data-niche-block-widget
         >
             {url !== null ? <img className={styles.img} src={url} alt={alt} /> : 'Image block'}
             <div data-niche-editable-inline="caption" className={styles.caption}>

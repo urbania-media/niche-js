@@ -19,10 +19,9 @@ const defaultProps = {
 function Heading({ size, body, className }) {
     const Component = `h${size || 4}`;
     return (
-        <Component
-            className={classNames([styles.container, { [className]: className !== null }])}
-            dangerouslySetInnerHTML={{ __html: body }}
-        />
+        <div className={classNames([styles.container, { [className]: className !== null }])}>
+            <Component dangerouslySetInnerHTML={{ __html: body }} />
+        </div>
     );
 }
 

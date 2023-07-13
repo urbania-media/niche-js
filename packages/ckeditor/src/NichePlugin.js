@@ -1,5 +1,6 @@
 import { Plugin } from '@ckeditor/ckeditor5-core';
 import { Widget, toWidget, toWidgetEditable } from '@ckeditor/ckeditor5-widget';
+import InsertParagraphCommand from './InsertParagraphCommand';
 
 /* eslint-disable no-underscore-dangle */
 export default class NichePlugin extends Plugin {
@@ -13,17 +14,22 @@ export default class NichePlugin extends Plugin {
         this.plugins = plugins.map((CustomPlugin) => new CustomPlugin(this.editor));
         this.plugins.forEach((plugin) => plugin.init());
 
+        // console.log('aaaaaaaa');
+        // this.editor.commands.add( 'insertParagraph', new InsertParagraphCommand( this.editor ) );
+
         const { schema } = this.editor.model;
         const { conversion } = this.editor;
 
         schema.register('nicheBlock', {
             // Behaves like a self-contained block object (e.g. a block image)
             // allowed in places where other blocks are allowed (e.g. directly in the root).
-            inheritAllFrom: '$blockObject',
+            inheritAllFrom: '$container',
+            isLimit: false,
+            isBlock: true,
 
             allowChildren: ['$inlineObject', '$blockObject'],
 
-            allowAttributes: ['tag', 'class', 'id', 'type'],
+            allowAttributes: ['tag', 'class', 'id', 'type', 'widget'],
         });
 
         schema.register('nicheEditableInline', {
@@ -51,33 +57,36 @@ export default class NichePlugin extends Plugin {
         //     allowAttributes: ['blockId', 'blockType'],
         // });
 
-        conversion.for('upcast').elementToElement({
-            model: (viewElement, { writer: modelWriter }) => {
-                const blockContainer = this.findBlockNode(viewElement);
-                return modelWriter.createElement('paragraph', {
-                    blockId: blockContainer.getAttribute('data-niche-block-id'),
-                    blockType: blockContainer.getAttribute('data-niche-block-type'),
-                });
-            },
-            view: {
-                name: 'p',
-            },
-            converterPriority: 'high',
-        });
+        // conversion.for('upcast').elementToElement({
+        //     model: (viewElement, { writer: modelWriter }) => {
+        //         const blockContainer = this.findBlockNode(viewElement);
+        //         return modelWriter.createElement('paragraph', {
+        //             blockId: blockContainer.getAttribute('data-niche-block-id'),
+        //             blockType: blockContainer.getAttribute('data-niche-block-type'),
+        //         });
+        //     },
+        //     view: {
+        //         name: 'p',
+        //     },
+        //     converterPriority: 'high',
+        // });
 
         conversion.for('upcast').elementToElement({
             model: (viewElement, { writer: modelWriter }) => {
-                const blockContainer = this.findBlockNode(viewElement);
+                const blockContainer = viewElement;
+                const block = blockContainer.getChild(0);
+                const widget = block.getAttribute('data-niche-block-widget') || null;
                 return modelWriter.createElement('nicheBlock', {
-                    tag: viewElement.name,
-                    class: viewElement.getAttribute('class'),
+                    tag: block.name,
+                    class: block.getAttribute('class'),
+                    widget: widget !== null,
                     id: blockContainer.getAttribute('data-niche-block-id'),
                     type: blockContainer.getAttribute('data-niche-block-type'),
                 });
             },
             view: {
                 attributes: {
-                    'data-niche-block': /.*/,
+                    'data-niche-block-type': /.*/,
                 },
             },
         });
@@ -96,6 +105,7 @@ export default class NichePlugin extends Plugin {
                 // return div;
                 const block = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
                     class: modelElement.getAttribute('class'),
+                    'data-niche-block-widget': modelElement.getAttribute('widget'),
                     'data-niche-block-id': modelElement.getAttribute('id'),
                     'data-niche-block-type': modelElement.getAttribute('type'),
                 });
@@ -110,12 +120,14 @@ export default class NichePlugin extends Plugin {
                 //     'data-niche-block-id': modelElement.getAttribute('id'),
                 //     'data-niche-block-type': modelElement.getAttribute('type'),
                 // });
+                const widget = modelElement.getAttribute('widget');
                 const block = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
                     class: modelElement.getAttribute('class'),
+                    'data-niche-block-widget': widget,
                     'data-niche-block-id': modelElement.getAttribute('id'),
                     'data-niche-block-type': modelElement.getAttribute('type'),
                 });
-                return toWidget(block, viewWriter);
+                return widget ? toWidget(block, viewWriter) : block;
                 // viewWriter.insert(viewWriter.createPositionAt(div, 0), block);
                 // return toWidget(div, viewWriter);
             },
@@ -136,6 +148,7 @@ export default class NichePlugin extends Plugin {
                     'data-niche-editable-inline': /.*/,
                 },
             },
+            converterPriority: 'high'
         });
 
         conversion.for('dataDowncast').elementToElement({
@@ -175,6 +188,7 @@ export default class NichePlugin extends Plugin {
                     'data-niche-editable': /.+/,
                 },
             },
+            converterPriority: 'high'
         });
 
         conversion.for('dataDowncast').elementToElement({
