@@ -27,14 +27,10 @@ function ViewerArticle({ document, className }) {
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>
             {(blocks || []).map((block, i) => {
-                const { type = null } = block || {};
+                const { id = i, type = null } = block || {};
                 const BlockComponent = blocksManager.getComponent(type);
                 return (
-                    <div
-                        key={`block-${i + 1}-${type}`}
-                        data-block-type={type}
-                        data-block-data={JSON.stringify(block)}
-                    >
+                    <div key={`block-${id}-${type}`} data-block-id={id} data-block-type={type}>
                         {BlockComponent !== null ? <BlockComponent {...block} /> : null}
                     </div>
                 );

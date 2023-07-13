@@ -6,7 +6,7 @@ import styles from './styles.module.css';
 
 const propTypes = {
     media: PropTypes.shape({
-        src: PropTypes.string,
+        url: PropTypes.string,
     }),
     className: PropTypes.string,
 };

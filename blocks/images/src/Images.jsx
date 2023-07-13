@@ -5,24 +5,26 @@ import React from 'react';
 import styles from './styles.module.css';
 
 const propTypes = {
-    medias: PropTypes.arrayOf(
+    items: PropTypes.arrayOf(
         PropTypes.shape({
-            src: PropTypes.string,
+            media: PropTypes.shape({
+                url: PropTypes.string,
+            }),
         }),
     ),
     className: PropTypes.string,
 };
 
 const defaultProps = {
-    medias: null,
+    items: null,
     className: null,
 };
 
-function Gallery({ medias, className }) {
+function Gallery({ items, className }) {
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>
-            {medias !== null
-                ? medias.map((media) => <img src={media.src} alt={media.alt || 'Media'} />)
+            {items !== null
+                ? items.map(({ media }) => <img src={media.url} alt={media.alt || 'Media'} />)
                 : null}
         </div>
     );

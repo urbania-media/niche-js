@@ -12,6 +12,6 @@ export default {
 
 export const Default = {
     args: {
-        media: { src: fireKoala },
+        media: { url: fireKoala },
     },
 };
