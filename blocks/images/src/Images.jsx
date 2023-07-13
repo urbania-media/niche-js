@@ -20,7 +20,7 @@ const defaultProps = {
     className: null,
 };
 
-function Gallery({ items, className }) {
+function Images({ items, className }) {
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>
             {items !== null
@@ -30,7 +30,7 @@ function Gallery({ items, className }) {
     );
 }
 
-Gallery.propTypes = propTypes;
-Gallery.defaultProps = defaultProps;
+Images.propTypes = propTypes;
+Images.defaultProps = defaultProps;
 
-export default Gallery;
+export default Images;

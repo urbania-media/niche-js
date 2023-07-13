@@ -1,3 +1,3 @@
-import Gallery from './Gallery';
+import Images from './Images';
 
-export default Gallery;
+export default Images;
