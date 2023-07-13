@@ -19,7 +19,7 @@ import { Paragraph } from '@ckeditor/ckeditor5-paragraph';
 import { BlockToolbar } from '@ckeditor/ckeditor5-ui';
 import { SimpleUploadAdapter } from '@ckeditor/ckeditor5-upload';
 
-import { plugin as ImagePlugin } from '@niche-js/block-image/editor';
+// import { plugin as ImagePlugin } from '@niche-js/block-image/editor';
 
 import NicheDPPlugin from './NicheDataProcessorPlugin';
 import NichePlugin from './NichePlugin';
@@ -34,20 +34,20 @@ NicheEditor.builtinPlugins = [
     Italic,
     Heading,
     List,
-    Image,
+    // Image,
     ImageBlock,
     ImageToolbar,
-    ImageCaption,
-    ImageStyle,
+    // ImageCaption,
+    // ImageStyle,
     ImageResize,
     ImageInsert,
     LinkImage,
-    AutoImage,
+    // AutoImage,
     BlockToolbar,
     // Custom plugins
     NichePlugin,
     // Blocks
-    ImagePlugin,
+    // ImagePlugin,
     SimpleUploadAdapter,
 ];
 

@@ -21,10 +21,10 @@ function Image({ media, className }) {
     return (
         <div
             className={classNames([styles.container, { [className]: className !== null }])}
-            data-block-image
+            data-niche-block
         >
             {url !== null ? <img className={styles.img} src={url} alt={alt} /> : 'Image block'}
-            <div data-caption className={styles.caption}>
+            <div data-niche-editable-inline="caption" className={styles.caption}>
                 {alt} Credits
             </div>
         </div>

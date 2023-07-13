@@ -8,6 +8,12 @@
         },
         {
             "role": "block",
+            "type": "quote",
+            "body": "The medium is the message.",
+            "caption": "Marshall McLuhan"
+        },
+        {
+            "role": "block",
             "type": "text",
             "body": "<p>Trash humpers is the best movie ever, even better than Gummo.</p>"
         },

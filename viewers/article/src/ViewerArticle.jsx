@@ -30,7 +30,7 @@ function ViewerArticle({ document, className }) {
                 const { id = i, type = null } = block || {};
                 const BlockComponent = blocksManager.getComponent(type);
                 return (
-                    <div key={`block-${id}-${type}`} data-block-id={id} data-block-type={type}>
+                    <div key={`block-${id}-${type}`} data-niche-block-id={id} data-niche-block-type={type}>
                         {BlockComponent !== null ? <BlockComponent {...block} /> : null}
                     </div>
                 );

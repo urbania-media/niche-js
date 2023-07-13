@@ -89,9 +89,8 @@ function EditorArticle({ document, viewer, className, onChange }) {
         [document],
     );
 
-    console.log('Editor', Editor);
-    console.log('NicheEditor', NicheEditor);
     console.log('current document', document);
+    console.log('body', body);
     console.log('components', components);
     console.log('focusedBlock', focusedBlock);
 

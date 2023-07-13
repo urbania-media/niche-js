@@ -41,6 +41,7 @@ export default class NicheDataProcessor {
      * @returns The converted view element.
      */
     toView(data = null) {
+        console.log(data);
         return this.htmlDataProcessor.toView(data);
     }
 
