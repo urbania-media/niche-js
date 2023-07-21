@@ -25,13 +25,18 @@ export default class NichePlugin extends Plugin {
             // Behaves like a self-contained block object (e.g. a block image)
             // allowed in places where other blocks are allowed (e.g. directly in the root).
             inheritAllFrom: '$container',
-            isLimit: false,
-            isBlock: true,
+            // allowIn: 'root',
+            // allowContentOf: '$container',
+            // isLimit: false,
+            // isBlock: true,
+            // isObject: true,
 
             allowChildren: ['$inlineObject', '$blockObject'],
 
             allowAttributes: ['tag', 'class', 'id', 'type', 'widget'],
         });
+
+        console.log(schema.getDefinition('nicheBlock'));
 
         schema.register('nicheEditableInline', {
             // Behaves like a self-contained block object (e.g. a block image)
