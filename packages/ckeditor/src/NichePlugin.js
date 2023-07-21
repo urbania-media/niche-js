@@ -1,5 +1,6 @@
 import { Plugin } from '@ckeditor/ckeditor5-core';
 import { Widget, toWidget, toWidgetEditable } from '@ckeditor/ckeditor5-widget';
+
 import InsertParagraphCommand from './InsertParagraphCommand';
 
 /* eslint-disable no-underscore-dangle */
@@ -148,7 +149,6 @@ export default class NichePlugin extends Plugin {
                     'data-niche-editable-inline': /.*/,
                 },
             },
-            converterPriority: 'high'
         });
 
         conversion.for('dataDowncast').elementToElement({
@@ -188,7 +188,6 @@ export default class NichePlugin extends Plugin {
                     'data-niche-editable': /.+/,
                 },
             },
-            converterPriority: 'high'
         });
 
         conversion.for('dataDowncast').elementToElement({
