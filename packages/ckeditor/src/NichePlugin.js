@@ -87,6 +87,7 @@ export default class NichePlugin extends Plugin {
         //         //     tag: block.name,
         //         //     class: block.getAttribute('class'),
         //         //     id: blockContainer.getAttribute('data-niche-block-id'),
+        //         //     uuid: blockContainer.getAttribute('data-niche-block-uuid'),
         //         //     type: blockContainer.getAttribute('data-niche-block-type'),
         //         //     inline: 'true',
         //         // });
@@ -110,7 +111,8 @@ export default class NichePlugin extends Plugin {
                 return modelWriter.createElement('nicheBlockInline', {
                     tag: block.name,
                     class: block.getAttribute('class'),
-                    id: blockContainer.getAttribute('data-niche-block-id'),
+                    id: blockContainer.getAttribute('data-niche-block-id') || null,
+                    uuid: blockContainer.getAttribute('data-niche-block-uuid'),
                     type: blockContainer.getAttribute('data-niche-block-type'),
                     inline: 'true',
                     role: 'block',
@@ -128,7 +130,8 @@ export default class NichePlugin extends Plugin {
             view: (modelElement, { writer: viewWriter }) => {
                 const block = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
                     class: modelElement.getAttribute('class'),
-                    'data-niche-block-id': modelElement.getAttribute('id'),
+                    'data-niche-block-id': modelElement.getAttribute('id') || null,
+                    'data-niche-block-uuid': modelElement.getAttribute('uuid'),
                     'data-niche-block-type': modelElement.getAttribute('type'),
                     'data-niche-block-inline': 'true',
                     'data-niche-role': modelElement.getAttribute('role'),
@@ -142,7 +145,8 @@ export default class NichePlugin extends Plugin {
             view: (modelElement, { writer: viewWriter }) => {
                 const block = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
                     class: modelElement.getAttribute('class'),
-                    'data-niche-block-id': modelElement.getAttribute('id'),
+                    'data-niche-block-id': modelElement.getAttribute('id') || null,
+                    'data-niche-block-uuid': modelElement.getAttribute('uuid'),
                     'data-niche-block-type': modelElement.getAttribute('type'),
                     'data-niche-role': modelElement.getAttribute('role'),
                     'data-niche-block-inline': 'true',
@@ -163,7 +167,8 @@ export default class NichePlugin extends Plugin {
                     tag: block.name,
                     class: block.getAttribute('class'),
                     widget: widget !== null,
-                    id: blockContainer.getAttribute('data-niche-block-id'),
+                    id: blockContainer.getAttribute('data-niche-block-id') || null,
+                    uuid: blockContainer.getAttribute('data-niche-block-uuid'),
                     type: blockContainer.getAttribute('data-niche-block-type'),
                     role: 'block',
                 });
@@ -182,7 +187,8 @@ export default class NichePlugin extends Plugin {
                 const block = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
                     class: modelElement.getAttribute('class'),
                     'data-niche-block-widget': modelElement.getAttribute('widget'),
-                    'data-niche-block-id': modelElement.getAttribute('id'),
+                    'data-niche-block-id': modelElement.getAttribute('id') || null,
+                    'data-niche-block-uuid': modelElement.getAttribute('uuid'),
                     'data-niche-block-type': modelElement.getAttribute('type'),
                     'data-niche-role': modelElement.getAttribute('role'),
                 });
@@ -197,7 +203,8 @@ export default class NichePlugin extends Plugin {
                 const block = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
                     class: modelElement.getAttribute('class'),
                     'data-niche-block-widget': widget,
-                    'data-niche-block-id': modelElement.getAttribute('id'),
+                    'data-niche-block-id': modelElement.getAttribute('id') || null,
+                    'data-niche-block-uuid': modelElement.getAttribute('uuid'),
                     'data-niche-block-type': modelElement.getAttribute('type'),
                     'data-niche-role': modelElement.getAttribute('role'),
                 });

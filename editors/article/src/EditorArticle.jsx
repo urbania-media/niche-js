@@ -87,11 +87,11 @@ function EditorArticle({ document, viewer, className, onChange }) {
     const onFieldChange = useCallback(
         (newValue) => {
             console.log('field change', newValue);
-            const { id: blockId = null } = newValue || {};
+            const { uuid: blockUUID = null } = newValue || {};
             // const { components: newComponents = null } = document || {};
             const newComponents = components.reduce((acc, comp) => {
-                const { id = null } = comp || {};
-                if (blockId !== null && id === blockId) {
+                const { uuid = null } = comp || {};
+                if (blockUUID !== null && uuid === blockUUID) {
                     return [...acc, newValue];
                 }
                 return [...acc, comp];
@@ -110,10 +110,10 @@ function EditorArticle({ document, viewer, className, onChange }) {
             //         ? first.parent.document.selection.getFirstPosition()
             // : null;
             if (target !== null) {
-                const blockId = findParentBlock(target.parent);
-                if (blockId !== null) {
+                const blockUUID = findParentBlock(target.parent);
+                if (blockUUID !== null) {
                     const focused =
-                        (components || []).find(({ id = null }) => id === blockId) || null;
+                        (components || []).find(({ uuid = null }) => uuid === blockUUID) || null;
                     setFocusedBlock(focused);
                 }
             }
@@ -131,10 +131,10 @@ function EditorArticle({ document, viewer, className, onChange }) {
     );
 
     const scrollTo = useCallback((block) => {
-        const { id = null } = block || {};
-        if (id !== null) {
-            const element = window.document.getElementById(id) || null;
-            console.log('scrollTo', id, element);
+        const { uuid = null } = block || {};
+        if (uuid !== null) {
+            const element = window.document.getElementById(uuid) || null;
+            console.log('scrollTo', uuid, element);
             if (element !== null) {
                 element.scrollIntoView();
             }
@@ -150,8 +150,8 @@ function EditorArticle({ document, viewer, className, onChange }) {
             ),
         [document, blocks],
     );
-    // const body = useMemo(() => dataToView(), [dataToView]);
 
+    // const body = useMemo(() => dataToView(), [dataToView]);
     // console.log('current document', document);
     // console.log('my body', body, document);
     // console.log('components', components);
@@ -187,7 +187,7 @@ function EditorArticle({ document, viewer, className, onChange }) {
                                     fields={[
                                         {
                                             type: 'text',
-                                            name: 'id',
+                                            name: 'uuid',
                                             withoutFormGroup: true,
                                             placeholder: 'Place',
                                         },

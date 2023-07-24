@@ -61,10 +61,11 @@ export default class NicheDataProcessor {
         const blocks = [...new Array(viewFragment.childCount).keys()]
             .map((index) => {
                 const child = viewFragment.getChild(index);
-                const id = child.getAttribute('data-niche-block-id') || uuidV4();
+                const id = child.getAttribute('data-niche-block-id') || null;
+                const uuid = child.getAttribute('data-niche-block-uuid') || uuidV4();
                 const type = child.getAttribute('data-niche-block-type') || null;
 
-                const customBody = this.htmlDataProcessor.toData(child);
+                // const customBody = this.htmlDataProcessor.toData(child);
                 const body = this.getInnerHTML(child) || '';
                 const headingMatches = isString(body) ? body.match(/^<h([0-9])/) : null;
                 const finalHeadingMatches =
@@ -74,11 +75,12 @@ export default class NicheDataProcessor {
                 const matchesHeading =
                     finalHeadingMatches !== null && finalHeadingMatches.length > 1;
 
-                // console.log('block', id, type, body, child, customBody);
+                // console.log('block', uuid, type, body, child, customBody);
 
                 if (type === 'heading' || matchesHeading) {
                     return {
                         id,
+                        uuid,
                         type: 'heading',
                         role: 'block',
                         size:
@@ -94,6 +96,7 @@ export default class NicheDataProcessor {
                     // const body = this.htmlDataProcessor.toData(child);
                     return {
                         id,
+                        uuid,
                         type: 'text',
                         role: 'block',
                         body,
@@ -103,13 +106,14 @@ export default class NicheDataProcessor {
                 if (type !== null) {
                     return {
                         id,
+                        uuid,
                         type,
                         role: 'block',
                         ...this.getFieldsFromChild(child),
                     };
                 }
 
-                // console.log('empty block not converted', id, type, body, child);
+                // console.log('empty block not converted', uuid, type, body, child);
 
                 return null;
             })

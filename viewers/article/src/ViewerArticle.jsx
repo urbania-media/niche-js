@@ -25,20 +25,19 @@ function ViewerArticle({ document, className }) {
     const { components = null } = document || {};
     const blocksManager = useBlocksComponentsManager();
     const blocks = (components || []).filter(({ role = null }) => role === 'block');
-
-    console.log('ViewerArticle renders', blocksManager, components, blocks);
-
+    // console.log('ViewerArticle renders', blocksManager, components, blocks);
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>
             {(blocks || []).map((block, i) => {
-                const { id = uuidV4(), type = null } = block || {};
+                const { id = null, uuid = uuidV4(), type = null } = block || {};
                 const BlockComponent = blocksManager.getComponent(type);
                 // eslint-disable-next-line no-nested-ternary
                 return (
                     <div
-                        id={id}
+                        id={uuid}
                         key={`block-${id}-${type}`}
                         data-niche-block-id={id}
+                        data-niche-block-uuid={uuid}
                         data-niche-block-type={type}
                         data-niche-role="block"
                         data-niche-block-inline={type === 'text' || type === 'heading'}

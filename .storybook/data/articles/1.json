@@ -2,33 +2,28 @@
     "title": "Les amis de la forêt",
     "components": [
         {
-            "id": "b435972345",
             "role": "block",
             "type": "heading",
             "body": "Trash humpers: the sequel",
             "size": 3
         },
         {
-            "id": "b762457534",
             "role": "block",
             "type": "text",
             "body": "We believe in Mr. Korine to deliver on his new screenplay."
         },
         {
-            "id": "b234652346",
             "role": "block",
             "type": "quote",
             "body": "The message is the medium.",
             "caption": "Marshall McLuhan"
         },
         {
-            "id": "b8525672",
             "role": "block",
             "type": "text",
             "body": "Trash humpers is the best movie ever, even better than Gummo."
         },
         {
-            "id": "b77145611",
             "role": "block",
             "type": "image",
             "media": {
@@ -36,7 +31,6 @@
             }
         },
         {
-            "id": "b13513451",
             "role": "block",
             "type": "text",
             "body": "We really like trash humpers it is great."
