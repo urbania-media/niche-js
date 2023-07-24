@@ -5,18 +5,18 @@ import React from 'react';
 import styles from './styles.module.css';
 
 const propTypes = {
-    size: PropTypes.number,
     body: PropTypes.string,
+    size: PropTypes.number,
     className: PropTypes.string,
 };
 
 const defaultProps = {
-    size: null,
     body: null,
+    size: null,
     className: null,
 };
 
-function Heading({ size, body, className }) {
+function Heading({ body, size, className }) {
     const Component = `h${size || 3}`;
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>

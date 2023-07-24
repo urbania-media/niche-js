@@ -26,7 +26,7 @@ function ViewerArticle({ document, className }) {
     const blocksManager = useBlocksComponentsManager();
     const blocks = (components || []).filter(({ role = null }) => role === 'block');
 
-    console.log('ViewerArticle renders', components, blocks);
+    console.log('ViewerArticle renders', blocksManager, components, blocks);
 
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>
