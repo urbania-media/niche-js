@@ -54,7 +54,7 @@ NicheEditor.defaultConfig = {
     toolbar: ['bold', 'italic'],
     simpleUpload: {
         // The URL that the images are uploaded to.
-        uploadUrl: 'https://niche.ca.test/medias/upload',
+        uploadUrl: 'https://niche.ca.test:8080/medias/upload',
 
         // Enable the XMLHttpRequest.withCredentials property.
         withCredentials: true,
