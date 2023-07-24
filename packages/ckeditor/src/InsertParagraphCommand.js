@@ -1,5 +1,6 @@
 import { Command, Editor } from '@ckeditor/ckeditor5-core';
 import { Element, Position } from '@ckeditor/ckeditor5-engine';
+import { v4 as uuidV4 } from 'uuid';
 
 /**
  * The insert paragraph command. It inserts a new paragraph at a specific
@@ -19,88 +20,94 @@ import { Element, Position } from '@ckeditor/ckeditor5-engine';
  * **Note**: This command moves the selection to the inserted paragraph.
  */
 export default class InsertParagraphCommand extends Command {
-	constructor( editor ) {
-		super( editor );
+    constructor(editor) {
+        super(editor);
 
-        console.log('aaaaaaaa');
+        console.log('create insert paragraph');
 
-		// Since this command passes position in execution block instead of selection, it should be checked directly.
-		this._isEnabledBasedOnSelection = false;
-	}
+        // Since this command passes position in execution block instead of selection, it should be checked directly.
+        this._isEnabledBasedOnSelection = false;
+    }
 
-	/**
-	 * Executes the command.
-	 *
-	 * @param options Options for the executed command.
-	 * @param options.position The model position at which the new paragraph will be inserted.
-	 * @param options.attributes Attributes keys and values to set on a inserted paragraph.
-	 * @fires execute
-	 */
-	execute(options ) {
+    /**
+     * Executes the command.
+     *
+     * @param options Options for the executed command.
+     * @param options.position The model position at which the new paragraph will be inserted.
+     * @param options.attributes Attributes keys and values to set on a inserted paragraph.
+     * @fires execute
+     */
+    execute(options) {
+        console.log('execute');
 
-        console.log('aaaaaaaa');
+        const model = this.editor.model;
+        const attributes = options.attributes;
 
-		const model = this.editor.model;
-		const attributes = options.attributes;
+        let position = options.position;
 
-		let position = options.position;
+        // Don't execute command if position is in non-editable place.
+        if (!model.canEditAt(position)) {
+            return;
+        }
 
-		// Don't execute command if position is in non-editable place.
-		if ( !model.canEditAt( position ) ) {
-			return;
-		}
+        model.change((writer) => {
+            console.log('AAAAAAAAAAAAA IM ALIVE');
 
-		model.change( writer => {
+            const textContainer = writer.createElement('div', {
+                tag: 'p',
+                class: 'some class',
+                id: uuidV4(),
+                type: 'text',
+                inline: 'true',
+            });
+            const paragraph = writer.createElement('paragraph');
 
-            console.log('AAAAAAAAAAAAA');
+            const allowedParent = model.schema.findAllowedParent(position, paragraph);
 
-			const paragraph = writer.createElement( 'paragraph' );
-			const allowedParent = model.schema.findAllowedParent( position, paragraph );
+            // It could be there's no ancestor limit that would allow paragraph.
+            // In theory, "paragraph" could be disallowed even in the "$root".
+            if (!allowedParent) {
+                return;
+            }
 
-			// It could be there's no ancestor limit that would allow paragraph.
-			// In theory, "paragraph" could be disallowed even in the "$root".
-			if ( !allowedParent ) {
-				return;
-			}
+            if (attributes) {
+                model.schema.setAllowedAttributes(paragraph, attributes, writer);
+            }
 
-			if ( attributes ) {
-				model.schema.setAllowedAttributes( paragraph, attributes, writer );
-			}
+            if (position.path.length < 2) {
+                model.insertContent(paragraph, position);
+                writer.setSelection(paragraph, 'in');
 
-			if ( position.path.length < 2 ) {
-				model.insertContent( paragraph, position );
-				writer.setSelection( paragraph, 'in' );
+                return;
+            }
 
-				return;
-			}
+            const positionParent = position.parent;
 
-			const positionParent = position.parent;
+            // E.g.
+            // <paragraph>[]</paragraph> ---> <paragraph></paragraph><paragraph>[]</paragraph>
+            const isInEmptyBlock = positionParent.isEmpty;
 
-			// E.g.
-			// <paragraph>[]</paragraph> ---> <paragraph></paragraph><paragraph>[]</paragraph>
-			const isInEmptyBlock = positionParent.isEmpty;
+            // E.g.
+            // <paragraph>foo[]</paragraph> ---> <paragraph>foo</paragraph><paragraph>[]</paragraph>
+            const isAtEndOfTextBlock = position.isAtEnd && !positionParent.isEmpty;
 
-			// E.g.
-			// <paragraph>foo[]</paragraph> ---> <paragraph>foo</paragraph><paragraph>[]</paragraph>
-			const isAtEndOfTextBlock = position.isAtEnd && !positionParent.isEmpty;
+            // E.g.
+            // <paragraph>[]foo</paragraph> ---> <paragraph>[]</paragraph><paragraph>foo</paragraph>
+            const isAtStartOfTextBlock = position.isAtStart && !positionParent.isEmpty;
 
-			// E.g.
-			// <paragraph>[]foo</paragraph> ---> <paragraph>[]</paragraph><paragraph>foo</paragraph>
-			const isAtStartOfTextBlock = position.isAtStart && !positionParent.isEmpty;
+            const canBeChild = model.schema.checkChild(positionParent, paragraph);
 
-			const canBeChild = model.schema.checkChild( positionParent, paragraph );
+            if (isInEmptyBlock || isAtEndOfTextBlock) {
+                position = writer.createPositionAfter(positionParent);
+            } else if (isAtStartOfTextBlock) {
+                position = writer.createPositionBefore(positionParent);
+            } else if (!canBeChild) {
+                position = writer.split(position, allowedParent).position;
+            }
 
-			if ( isInEmptyBlock || isAtEndOfTextBlock ) {
-				position = writer.createPositionAfter( positionParent );
-			} else if ( isAtStartOfTextBlock ) {
-				position = writer.createPositionBefore( positionParent );
-			} else if ( !canBeChild ) {
-				position = writer.split( position, allowedParent ).position;
-			}
+            model.insertContent(paragraph, position);
 
-			model.insertContent( paragraph, position );
-
-			writer.setSelection( paragraph, 'in' );
-		} );
-	}
+            writer.setSelection(paragraph, 'in');
+        });
+    }
 }

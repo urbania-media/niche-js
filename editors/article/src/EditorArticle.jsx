@@ -1,12 +1,12 @@
 // import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
 // import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
-import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
+// import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { ComponentsProvider } from '@panneau/core/contexts';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { useCallback, useMemo, useState } from 'react';
-import { createRoot } from 'react-dom/client';
+import React, { useCallback, useState } from 'react';
+// import { createRoot } from 'react-dom/client';
 import { renderToString } from 'react-dom/server';
 
 import NicheEditor from '@niche-js/ckeditor/build';
@@ -33,66 +33,95 @@ const defaultProps = {
     onChange: null,
 };
 
+function findParentBlock(block) {
+    const nicheId = block.getAttribute ? block.getAttribute('data-niche-block-id') || null : null;
+    if (nicheId !== null) {
+        return nicheId;
+    }
+    if (block.parent) {
+        return findParentBlock(block.parent);
+    }
+    return null;
+}
+
 function EditorArticle({ document, viewer, className, onChange }) {
-    const { type = 'article' } = document || {};
+    const { type = 'article', components = [] } = document || {};
     // const blocksDefinitions = useBlocksDefinitions();
     const ViewerComponent = useViewerComponent(viewer || type || 'article');
 
     const blocksManager = useBlocksComponentsManager();
+    const blocks = blocksManager.getComponents();
+
+    console.log('The Document', document);
 
     const onEditorReady = useCallback((editor) => {
         // You can store the "editor" and use when it is needed.
         console.log('Editor is ready!', editor);
-        CKEditorInspector.attach(editor);
+        // CKEditorInspector.attach(editor);
     }, []);
 
     const onEditorChange = useCallback(
         (event, editor) => {
             const data = editor.getData();
-            console.log(data);
-            // console.log('newdata', event, data);
-            // console.log('change', data);
-            if (onChange !== null) {
-                onChange(data);
+            console.log('editor get data event', event);
+
+            if (data && onChange !== null) {
+                const { components: newComponents = null } = data || {};
+                const nextValue = { ...document, components: newComponents };
+                console.log('editor onchange', nextValue);
+                // onChange(nextValue);
             }
         },
-        [onChange],
+        [document, onChange],
     );
 
-    const onEditorFocus = useCallback((event, editor) => {
-        // You can store the "editor" and use when it is needed.
-        console.log('Focus', event, event.source, event.source.selection.getFirstPosition());
-    }, []);
+    const [focusedBlock, setFocusedBlock] = useState(null);
+    const onEditorFocus = useCallback(
+        (event, editor) => {
+            const first = event.source.selection.getFirstPosition();
+            if (first !== null) {
+                const blockId = findParentBlock(first.parent);
+                if (blockId !== null) {
+                    const focused = (components || []).find(({ id = null }) => id === blockId);
+                    console.log(blockId, focused, components);
+                    setFocusedBlock(focused);
+                }
+            }
+        },
+        [components, setFocusedBlock],
+    );
 
     const onEditorBlur = useCallback((event, editor) => {
         // You can store the "editor" and use when it is needed.
-        console.log('Blur', event);
+        // console.log('Blur', event);
     }, []);
 
-    const [focusedBlock, setFocusedBlock] = useState(null);
-    const { components = [] } = document || [];
-
     const scrollTo = useCallback((block) => {
-        console.log('scrollTo', block);
+        const { id = null } = block || {};
+        if (id !== null) {
+            const element = window.document.getElementById(id) || null;
+            console.log('scrollTo', id, element);
+            if (element !== null) {
+                element.scrollIntoView();
+            }
+        }
     });
 
-    const body = useMemo(
+    const dataToView = useCallback(
         () =>
             renderToString(
-                <ComponentsProvider
-                    namespace={BLOCKS_NAMESPACE}
-                    components={blocksManager.getComponents()}
-                >
+                <ComponentsProvider namespace={BLOCKS_NAMESPACE} components={blocks}>
                     <ViewerComponent document={document} />
                 </ComponentsProvider>,
             ),
-        [document],
+        [document, blocks],
     );
+    // const body = useMemo(() => dataToView(), [dataToView]);
 
-    console.log('current document', document);
-    console.log('body', body);
-    console.log('components', components);
-    console.log('focusedBlock', focusedBlock);
+    // console.log('current document', document);
+    // console.log('my body', body, document);
+    // console.log('components', components);
+    // console.log('focusedBlock', focusedBlock);
 
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>
@@ -115,15 +144,22 @@ function EditorArticle({ document, viewer, className, onChange }) {
                 right={
                     <div>
                         <p>Fields</p>
-                        {focusedBlock !== null ? <p>Show fields</p> : null}
+                        {focusedBlock !== null ? (
+                            <p>
+                                Show fields
+                                <br />
+                                for {focusedBlock.type}
+                            </p>
+                        ) : null}
                     </div>
                 }
             >
                 <CKEditor
                     editor={NicheEditor}
-                    data={body}
+                    // data={body}
                     config={{
                         niche: {
+                            dataToView,
                             // blocksPlugins: blocksDefinitions.map({ plugin } => plugin),
                             // blockRenderer: (type, data, domElement) => {
                             //     console.log('render data', type, data);

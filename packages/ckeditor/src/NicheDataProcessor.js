@@ -1,24 +1,23 @@
 import { HtmlDataProcessor } from 'ckeditor5/src/engine';
+import isObject from 'lodash/isObject';
+import isString from 'lodash/isString';
+import { v4 as uuidV4 } from 'uuid';
 
-// import markdown2html from './markdown2html/markdown2html';
-// import html2markdown, { turndownService } from './html2markdown/html2markdown';
-
-/**
- * This data processor implementation uses GitHub Flavored Markdown as input/output data.
- *
- * See the {@glink features/markdown Markdown output} guide to learn more on how to enable it.
- */
 export default class NicheDataProcessor {
     /**
      * HTML data processor used to process HTML produced by the Markdown-to-HTML converter and the other way.
      */
-    htmlDataProcessor;
+    htmlDataProcessor = null;
+    dataToView = null;
 
     /**
      * Creates a new instance of the Markdown data processor class.
      */
-    constructor(document = null) {
+    constructor(document = null, editor) {
         this.htmlDataProcessor = new HtmlDataProcessor(document);
+        const { dataToView = null } = editor.config.get('niche') || {};
+        this.dataToView = dataToView;
+        console.log('dataToView', dataToView);
     }
 
     /**
@@ -41,8 +40,13 @@ export default class NicheDataProcessor {
      * @returns The converted view element.
      */
     toView(data = null) {
-        console.log(data);
-        return this.htmlDataProcessor.toView(data);
+        let finalData = data;
+        console.log('to view', data);
+        if (this.dataToView !== null) {
+            console.log('parse me', data);
+            finalData = this.dataToView(data);
+        }
+        return this.htmlDataProcessor.toView(finalData);
     }
 
     /**
@@ -52,65 +56,104 @@ export default class NicheDataProcessor {
      * @returns Markdown string.
      */
     toData(viewFragment = null) {
-        // Convert html to data format
-        // const html = this._htmlDP.toData(viewFragment);
-        // return html2markdown(html);
-        // console.log('toData', viewFragment);
+        console.log('view to data', viewFragment, 'children', viewFragment.childCount);
 
-        const children = viewFragment.getChildren();
+        const blocks = [...new Array(viewFragment.childCount).keys()]
+            .map((index) => {
+                const child = viewFragment.getChild(index);
+                const id = child.getAttribute('data-niche-block-id') || uuidV4();
+                const type = child.getAttribute('data-niche-block-type') || null;
 
-        console.log(viewFragment);
+                const customBody = this.htmlDataProcessor.toData(child);
+                const body = this.getInnerHTML(child) || '';
+                const headingMatches = isString(body) ? body.match(/^<h([0-9])/) : null;
+                const finalHeadingMatches =
+                    isObject(body) && isString(body.name)
+                        ? body.name.match(/^<h([0-9])/)
+                        : headingMatches;
+                const matchesHeading =
+                    finalHeadingMatches !== null && finalHeadingMatches.length > 1;
 
-        const blocks = [...new Array(viewFragment.childCount).keys()].map((index) => {
-            const child = viewFragment.getChild(index);
-            const type = child.getAttribute('data-block-type') || null;
+                // console.log('block', id, type, body, child, customBody);
 
-            if (type !== null) {
-                return {
-                    type,
-                    ...this.getFieldsFromChild(child),
-                };
-            }
+                if (type === 'heading' || matchesHeading) {
+                    return {
+                        id,
+                        type: 'heading',
+                        role: 'block',
+                        size:
+                            headingMatches !== null && headingMatches.length > 1
+                                ? headingMatches[1]
+                                : null,
+                        body,
+                    };
+                }
 
-            const headingMatches = (child.name || '').match(/^h([0-9])$/);
-            if (headingMatches !== null) {
-                return {
-                    type: 'heading',
-                    size: headingMatches[1],
-                    body: this.getInnerHTML(child),
-                };
-            }
+                if (type === 'text' || child.name === 'p') {
+                    // const body = this.getInnerHTML(child);
+                    // const body = this.htmlDataProcessor.toData(child);
+                    return {
+                        id,
+                        type: 'text',
+                        role: 'block',
+                        body,
+                    };
+                }
 
-            if (child.name === 'p') {
-                return {
-                    type: 'text',
-                    body: this.htmlDataProcessor.toData(child),
-                };
-            }
+                if (type !== null) {
+                    return {
+                        id,
+                        type,
+                        role: 'block',
+                        ...this.getFieldsFromChild(child),
+                    };
+                }
 
-            return null;
-        });
+                // console.log('empty block not converted', id, type, body, child);
+
+                return null;
+            })
+            .filter((block) => block !== null);
+
+        console.log('blocks', blocks);
 
         return {
             components: blocks,
         };
-
-        // return this.htmlDataProcessor.toData(viewFragment);
     }
 
     getFieldsFromChild(child) {
         return [...new Array(child.childCount).keys()].reduce((acc, index) => {
-            const subChild = child.getChild(index);
-            const isEditable =
-                (subChild.getAttribute('data-niche-inline-editable') ||
-                    subChild.getAttribute('data-niche-block-editable')) === 'true';
+            const subChild = child.getChild(index) || {};
+            const { name = null } = subChild;
 
-            if (isEditable) {
-                const key = subChild.getAttribute('data-niche-key');
+            if (subChild.name === 'img') {
+                return {
+                    ...acc,
+                    src: subChild.getAttribute('src'),
+                    alt: subChild.getAttribute('alt'),
+                    srcSet: subChild.getAttribute('srcset'),
+                };
+            }
+
+            if (name === 'figure') {
+                const attributes = this.getFieldsFromChild(subChild);
 
                 return {
                     ...acc,
-                    [key]: this.getInnerHTML(subChild),
+                    ...attributes,
+                };
+            }
+
+            const editableKey =
+                subChild.getAttribute('data-niche-editable-inline') ||
+                subChild.getAttribute('data-niche-editable') ||
+                null;
+
+            if (editableKey !== null) {
+                return {
+                    ...acc,
+                    [editableKey]: this.getInnerHTML(subChild),
                 };
             }
 
@@ -126,24 +169,10 @@ export default class NicheDataProcessor {
         return container.children[0].innerHTML;
     }
 
-    /**
-     * Registers a {@link module:engine/view/matcher~MatcherPattern} for view elements whose content should be treated as raw data
-     * and not processed during the conversion from Markdown to view elements.
-     *
-     * The raw data can be later accessed by a
-     * {@link module:engine/view/element~Element#getCustomProperty custom property of a view element} called `"$rawContent"`.
-     *
-     * @param pattern The pattern matching all view elements whose content should
-     * be treated as raw data.
-     */
     registerRawContentMatcher(pattern) {
         this.htmlDataProcessor.registerRawContentMatcher(pattern);
     }
 
-    /**
-     * This method does not have any effect on the data processor result. It exists for compatibility with the
-     * {@link module:engine/dataprocessor/dataprocessor~DataProcessor `DataProcessor` interface}.
-     */
     useFillerType(type) {
         this.htmlDataProcessor.domConverter.blockFillerMode =
             type === 'marked' ? 'markedNbsp' : 'nbsp';

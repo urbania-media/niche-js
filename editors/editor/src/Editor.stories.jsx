@@ -5,7 +5,6 @@ import Editor from './Editor';
 
 import styles from './styles.module.css';
 
-// More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 export default {
     title: 'Editors/Editor',
     component: Editor,

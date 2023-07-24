@@ -4,12 +4,10 @@ import { BalloonEditor as BaseEditor } from '@ckeditor/ckeditor5-editor-balloon'
 import { Essentials } from '@ckeditor/ckeditor5-essentials';
 import { Heading } from '@ckeditor/ckeditor5-heading';
 import {
-    AutoImage,
-    Image,
-    ImageBlock,
-    ImageCaption,
-    ImageResize,
-    ImageStyle,
+    //  AutoImage,
+    // Image,
+    ImageBlock, // ImageCaption,
+    ImageResize, // ImageStyle,
     ImageToolbar,
     ImageInsert,
 } from '@ckeditor/ckeditor5-image';
@@ -18,9 +16,9 @@ import { List } from '@ckeditor/ckeditor5-list';
 import { Paragraph } from '@ckeditor/ckeditor5-paragraph';
 import { BlockToolbar } from '@ckeditor/ckeditor5-ui';
 import { SimpleUploadAdapter } from '@ckeditor/ckeditor5-upload';
+import { getCSRFHeaders } from '@folklore/fetch';
 
 // import { plugin as ImagePlugin } from '@niche-js/block-image/editor';
-
 import NicheDPPlugin from './NicheDataProcessorPlugin';
 import NichePlugin from './NichePlugin';
 
@@ -45,9 +43,9 @@ NicheEditor.builtinPlugins = [
     // AutoImage,
     BlockToolbar,
     // Custom plugins
-    NichePlugin,
-    // Blocks
     // ImagePlugin,
+    // Blocks
+    NichePlugin,
     SimpleUploadAdapter,
 ];
 
@@ -56,15 +54,16 @@ NicheEditor.defaultConfig = {
     toolbar: ['bold', 'italic'],
     simpleUpload: {
         // The URL that the images are uploaded to.
-        uploadUrl: 'http://niche.ca.test/panneau/upload',
+        uploadUrl: 'https://niche.ca.test/medias/upload',
 
         // Enable the XMLHttpRequest.withCredentials property.
         withCredentials: true,
 
         // Headers sent along with the XMLHttpRequest to the upload server.
         headers: {
-            'X-CSRF-TOKEN': 'CSRF-Token',
-            Authorization: 'Bearer <JSON Web Token>',
+            // 'X-CSRF-TOKEN': 'CSRF-Token',
+            // Authorization: 'Bearer <JSON Web Token>',
+            ...getCSRFHeaders(),
         },
     },
     image: {

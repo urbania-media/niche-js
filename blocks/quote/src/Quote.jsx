@@ -20,8 +20,8 @@ const defaultProps = {
 function Quote({ body, caption, className }) {
     return (
         <figure
-            data-niche-block-widget
             className={classNames([styles.container, { [className]: className !== null }])}
+            data-niche-block-widget
         >
             <blockquote
                 className={styles.body}

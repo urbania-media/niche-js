@@ -5,6 +5,7 @@ import NicheDataProcessor from './NicheDataProcessor';
 export default class NicheDPPlugin extends Plugin {
     constructor(editor) {
         super(editor);
-        editor.data.processor = new NicheDataProcessor(editor.data.viewDocument);
+        // eslint-disable-next-line no-param-reassign
+        editor.data.processor = new NicheDataProcessor(editor.data.viewDocument, editor);
     }
 }

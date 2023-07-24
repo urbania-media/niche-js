@@ -23,7 +23,17 @@ function Image({ media, className }) {
             className={classNames([styles.container, { [className]: className !== null }])}
             data-niche-block-widget
         >
-            {url !== null ? <img className={styles.img} src={url} alt={alt} /> : 'Image block'}
+            {url !== null ? (
+                <img
+                    // data-niche-editable-attributes="src,alt"
+                    data-image="magieee"
+                    className={styles.img}
+                    src={url}
+                    alt={alt}
+                />
+            ) : (
+                'Image block'
+            )}
             <div data-niche-editable-inline="caption" className={styles.caption}>
                 {alt} Credits
             </div>

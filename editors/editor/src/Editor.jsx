@@ -19,7 +19,7 @@ const defaultProps = {
 };
 
 function Editor({ left, right, className, children }) {
-    console.log('editor render', left, right, children);
+    // console.log('editor render', left, right, children);
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>
             <aside className={styles.left}>{left}</aside>
