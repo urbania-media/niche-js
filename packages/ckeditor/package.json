@@ -1,6 +1,6 @@
 {
     "name": "@niche-js/ckeditor",
-    "version": "0.0.12",
+    "version": "0.0.13",
     "private": false,
     "description": "",
     "keywords": [
@@ -54,7 +54,6 @@
         "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
     },
     "dependencies": {
-        "ckeditor5": "^38.1.1",
         "@ckeditor/ckeditor5-basic-styles": "^38.1.1",
         "@ckeditor/ckeditor5-build-balloon": "^38.1.1",
         "@ckeditor/ckeditor5-build-classic": "^38.1.1",
@@ -76,8 +75,9 @@
         "@ckeditor/ckeditor5-ui": "^38.1.1",
         "@ckeditor/ckeditor5-upload": "^38.1.1",
         "@ckeditor/ckeditor5-widget": "^38.1.1",
-        "@niche-js/block-image": "^0.0.12",
-        "@folklore/fetch": "^0.1.17"
+        "@folklore/fetch": "^0.1.17",
+        "@niche-js/block-image": "^0.0.13",
+        "ckeditor5": "^38.1.1"
     },
     "publishConfig": {
         "access": "public",
