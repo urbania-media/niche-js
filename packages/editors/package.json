@@ -1,6 +1,6 @@
 {
     "name": "@niche-js/editors",
-    "version": "0.0.15",
+    "version": "0.0.16",
     "private": false,
     "description": "",
     "keywords": [
@@ -61,8 +61,8 @@
     },
     "dependencies": {
         "@babel/runtime": "^7.12.5",
-        "@niche-js/core": "^0.0.15",
-        "@niche-js/editor-article": "^0.0.15",
+        "@niche-js/core": "^0.0.16",
+        "@niche-js/editor-article": "^0.0.16",
         "@panneau/core": "^3.0.9",
         "prop-types": "^15.7.2"
     },
