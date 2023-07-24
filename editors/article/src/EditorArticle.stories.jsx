@@ -1,7 +1,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
+// import FieldsProvider from '@panneau/fields';
 import React, { useCallback, useState } from 'react';
 
 import BlocksProvider from '../../../packages/blocks/src/BlocksProvider';
+import FieldsProvider from '../../../packages/fields/src/FieldsProvider';
 import ViewersProvider from '../../../packages/viewers/src/ViewersProvider';
 import Article from './EditorArticle';
 
@@ -14,11 +16,13 @@ export default {
     argTypes: {},
     decorators: [
         (Story) => (
-            <BlocksProvider>
-                <ViewersProvider>
-                    <Story />
-                </ViewersProvider>
-            </BlocksProvider>
+            <FieldsProvider>
+                <BlocksProvider>
+                    <ViewersProvider>
+                        <Story />
+                    </ViewersProvider>
+                </BlocksProvider>
+            </FieldsProvider>
         ),
     ],
 };

@@ -8,3 +8,15 @@
     display: block;
     margin: 0 0 10px;
 }
+
+.fields {
+    max-width: 100%;
+}
+
+.field {
+    max-width: 100%;
+
+    input {
+        max-width: 100%;
+    }
+}

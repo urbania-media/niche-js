@@ -77,7 +77,7 @@
         "@folklore/services": "^0.1.24",
         "@folklore/size": "^0.1.20",
         "@folklore/tracking": "^0.0.9",
-        "@panneau/core": "^3.0.0",
+        "@panneau/core": "^3.0.9",
         "bootstrap": "^5.3.0-alpha1",
         "change-case": "^4.1.2",
         "classnames": "^2.2.6",

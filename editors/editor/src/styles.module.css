@@ -7,10 +7,11 @@
 
 .main {
     width: 66%;
+    flex-grow: 1;
 }
 
 .left, .right {
-    flex-grow: 1;
+    width: 16.66%;
     background-color: #ededed
 }
 
