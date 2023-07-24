@@ -62,7 +62,7 @@ function EditorArticle({ document, viewer, className, onChange }) {
     const onEditorReady = useCallback((editor) => {
         // You can store the "editor" and use when it is needed.
         console.log('Editor is ready!', editor);
-        CKEditorInspector.attach(editor);
+        // CKEditorInspector.attach(editor);
         // setCkEditor(editor);
 
         // editor.ui.focusTracker.on('change:focusedElement', (evt, data, isFocused) => {
