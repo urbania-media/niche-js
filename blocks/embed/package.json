@@ -1,0 +1,61 @@
+{
+    "name": "@niche-js/block-embed",
+    "version": "0.0.18",
+    "private": false,
+    "description": "Niche block",
+    "keywords": [
+        "niche",
+        "javascript"
+    ],
+    "homepage": "https://github.com/urbania-media/niche-js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/urbania-media/niche-js.git"
+    },
+    "author": {
+        "name": "Folklore",
+        "email": "info@folklore.email"
+    },
+    "contributors": [
+        {
+            "name": "David Mongeau-Petitpas",
+            "email": "dmp@folklore.email"
+        },
+        {
+            "name": "Nicolas Roy-Bourdages",
+            "email": "nrb@folklore.email"
+        }
+    ],
+    "license": "ISC",
+    "main": "lib/index.js",
+    "module": "es/index.js",
+    "style": "assets/css/styles.css",
+    "exports": {
+        ".": "./lib/index.js"
+    },
+    "browser": {
+        ".": "./es/index.js"
+    },
+    "files": [
+        "lib",
+        "es",
+        "assets"
+    ],
+    "scripts": {
+        "prepare": "../../scripts/prepare-package.sh"
+    },
+    "peerDependencies": {
+        "react": "^18.0.0",
+        "react-dom": "^18.0.0"
+    },
+    "dependencies": {
+        "@niche-js/core": "^0.0.18",
+        "classnames": "^2.2.6",
+        "prop-types": "^15.7.2",
+        "react-intl": "^6.4.4"
+    },
+    "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+    }
+}
