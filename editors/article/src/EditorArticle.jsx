@@ -173,11 +173,11 @@ function EditorArticle({ document, viewer, className, onChange }) {
                                     fields={[
                                         {
                                             type: 'text',
-                                            name: 'uuid',
+                                            name: 'body',
                                             withoutFormGroup: true,
-                                            placeholder: 'Place',
+                                            placeholder: 'Body',
                                         },
-                                        { type: 'toggle', name: 'truefalse' },
+                                        { type: 'toggle', name: 'test' },
                                     ]}
                                     onChange={onFieldChange}
                                 />
@@ -189,7 +189,7 @@ function EditorArticle({ document, viewer, className, onChange }) {
                 <Preview>
                     <CKEditor
                         editor={NicheEditor}
-                        // data={body}
+                        // data={body} ohoh
                         config={{
                             niche: {
                                 dataToView,
