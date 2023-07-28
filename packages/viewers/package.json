@@ -1,6 +1,6 @@
 {
     "name": "@niche-js/viewers",
-    "version": "0.0.19",
+    "version": "0.0.20",
     "private": false,
     "description": "",
     "keywords": [
@@ -61,8 +61,8 @@
     },
     "dependencies": {
         "@babel/runtime": "^7.12.5",
-        "@niche-js/core": "^0.0.19",
-        "@niche-js/viewer-article": "^0.0.19",
+        "@niche-js/core": "^0.0.20",
+        "@niche-js/viewer-article": "^0.0.20",
         "@panneau/core": "^3.0.9",
         "prop-types": "^15.7.2"
     },
