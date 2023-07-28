@@ -77,7 +77,8 @@
         "@ckeditor/ckeditor5-widget": "^38.1.1",
         "@folklore/fetch": "^0.1.17",
         "@niche-js/block-image": "^0.0.19",
-        "ckeditor5": "^38.1.1"
+        "ckeditor5": "^38.1.1",
+        "uuid": "^9.0.0"
     },
     "publishConfig": {
         "access": "public",

@@ -2,6 +2,7 @@
     "title": "Les amis de la forêt",
     "components": [
         {
+            "id": 1,
             "role": "block",
             "type": "heading",
             "body": "Trash humpers: the sequel",
@@ -13,6 +14,7 @@
             "body": "We believe in Mr. Korine to deliver on his new screenplay."
         },
         {
+            "id": "100",
             "role": "block",
             "type": "quote",
             "body": "The message is the medium.",
@@ -28,6 +30,16 @@
             "type": "image",
             "media": {
                 "url": "https://picsum.photos/200/300"
+            }
+        },
+        {
+            "role": "block",
+            "type": "embed",
+            "embed": {
+                "provider": "youtube",
+                "url": "https://www.youtube.com/watch?v=Xw5AiRVqfqk",
+                "iframeUrl": "https://www.youtube.com/embed/Xw5AiRVqfqk",
+                "html": "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/Xw5AiRVqfqk\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>"
             }
         },
         {

@@ -31,13 +31,17 @@ const packages = Object.keys(dependencies).filter((it) => {
     if (!patternRegExp.test(it)) {
         return false;
     }
+
     try {
         require.resolve(`${it}/assets/css/styles.css`);
     } catch (e) {
+        console.log(e);
         return false;
     }
+
     return true;
 });
+console.log(packages);
 
 const templateStr = fs.readFileSync(templateFile);
 const styles = ejs.render(templateStr.toString('utf-8'), {

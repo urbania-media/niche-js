@@ -31,10 +31,12 @@
     "module": "es/index.js",
     "style": "assets/css/styles.css",
     "exports": {
-        ".": "./lib/index.js"
+        ".": "./lib/index.js",
+        "./assets/css/styles.css": "./assets/css/styles.css"
     },
     "browser": {
-        ".": "./es/index.js"
+        ".": "./es/index.js",
+        "./assets/css/styles.css": "./assets/css/styles.css"
     },
     "files": [
         "lib",

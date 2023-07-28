@@ -1,7 +1,7 @@
 import { Plugin } from '@ckeditor/ckeditor5-core';
 import { Widget, toWidget, toWidgetEditable } from '@ckeditor/ckeditor5-widget';
+import { v4 as uuidV4 } from 'uuid';
 
-// import { v4 as uuidV4 } from 'uuid';
 // import EnterCommand from './EnterCommand';
 import InsertParagraphCommand from './InsertParagraphCommand';
 
@@ -129,6 +129,7 @@ export default class NichePlugin extends Plugin {
             model: 'nicheBlockInline',
             view: (modelElement, { writer: viewWriter }) => {
                 const block = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
+                    id: modelElement.getAttribute('uuid'),
                     class: modelElement.getAttribute('class'),
                     'data-niche-block-id': modelElement.getAttribute('id') || null,
                     'data-niche-block-uuid': modelElement.getAttribute('uuid'),
@@ -144,6 +145,7 @@ export default class NichePlugin extends Plugin {
             model: 'nicheBlockInline',
             view: (modelElement, { writer: viewWriter }) => {
                 const block = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
+                    id: modelElement.getAttribute('uuid'),
                     class: modelElement.getAttribute('class'),
                     'data-niche-block-id': modelElement.getAttribute('id') || null,
                     'data-niche-block-uuid': modelElement.getAttribute('uuid'),
@@ -185,6 +187,7 @@ export default class NichePlugin extends Plugin {
             model: 'nicheBlock',
             view: (modelElement, { writer: viewWriter }) => {
                 const block = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
+                    id: modelElement.getAttribute('uuid'),
                     class: modelElement.getAttribute('class'),
                     'data-niche-block-widget': modelElement.getAttribute('widget'),
                     'data-niche-block-id': modelElement.getAttribute('id') || null,
@@ -201,6 +204,7 @@ export default class NichePlugin extends Plugin {
             view: (modelElement, { writer: viewWriter }) => {
                 const widget = modelElement.getAttribute('widget');
                 const block = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
+                    id: modelElement.getAttribute('uuid'),
                     class: modelElement.getAttribute('class'),
                     'data-niche-block-widget': widget,
                     'data-niche-block-id': modelElement.getAttribute('id') || null,
