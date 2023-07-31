@@ -16,10 +16,6 @@ export default class NichePlugin extends Plugin {
         this.plugins = plugins.map((CustomPlugin) => new CustomPlugin(this.editor));
         this.plugins.forEach((plugin) => plugin.init());
 
-        console.log('commands', this.editor.commands);
-
-        // this.editor.commands.add('insertParagraph', new InsertParagraphCommand(this.editor));
-
         this.editor.commands.get('enter').on('afterExecute', () => {
             const block = this.editor.model.document.selection.getSelectedBlocks().next().value;
             // console.log('block', block, this.editor.model.document.selection.getSelectedBlocks());
@@ -36,20 +32,6 @@ export default class NichePlugin extends Plugin {
                 writer.setAttribute('uuid', uuidV4(), block);
             });
         });
-
-        // TODO: figure out a way to override the enter and shift enter keys
-        // this.editor.editing.view.document.on(
-        //     'enter',
-        //     (evt, data) => {
-        //         console.log('plug', this.editor.plugins.get('CustomEnter'));
-        //         // this.editor.execute('shiftEnter');
-        //         // Cancel existing event
-        //         data.preventDefault();
-        //         evt.stop();
-        //         console.log(data, evt);
-        //     },
-        //     { priority: 'high' },
-        // );
 
         const { schema } = this.editor.model;
         const { conversion } = this.editor;
@@ -96,14 +78,12 @@ export default class NichePlugin extends Plugin {
         schema.extend('imageBlock', {
             allowAttributes: ['alt', 'src', 'srcset', 'data-image'],
         });
-
         // schema.extend('paragraph', {});
 
         // The paragraph problem
         conversion.for('upcast').elementToElement({
-            model: (viewElement, { writer: modelWriter }) => {
-                console.log('veee', viewElement);
-                return modelWriter.createElement('paragraph', {
+            model: (viewElement, { writer: modelWriter }) =>
+                modelWriter.createElement('paragraph', {
                     tag: viewElement.name,
                     id: null,
                     class: viewElement.parent.getAttribute('class'),
@@ -112,8 +92,7 @@ export default class NichePlugin extends Plugin {
                     type: 'text',
                     role: 'block',
                     inline: 'true',
-                });
-            },
+                }),
             view: {
                 name: 'p',
                 // attributes: {
@@ -132,7 +111,6 @@ export default class NichePlugin extends Plugin {
                 name: 'paragraph',
                 key: 'class',
             },
-            // converterPriority: 'high',
         });
 
         conversion.for('downcast').attributeToAttribute({
@@ -142,7 +120,6 @@ export default class NichePlugin extends Plugin {
             model: {
                 key: 'uuid',
             },
-            // converterPriority: 'high',
         });
 
         /**
@@ -214,7 +191,7 @@ export default class NichePlugin extends Plugin {
                     class: block.getAttribute('class'),
                     widget: widget !== null,
                     id: blockContainer.getAttribute('data-niche-block-id') || null,
-                    // uuid: blockContainer.getAttribute('data-niche-block-uuid'),
+                    uuid: blockContainer.getAttribute('data-niche-block-uuid'),
                     type: blockContainer.getAttribute('data-niche-block-type'),
                     role: 'block',
                 });
@@ -236,7 +213,7 @@ export default class NichePlugin extends Plugin {
                     class: modelElement.getAttribute('class'),
                     'data-niche-block-widget': modelElement.getAttribute('widget'),
                     'data-niche-block-id': modelElement.getAttribute('id') || null,
-                    // 'data-niche-block-uuid': modelElement.getAttribute('uuid'),
+                    'data-niche-block-uuid': modelElement.getAttribute('uuid'),
                     'data-niche-block-type': modelElement.getAttribute('type'),
                     'data-niche-role': modelElement.getAttribute('role'),
                 });
@@ -253,13 +230,11 @@ export default class NichePlugin extends Plugin {
                     class: modelElement.getAttribute('class'),
                     'data-niche-block-widget': widget,
                     'data-niche-block-id': modelElement.getAttribute('id') || null,
-                    // 'data-niche-block-uuid': modelElement.getAttribute('uuid'),
+                    'data-niche-block-uuid': modelElement.getAttribute('uuid'),
                     'data-niche-block-type': modelElement.getAttribute('type'),
                     'data-niche-role': modelElement.getAttribute('role'),
                 });
                 return widget ? toWidget(block, viewWriter) : block;
-                // viewWriter.insert(viewWriter.createPositionAt(div, 0), block);
-                // return toWidget(div, viewWriter);
             },
         });
 

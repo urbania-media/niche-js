@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 // import FieldsProvider from '@panneau/fields';
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { v4 as uuidV4 } from 'uuid';
 
 import BlocksProvider from '../../../packages/blocks/src/BlocksProvider';
@@ -8,7 +8,8 @@ import FieldsProvider from '../../../packages/fields/src/FieldsProvider';
 import ViewersProvider from '../../../packages/viewers/src/ViewersProvider';
 import Article from './EditorArticle';
 
-import article from '../../../.storybook/data/articles/2.json';
+import article1 from '../../../.storybook/data/articles/1.json';
+import article2 from '../../../.storybook/data/articles/2.json';
 
 export default {
     title: 'Editors/Article',
@@ -30,7 +31,7 @@ export default {
 
 export const Default = {
     args: {
-        document: article,
+        document: article1,
     },
     render: ({ document = null }) => {
         const initialDocument = {
@@ -38,7 +39,24 @@ export const Default = {
             components: document.components.map((it) => ({ ...it, uuid: uuidV4() })),
         };
         const [currentDocument, onChange] = useState(initialDocument);
+        return (
+            <div style={{ width: 800, height: 600, margin: 'auto' }}>
+                <Article document={currentDocument} onChange={onChange} />
+            </div>
+        );
+    },
+};
 
+export const Simple = {
+    args: {
+        document: article2,
+    },
+    render: ({ document = null }) => {
+        const initialDocument = {
+            ...document,
+            components: document.components.map((it) => ({ ...it, uuid: uuidV4() })),
+        };
+        const [currentDocument, onChange] = useState(initialDocument);
         return (
             <div style={{ width: 800, height: 600, margin: 'auto' }}>
                 <Article document={currentDocument} onChange={onChange} />
@@ -53,12 +71,9 @@ export const EmptyArticle = {
     },
     render: ({ document = null }) => {
         const [currentDocument, onChange] = useState(document);
-        const storyOnChange = useCallback((newValue) => {
-            onChange(newValue);
-        });
         return (
             <div style={{ width: 800, height: 900, margin: 'auto ' }}>
-                <Article document={currentDocument} onChange={storyOnChange} />
+                <Article document={currentDocument} onChange={onChange} />
             </div>
         );
     },

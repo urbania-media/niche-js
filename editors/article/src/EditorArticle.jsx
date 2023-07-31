@@ -39,11 +39,11 @@ const defaultProps = {
 function findParentBlock(block) {
     const nicheId = block.getAttribute ? block.getAttribute('data-niche-block-uuid') || null : null;
     if (nicheId !== null) {
-        console.log('target', nicheId);
+        // console.log('target', nicheId);
         return nicheId;
     }
     if (block.parent) {
-        console.log('parent', block.parent);
+        // console.log('parent', block.parent);
         return findParentBlock(block.parent);
     }
     return null;
@@ -60,7 +60,7 @@ function EditorArticle({ document, viewer, className, onChange }) {
     console.log('The Document Value', document);
 
     const onEditorReady = useCallback((editor) => {
-        console.log('Editor is ready!', editor);
+        // console.log('Editor is ready!', editor);
         CKEditorInspector.attach(editor);
     }, []);
 
@@ -96,7 +96,7 @@ function EditorArticle({ document, viewer, className, onChange }) {
     const onEditorFocus = useCallback(
         (event, editor) => {
             const target = event.source.selection.getFirstPosition();
-            const element = editor.model.document.selection.getLastPosition();
+            // const element = editor.model.document.selection.getLastPosition();
             // console.log('event', event, editor.model.document.selection.getFirstPosition());
             // const target =
             //     first !== null && first.parent

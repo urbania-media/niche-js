@@ -1,13 +1,14 @@
 import { Bold, Italic } from '@ckeditor/ckeditor5-basic-styles';
-// import { ClassicEditor as BaseEditor } from '@ckeditor/ckeditor5-editor-classic';
 import { BalloonEditor as BaseEditor } from '@ckeditor/ckeditor5-editor-balloon';
 import { Essentials } from '@ckeditor/ckeditor5-essentials';
 import { Heading } from '@ckeditor/ckeditor5-heading';
 import {
-    //  AutoImage,
+    // AutoImage,
     // Image,
-    ImageBlock, // ImageCaption,
-    ImageResize, // ImageStyle,
+    // ImageCaption,
+    // ImageStyle,
+    ImageBlock,
+    ImageResize,
     ImageToolbar,
     ImageInsert,
 } from '@ckeditor/ckeditor5-image';
@@ -55,10 +56,8 @@ NicheEditor.defaultConfig = {
     simpleUpload: {
         // The URL that the images are uploaded to.
         uploadUrl: 'https://niche.ca.test:8080/medias/upload',
-
         // Enable the XMLHttpRequest.withCredentials property.
         withCredentials: true,
-
         // Headers sent along with the XMLHttpRequest to the upload server.
         headers: {
             // 'X-CSRF-TOKEN': 'CSRF-Token',
