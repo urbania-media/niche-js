@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 
 import styles from './styles.module.css';
 
@@ -21,9 +21,21 @@ const defaultProps = {
 };
 
 function Preview({ value, fields, onChange, className, children }) {
+    const [size, setSize] = useState('normal');
+    const onClick = useCallback(() => {
+        setSize(size === 'normal' ? 'small' : 'normal');
+    }, [size, setSize]);
+
     return (
-        <div className={classNames([styles.preview, { [className]: className !== null }])}>
-            Sizes
+        <div
+            className={classNames([
+                styles.preview,
+                { [styles[`${size}`]]: size !== null, [className]: className !== null },
+            ])}
+        >
+            <button type="button" className={styles.sizeButton} onClick={onClick}>
+                Change size
+            </button>
             <div className={styles.editor}>{children}</div>
         </div>
     );

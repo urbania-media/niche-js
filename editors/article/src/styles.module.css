@@ -57,11 +57,22 @@
     height: 100%;
     padding: 20px;
     background-color: #e9e9e9;
+
+    &.small {
+        .editor {
+            max-width: 320px;
+        }
+    }
+}
+
+.sizeButton {
+    margin-bottom: 5px;
 }
 
 .editor {
     position: relative;
     width: 100%;
     height: 96%;
+    margin: 0 auto;
     background-color: #fff;
 }
