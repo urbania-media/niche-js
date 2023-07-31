@@ -8,7 +8,7 @@ import FieldsProvider from '../../../packages/fields/src/FieldsProvider';
 import ViewersProvider from '../../../packages/viewers/src/ViewersProvider';
 import Article from './EditorArticle';
 
-import article from '../../../.storybook/data/articles/1.json';
+import article from '../../../.storybook/data/articles/2.json';
 
 export default {
     title: 'Editors/Article',

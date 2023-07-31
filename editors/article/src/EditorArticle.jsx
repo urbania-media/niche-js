@@ -56,23 +56,17 @@ function EditorArticle({ document, viewer, className, onChange }) {
     const ViewerComponent = useViewerComponent(viewer || type || 'article');
     const blocksManager = useBlocksComponentsManager();
     const blocks = blocksManager.getComponents();
-    // const blocksDefinitions = useBlocksDefinitions();
 
     console.log('The Document Value', document);
 
     const onEditorReady = useCallback((editor) => {
         console.log('Editor is ready!', editor);
         CKEditorInspector.attach(editor);
-        // setEditorInstance(editor);
-        // eslint-disable-next-line no-param-reassign
-        // editorRef.current = editor;
     }, []);
 
     const onEditorChange = useCallback(
         (event, editor) => {
             const data = editor.getData();
-            // TODO: figure out a way
-            console.log('editor get data event', data);
 
             if (data && onChange !== null) {
                 const { components: newComponents = null } = data || {};
@@ -85,7 +79,6 @@ function EditorArticle({ document, viewer, className, onChange }) {
 
     const onFieldChange = useCallback(
         (newValue) => {
-            console.log('field change', newValue);
             const { uuid: blockUUID = null } = newValue || {};
             const newComponents = components.reduce((acc, comp) => {
                 const { uuid = null } = comp || {};
@@ -104,14 +97,13 @@ function EditorArticle({ document, viewer, className, onChange }) {
         (event, editor) => {
             const target = event.source.selection.getFirstPosition();
             const element = editor.model.document.selection.getLastPosition();
-            console.log('event', event, editor.model.document.selection.getFirstPosition());
+            // console.log('event', event, editor.model.document.selection.getFirstPosition());
             // const target =
             //     first !== null && first.parent
             //         ? first.parent.document.selection.getFirstPosition()
             // : null;
             if (target !== null) {
                 const blockUUID = findParentBlock(target);
-                console.log('blockUUID', blockUUID, components);
                 if (blockUUID !== null) {
                     const focused =
                         (components || []).find(({ uuid = null }) => uuid === blockUUID) || null;
@@ -122,14 +114,7 @@ function EditorArticle({ document, viewer, className, onChange }) {
         [components, setFocusedBlock],
     );
 
-    const onEditorBlur = useCallback(
-        (event, editor) => {
-            // You can store the "editor" and use when it is needed.
-            // console.log('Blur', event);
-            // setFocusedBlock(null);
-        },
-        [setFocusedBlock],
-    );
+    const onEditorBlur = useCallback(() => {}, [setFocusedBlock]);
 
     const scrollTo = useCallback((block) => {
         const { uuid: blockUUID = null } = block || {};
@@ -153,8 +138,6 @@ function EditorArticle({ document, viewer, className, onChange }) {
             ),
         [document],
     );
-
-    console.log('body', body);
 
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>

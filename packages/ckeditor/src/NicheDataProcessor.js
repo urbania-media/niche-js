@@ -9,16 +9,8 @@ export default class NicheDataProcessor {
      */
     htmlDataProcessor = null;
 
-    dataToView = null;
-
-    /**
-     * Creates a new instance of the Markdown data processor class.
-     */
-    constructor(document = null, editor) {
-        this.htmlDataProcessor = new HtmlDataProcessor(document);
-        const { dataToView = null } = editor.config.get('niche') || {};
-        this.dataToView = dataToView;
-        console.log('dataToView', dataToView);
+    constructor(document) {
+        this.htmlDataProcessor = new HtmlDataProcessor(document || null);
     }
 
     /**
@@ -34,26 +26,14 @@ export default class NicheDataProcessor {
     // return element;
     // }
 
-    /**
-     * Converts the provided Markdown string to a view tree.
-     *
-     * @param data A Markdown string.
-     * @returns The converted view element.
-     */
     toView(data = null) {
         const finalData = data;
-        console.log('to view', data);
+        // console.log('to view', data);
         return this.htmlDataProcessor.toView(finalData);
     }
 
-    /**
-     * Converts the provided {@link module:engine/view/documentfragment~DocumentFragment} to data format &mdash; in this
-     * case to a Markdown string.
-     *
-     * @returns Markdown string.
-     */
     toData(viewFragment = null) {
-        console.log('to data', viewFragment, 'count', viewFragment.childCount);
+        // console.log('to data', viewFragment);
 
         const blocks = [...new Array(viewFragment.childCount).keys()]
             .map((index) => {
@@ -62,10 +42,7 @@ export default class NicheDataProcessor {
                 const uuid = child.getAttribute('data-niche-block-uuid') || uuidV4();
                 const type = child.getAttribute('data-niche-block-type') || null;
 
-                // const customBody = this.htmlDataProcessor.toData(child);
-
                 const body = this.getInnerHTML(child) || '';
-
                 const headingMatches = isString(body) ? body.match(/^<h([0-9])/) : null;
                 const finalHeadingMatches =
                     isObject(body) && isString(body.name)
@@ -74,9 +51,11 @@ export default class NicheDataProcessor {
                 const matchesHeading =
                     finalHeadingMatches !== null && finalHeadingMatches.length > 1;
 
-                // console.log('block', uuid, type, body, child, customBody);
-
                 if (type === 'heading' || matchesHeading) {
+                    const size =
+                        headingMatches !== null && headingMatches.length > 1
+                            ? headingMatches[1]
+                            : null;
                     return {
                         id,
                         uuid,
@@ -86,13 +65,11 @@ export default class NicheDataProcessor {
                             headingMatches !== null && headingMatches.length > 1
                                 ? headingMatches[1]
                                 : null,
-                        body,
+                        body: `<h${size || 1}>${body}</p>`,
                     };
                 }
 
                 if (type === 'text' || child.name === 'p') {
-                    // const body = this.getInnerHTML(child);
-                    // const body = this.htmlDataProcessor.toData(child);
                     return {
                         id,
                         uuid,
@@ -112,13 +89,9 @@ export default class NicheDataProcessor {
                     };
                 }
 
-                // console.log('empty block not converted', uuid, type, body, child);
-
                 return null;
             })
             .filter((block) => block !== null);
-
-        console.log('blocks', blocks);
 
         return {
             components: blocks,
@@ -141,7 +114,6 @@ export default class NicheDataProcessor {
 
             if (name === 'figure') {
                 const attributes = this.getFieldsFromChild(subChild);
-
                 return {
                     ...acc,
                     ...attributes,

@@ -2,7 +2,6 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { v4 as uuidV4 } from 'uuid';
 
 import { useBlocksComponentsManager } from '@niche-js/core/contexts';
 
@@ -10,8 +9,14 @@ import styles from './styles.module.css';
 
 const propTypes = {
     document: PropTypes.shape({
-        // eslint-disable-next-line react/forbid-prop-types
-        components: PropTypes.arrayOf(PropTypes.object),
+        components: PropTypes.arrayOf(
+            PropTypes.shape({
+                id: PropTypes.string,
+                uuid: PropTypes.string.isRequired,
+                role: PropTypes.string.isRequired,
+                type: PropTypes.string.isRequired,
+            }),
+        ),
     }),
     className: PropTypes.string,
 };
@@ -25,17 +30,26 @@ function ViewerArticle({ document, className }) {
     const { components = null } = document || {};
     const blocksManager = useBlocksComponentsManager();
     const blocks = (components || []).filter(({ role = null }) => role === 'block');
-    // console.log('ViewerArticle renders', blocksManager, components, blocks);
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>
-            {(blocks || []).map((block, i) => {
+            <div
+                id={null}
+                key="heading-1"
+                data-niche-block-id={null}
+                data-niche-block-uuid="myuuid"
+                data-niche-block-type="article"
+                data-niche-role="heading"
+                data-niche-block-widget
+            >
+                MY TEST HEADING
+            </div>
+            {(blocks || []).map((block) => {
                 const { id = null, uuid = null, type = null } = block || {};
                 const BlockComponent = blocksManager.getComponent(type);
-                // eslint-disable-next-line no-nested-ternary
                 return (
                     <div
                         id={uuid}
-                        key={`block-${id}-${type}`}
+                        key={`block-${uuid}-${type}`}
                         data-niche-block-id={id}
                         data-niche-block-uuid={uuid}
                         data-niche-block-type={type}
