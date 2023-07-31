@@ -22,11 +22,13 @@ function Outline({ components, className, onClick }) {
             {(components || []).map((it, i) => {
                 const { type = null, body = null, size } = it || {};
                 let label = <p className={styles.outlineLabel}>{type}</p>;
+                const finalBody = body !== null ? body.replace(/<\/?[^>]+(>|$)/g, '') : null;
+
                 if (type === 'text') {
                     label = (
                         <p className={styles.outlineLabel}>
                             <span className={styles.pre}>p</span>
-                            {body}
+                            {finalBody}
                         </p>
                     );
                 }
@@ -34,7 +36,7 @@ function Outline({ components, className, onClick }) {
                     label = (
                         <p className={styles.outlineLabel}>
                             <span className={styles.pre}>{`h${size}`}</span>
-                            {body}
+                            {finalBody}
                         </p>
                     );
                 }

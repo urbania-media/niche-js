@@ -41,7 +41,8 @@ function ViewerArticle({ document, className }) {
                 data-niche-role="heading"
                 data-niche-block-widget
             >
-                MY TEST HEADING
+                <h1>MY TEST HEADING</h1>
+                <p>Some description</p>
             </div>
             {(blocks || []).map((block) => {
                 const { id = null, uuid = null, type = null } = block || {};
