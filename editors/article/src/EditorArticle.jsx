@@ -4,7 +4,7 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { ComponentsProvider } from '@panneau/core/contexts';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { useCallback, useState } from 'react';
+import React, { forwardRef, useCallback, useState, useMemo } from 'react';
 // import { createRoot } from 'react-dom/client';
 import { renderToString } from 'react-dom/server';
 
@@ -62,32 +62,31 @@ function EditorArticle({ document, viewer, className, onChange }) {
 
     const onEditorReady = useCallback((editor) => {
         console.log('Editor is ready!', editor);
-        // CKEditorInspector.attach(editor);
-        // setCkEditor(editor);
-        // editor.ui.focusTracker.on('change:focusedElement', (evt, data, isFocused) => {
-        //     console.log(`The editor is focused noww: ${data} ${isFocused}.`);
-        // });
+        CKEditorInspector.attach(editor);
+        // setEditorInstance(editor);
+        // eslint-disable-next-line no-param-reassign
+        // editorRef.current = editor;
     }, []);
 
     const onEditorChange = useCallback(
         (event, editor) => {
             const data = editor.getData();
-            console.log('editor get data event', event.source);
+            // TODO: figure out a way
+            console.log('editor get data event', data);
+
             if (data && onChange !== null) {
                 const { components: newComponents = null } = data || {};
                 const nextValue = { ...document, components: newComponents };
-                console.log('editor onchange', nextValue);
-                onChange(nextValue);
+                // onChange(nextValue);
             }
         },
-        [document, onChange],
+        [onChange],
     );
 
     const onFieldChange = useCallback(
         (newValue) => {
             console.log('field change', newValue);
             const { uuid: blockUUID = null } = newValue || {};
-            // const { components: newComponents = null } = document || {};
             const newComponents = components.reduce((acc, comp) => {
                 const { uuid = null } = comp || {};
                 if (blockUUID !== null && uuid === blockUUID) {
@@ -104,7 +103,8 @@ function EditorArticle({ document, viewer, className, onChange }) {
     const onEditorFocus = useCallback(
         (event, editor) => {
             const target = event.source.selection.getFirstPosition();
-            // console.log(target);
+            const element = editor.model.document.selection.getLastPosition();
+            console.log('event', event, editor.model.document.selection.getFirstPosition());
             // const target =
             //     first !== null && first.parent
             //         ? first.parent.document.selection.getFirstPosition()
@@ -132,32 +132,29 @@ function EditorArticle({ document, viewer, className, onChange }) {
     );
 
     const scrollTo = useCallback((block) => {
-        const { uuid = null } = block || {};
-        // console.log('scrollTo', uuid);
-        if (uuid !== null) {
-            const element = window.document.getElementById(uuid) || null;
-            // console.log('scrollTo element', element);
+        const { uuid: blockUUID = null } = block || {};
+        if (blockUUID !== null) {
+            const element = window.document.getElementById(blockUUID) || null;
             if (element !== null) {
-                element.scrollIntoView();
+                element.scrollIntoView({ behavior: 'smooth' });
             }
+            const focused =
+                (components || []).find(({ uuid = null }) => uuid === blockUUID) || null;
+            setFocusedBlock(focused);
         }
     });
 
-    const dataToView = useCallback(
+    const body = useMemo(
         () =>
             renderToString(
                 <ComponentsProvider namespace={BLOCKS_NAMESPACE} components={blocks}>
                     <ViewerComponent document={document} />
                 </ComponentsProvider>,
             ),
-        [document, blocks],
+        [document],
     );
 
-    // const body = useMemo(() => dataToView(), [dataToView]);
-    // console.log('current document', document);
-    // console.log('my body', body, document);
-    // console.log('components', components);
-    // console.log('focusedBlock', focusedBlock);
+    console.log('body', body);
 
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>
@@ -189,10 +186,9 @@ function EditorArticle({ document, viewer, className, onChange }) {
                 <Preview>
                     <CKEditor
                         editor={NicheEditor}
-                        // data={body} ohoh
+                        data={body}
                         config={{
                             niche: {
-                                dataToView,
                                 // blocksPlugins: blocksDefinitions.map({ plugin } => plugin),
                                 // blockRenderer: (type, data, domElement) => {
                                 //     console.log('render data', type, data);
@@ -217,4 +213,4 @@ function EditorArticle({ document, viewer, className, onChange }) {
 EditorArticle.propTypes = propTypes;
 EditorArticle.defaultProps = defaultProps;
 
-export default EditorArticle;
+export default forwardRef(EditorArticle);

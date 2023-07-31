@@ -22,6 +22,7 @@ function Quote({ body, caption, className }) {
         <figure
             className={classNames([styles.container, { [className]: className !== null }])}
             data-niche-block-widget
+            // data-cke-ignore-events="true"
         >
             <blockquote
                 className={styles.body}

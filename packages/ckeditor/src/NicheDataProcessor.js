@@ -8,6 +8,7 @@ export default class NicheDataProcessor {
      * HTML data processor used to process HTML produced by the Markdown-to-HTML converter and the other way.
      */
     htmlDataProcessor = null;
+
     dataToView = null;
 
     /**
@@ -40,12 +41,8 @@ export default class NicheDataProcessor {
      * @returns The converted view element.
      */
     toView(data = null) {
-        let finalData = data;
+        const finalData = data;
         console.log('to view', data);
-        if (this.dataToView !== null) {
-            console.log('parse me', data);
-            finalData = this.dataToView(data);
-        }
         return this.htmlDataProcessor.toView(finalData);
     }
 
@@ -56,7 +53,7 @@ export default class NicheDataProcessor {
      * @returns Markdown string.
      */
     toData(viewFragment = null) {
-        console.log('view to data', viewFragment, 'children', viewFragment.childCount);
+        console.log('to data', viewFragment, 'count', viewFragment.childCount);
 
         const blocks = [...new Array(viewFragment.childCount).keys()]
             .map((index) => {
@@ -66,7 +63,9 @@ export default class NicheDataProcessor {
                 const type = child.getAttribute('data-niche-block-type') || null;
 
                 // const customBody = this.htmlDataProcessor.toData(child);
+
                 const body = this.getInnerHTML(child) || '';
+
                 const headingMatches = isString(body) ? body.match(/^<h([0-9])/) : null;
                 const finalHeadingMatches =
                     isObject(body) && isString(body.name)
@@ -99,7 +98,7 @@ export default class NicheDataProcessor {
                         uuid,
                         type: 'text',
                         role: 'block',
-                        body,
+                        body: `<p>${body}</p>`,
                     };
                 }
 
@@ -171,6 +170,14 @@ export default class NicheDataProcessor {
         const container = doc.createElement('div');
         container.appendChild(domFragment);
         return container.children[0].innerHTML;
+    }
+
+    getHTML(fragment) {
+        const domFragment = this.htmlDataProcessor.domConverter.viewToDom(fragment);
+        const doc = document.implementation.createHTMLDocument('');
+        const container = doc.createElement('div');
+        container.appendChild(domFragment);
+        return container.innerHTML;
     }
 
     registerRawContentMatcher(pattern) {

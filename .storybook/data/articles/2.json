@@ -1,0 +1,10 @@
+{
+    "title": "Les amis de la forêt",
+    "components": [
+        {
+            "role": "block",
+            "type": "text",
+            "body": "<p>Hello</p>"
+        }
+    ]
+}

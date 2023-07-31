@@ -3,7 +3,7 @@ import { Widget, toWidget, toWidgetEditable } from '@ckeditor/ckeditor5-widget';
 import { v4 as uuidV4 } from 'uuid';
 
 // import EnterCommand from './EnterCommand';
-import InsertParagraphCommand from './InsertParagraphCommand';
+// import InsertParagraphCommand from './InsertParagraphCommand';
 
 /* eslint-disable no-underscore-dangle */
 export default class NichePlugin extends Plugin {
@@ -16,7 +16,27 @@ export default class NichePlugin extends Plugin {
         this.plugins = plugins.map((CustomPlugin) => new CustomPlugin(this.editor));
         this.plugins.forEach((plugin) => plugin.init());
 
-        this.editor.commands.add('insertParagraph', new InsertParagraphCommand(this.editor));
+        console.log('commands', this.editor.commands);
+
+        // this.editor.commands.add('insertParagraph', new InsertParagraphCommand(this.editor));
+
+        this.editor.commands.get('enter').on('afterExecute', () => {
+            const block = this.editor.model.document.selection.getSelectedBlocks().next().value;
+            // console.log('block', block, this.editor.model.document.selection.getSelectedBlocks());
+            this.editor.model.change((writer) => {
+                writer.removeAttribute('id', block);
+                writer.setAttribute('uuid', uuidV4(), block);
+            });
+        });
+
+        this.editor.commands.get('insertParagraph').on('execute', () => {
+            const block = this.editor.model.document.selection.getSelectedBlocks().next().value;
+            this.editor.model.change((writer) => {
+                writer.removeAttribute('id', block);
+                writer.setAttribute('uuid', uuidV4(), block);
+            });
+        });
+
         // TODO: figure out a way to override the enter and shift enter keys
         // this.editor.editing.view.document.on(
         //     'enter',
@@ -77,85 +97,109 @@ export default class NichePlugin extends Plugin {
             allowAttributes: ['alt', 'src', 'srcset', 'data-image'],
         });
 
+        // schema.extend('paragraph', {});
+
         // The paragraph problem
-        // conversion.for('upcast').elementToElement({
-        //     model: (viewElement, { writer: modelWriter }) => {
-        //         console.log('veee', viewElement);
-        //         // const blockContainer = viewElement;
-        //         // const block = blockContainer.getChild(0);
-        //         // return modelWriter.createElement('nicheBlockInline', {
-        //         //     tag: block.name,
-        //         //     class: block.getAttribute('class'),
-        //         //     id: blockContainer.getAttribute('data-niche-block-id'),
-        //         //     uuid: blockContainer.getAttribute('data-niche-block-uuid'),
-        //         //     type: blockContainer.getAttribute('data-niche-block-type'),
-        //         //     inline: 'true',
-        //         // });
-        //     },
-        //     view: {
-        //         name: 'paragraph',
-        //         // attributes: {
-        //         //     'data-niche-block-inline': 'true',
-        //         // },
-        //     },
-        //     // converterPriority: 'high',
-        // });
+        conversion.for('upcast').elementToElement({
+            model: (viewElement, { writer: modelWriter }) => {
+                console.log('veee', viewElement);
+                return modelWriter.createElement('paragraph', {
+                    tag: viewElement.name,
+                    id: null,
+                    class: viewElement.parent.getAttribute('class'),
+                    uuid:
+                        viewElement.parent.parent.getAttribute('data-niche-block-uuid') || uuidV4(),
+                    type: 'text',
+                    role: 'block',
+                    inline: 'true',
+                });
+            },
+            view: {
+                name: 'p',
+                // attributes: {
+                //     'data-niche-block-type': 'text',
+                // },
+            },
+            converterPriority: 'high',
+        });
+
+        conversion.for('editingDowncast').attributeToAttribute({
+            view: {
+                name: 'p',
+                key: 'class',
+            },
+            model: {
+                name: 'paragraph',
+                key: 'class',
+            },
+            // converterPriority: 'high',
+        });
+
+        conversion.for('downcast').attributeToAttribute({
+            view: {
+                key: 'data-niche-block-uuid',
+            },
+            model: {
+                key: 'uuid',
+            },
+            // converterPriority: 'high',
+        });
 
         /**
          * Niche inline blocks
          */
-        conversion.for('upcast').elementToElement({
-            model: (viewElement, { writer: modelWriter }) => {
-                const blockContainer = viewElement;
-                const block = blockContainer.getChild(0);
-                return modelWriter.createElement('nicheBlockInline', {
-                    tag: block.name,
-                    class: block.getAttribute('class'),
-                    id: blockContainer.getAttribute('data-niche-block-id') || null,
-                    uuid: blockContainer.getAttribute('data-niche-block-uuid'),
-                    type: blockContainer.getAttribute('data-niche-block-type'),
-                    inline: 'true',
-                    role: 'block',
-                });
-            },
-            view: {
-                attributes: {
-                    'data-niche-block-inline': 'true',
-                },
-            },
-        });
+        // conversion.for('upcast').elementToElement({
+        //     model: (viewElement, { writer: modelWriter }) => {
+        //         const blockContainer = viewElement;
+        //         const block = blockContainer.getChild(0);
+        //         return modelWriter.createElement('nicheBlockInline', {
+        //             tag: block.name,
+        //             class: block.getAttribute('class'),
+        //             id: blockContainer.getAttribute('data-niche-block-id') || null,
+        //             uuid: blockContainer.getAttribute('data-niche-block-uuid'),
+        //             type: blockContainer.getAttribute('data-niche-block-type'),
+        //             inline: 'true',
+        //             role: 'block',
+        //         });
+        //     },
+        //     view: {
+        //         attributes: {
+        //             'data-niche-block-inline': 'true',
+        //         },
+        //     },
+        // });
 
-        conversion.for('dataDowncast').elementToElement({
-            model: 'nicheBlockInline',
-            view: (modelElement, { writer: viewWriter }) => {
-                const block = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
-                    id: modelElement.getAttribute('uuid'),
-                    class: modelElement.getAttribute('class'),
-                    'data-niche-block-id': modelElement.getAttribute('id') || null,
-                    'data-niche-block-uuid': modelElement.getAttribute('uuid'),
-                    'data-niche-block-type': modelElement.getAttribute('type'),
-                    'data-niche-block-inline': 'true',
-                    'data-niche-role': modelElement.getAttribute('role'),
-                });
-                return block;
-            },
-        });
+        // conversion.for('dataDowncast').elementToElement({
+        //     model: 'nicheBlockInline',
+        //     view: (modelElement, { writer: viewWriter }) => {
+        //         const block = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
+        //             id: modelElement.getAttribute('uuid'),
+        //             class: modelElement.getAttribute('class'),
+        //             'data-niche-block-id': modelElement.getAttribute('id') || null,
+        //             'data-niche-block-uuid': modelElement.getAttribute('uuid'),
+        //             'data-niche-block-type': modelElement.getAttribute('type'),
+        //             'data-niche-block-inline': 'true',
+        //             'data-niche-role': modelElement.getAttribute('role'),
+        //         });
+        //         return block;
+        //     },
+        // });
 
-        conversion.for('editingDowncast').elementToElement({
-            model: 'nicheBlockInline',
-            view: (modelElement, { writer: viewWriter }) => {
-                const block = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
-                    id: modelElement.getAttribute('uuid'),
-                    class: modelElement.getAttribute('class'),
-                    'data-niche-block-id': modelElement.getAttribute('id') || null,
-                    'data-niche-block-uuid': modelElement.getAttribute('uuid'),
-                    'data-niche-block-type': modelElement.getAttribute('type'),
-                    'data-niche-role': modelElement.getAttribute('role'),
-                    'data-niche-block-inline': 'true',
-                });
-                return block;
-            },
-        });
+        // conversion.for('editingDowncast').elementToElement({
+        //     model: 'nicheBlockInline',
+        //     view: (modelElement, { writer: viewWriter }) => {
+        //         const block = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
+        //             id: modelElement.getAttribute('uuid'),
+        //             class: modelElement.getAttribute('class'),
+        //             'data-niche-block-id': modelElement.getAttribute('id') || null,
+        //             'data-niche-block-uuid': modelElement.getAttribute('uuid'),
+        //             'data-niche-block-type': modelElement.getAttribute('type'),
+        //             'data-niche-role': modelElement.getAttribute('role'),
+        //             'data-niche-block-inline': 'true',
+        //         });
+        //         return block;
+        //     },
+        // });
 
         /**
          * Niche blocks
@@ -170,7 +214,7 @@ export default class NichePlugin extends Plugin {
                     class: block.getAttribute('class'),
                     widget: widget !== null,
                     id: blockContainer.getAttribute('data-niche-block-id') || null,
-                    uuid: blockContainer.getAttribute('data-niche-block-uuid'),
+                    // uuid: blockContainer.getAttribute('data-niche-block-uuid'),
                     type: blockContainer.getAttribute('data-niche-block-type'),
                     role: 'block',
                 });
@@ -179,6 +223,7 @@ export default class NichePlugin extends Plugin {
                 attributes: {
                     // 'data-niche-block-widget': 'true',
                     'data-niche-block-type': /.*/,
+                    'data-niche-block-inline': 'false',
                 },
             },
         });
@@ -191,7 +236,7 @@ export default class NichePlugin extends Plugin {
                     class: modelElement.getAttribute('class'),
                     'data-niche-block-widget': modelElement.getAttribute('widget'),
                     'data-niche-block-id': modelElement.getAttribute('id') || null,
-                    'data-niche-block-uuid': modelElement.getAttribute('uuid'),
+                    // 'data-niche-block-uuid': modelElement.getAttribute('uuid'),
                     'data-niche-block-type': modelElement.getAttribute('type'),
                     'data-niche-role': modelElement.getAttribute('role'),
                 });
@@ -208,7 +253,7 @@ export default class NichePlugin extends Plugin {
                     class: modelElement.getAttribute('class'),
                     'data-niche-block-widget': widget,
                     'data-niche-block-id': modelElement.getAttribute('id') || null,
-                    'data-niche-block-uuid': modelElement.getAttribute('uuid'),
+                    // 'data-niche-block-uuid': modelElement.getAttribute('uuid'),
                     'data-niche-block-type': modelElement.getAttribute('type'),
                     'data-niche-role': modelElement.getAttribute('role'),
                 });

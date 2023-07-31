@@ -38,13 +38,10 @@ export const Default = {
             components: document.components.map((it) => ({ ...it, uuid: uuidV4() })),
         };
         const [currentDocument, onChange] = useState(initialDocument);
-        const storyOnChange = useCallback((newValue) => {
-            console.log('story on change', newValue);
-            onChange(newValue);
-        });
+
         return (
             <div style={{ width: 800, height: 600, margin: 'auto' }}>
-                <Article document={currentDocument} onChange={storyOnChange} />
+                <Article document={currentDocument} onChange={onChange} />
             </div>
         );
     },
@@ -54,9 +51,15 @@ export const EmptyArticle = {
     args: {
         document: null,
     },
-    render: (args) => (
-        <div style={{ width: 800, height: 900, margin: 'auto ' }}>
-            <Article {...args} />
-        </div>
-    ),
+    render: ({ document = null }) => {
+        const [currentDocument, onChange] = useState(document);
+        const storyOnChange = useCallback((newValue) => {
+            onChange(newValue);
+        });
+        return (
+            <div style={{ width: 800, height: 900, margin: 'auto ' }}>
+                <Article document={currentDocument} onChange={storyOnChange} />
+            </div>
+        );
+    },
 };

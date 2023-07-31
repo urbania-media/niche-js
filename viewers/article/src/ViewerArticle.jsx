@@ -29,7 +29,7 @@ function ViewerArticle({ document, className }) {
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>
             {(blocks || []).map((block, i) => {
-                const { id = null, uuid = uuidV4(), type = null } = block || {};
+                const { id = null, uuid = null, type = null } = block || {};
                 const BlockComponent = blocksManager.getComponent(type);
                 // eslint-disable-next-line no-nested-ternary
                 return (
