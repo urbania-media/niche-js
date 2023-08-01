@@ -4,9 +4,6 @@ import isString from 'lodash/isString';
 import { v4 as uuidV4 } from 'uuid';
 
 export default class NicheDataProcessor {
-    /**
-     * HTML data processor used to process HTML produced by the Markdown-to-HTML converter and the other way.
-     */
     htmlDataProcessor = null;
 
     constructor(document) {
@@ -33,7 +30,7 @@ export default class NicheDataProcessor {
     }
 
     toData(viewFragment = null) {
-        // console.log('to data', viewFragment);
+        console.log('to data', viewFragment.childCount, viewFragment);
 
         const blocks = [...new Array(viewFragment.childCount).keys()]
             .map((index) => {
@@ -43,29 +40,22 @@ export default class NicheDataProcessor {
                 const type = child.getAttribute('data-niche-block-type') || null;
 
                 const body = this.getInnerHTML(child) || '';
-                const headingMatches = isString(body) ? body.match(/^<h([0-9])/) : null;
-                const finalHeadingMatches =
-                    isObject(body) && isString(body.name)
-                        ? body.name.match(/^<h([0-9])/)
-                        : headingMatches;
-                const matchesHeading =
-                    finalHeadingMatches !== null && finalHeadingMatches.length > 1;
-
-                if (type === 'heading' || matchesHeading) {
+                const headingNameMatch = child.name.match(/^h([0-9])/);
+                if (
+                    type === 'heading' ||
+                    (headingNameMatch !== null && headingNameMatch.length > 0)
+                ) {
                     const size =
-                        headingMatches !== null && headingMatches.length > 1
-                            ? headingMatches[1]
+                        headingNameMatch !== null && headingNameMatch.length > 1
+                            ? parseInt(headingNameMatch[1], 10)
                             : null;
                     return {
                         id,
                         uuid,
                         type: 'heading',
                         role: 'block',
-                        size:
-                            headingMatches !== null && headingMatches.length > 1
-                                ? headingMatches[1]
-                                : null,
-                        body: `<h${size || 1}>${body}</p>`,
+                        size,
+                        body, // `<h${size || 1}>${body}<h${size || 1}>`,
                     };
                 }
 
@@ -89,9 +79,13 @@ export default class NicheDataProcessor {
                     };
                 }
 
+                console.log('BLOCK NOT FOUND', child);
+
                 return null;
             })
             .filter((block) => block !== null);
+
+        console.log(blocks);
 
         return {
             components: blocks,

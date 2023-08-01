@@ -18,8 +18,6 @@ function Text({ body, className }) {
     return (
         <div
             className={classNames([styles.container, { [className]: className !== null }])}
-            // data-niche-block-id={id}
-            // data-niche-block-type={type}
             dangerouslySetInnerHTML={{ __html: body }}
         />
     );

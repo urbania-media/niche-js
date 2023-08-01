@@ -14,7 +14,6 @@
             "body": "<p>We believe in Mr. Korine to deliver on his new screenplay.</p>"
         },
         {
-            "id": "100",
             "role": "block",
             "type": "quote",
             "body": "The message is the medium.",
@@ -23,7 +22,7 @@
         {
             "role": "block",
             "type": "text",
-            "body": "Trash humpers is the best movie ever, even better than Gummo."
+            "body": "<p>Trash humpers is the best movie ever, even better than Gummo.</p>"
         },
         {
             "role": "block",
@@ -45,7 +44,7 @@
         {
             "role": "block",
             "type": "text",
-            "body": "We really like trash humpers it is great."
+            "body": "<p>We really like trash humpers it is great.</p>"
         }
     ]
 }

@@ -32,7 +32,7 @@ function ViewerArticle({ document, className }) {
     const blocks = (components || []).filter(({ role = null }) => role === 'block');
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>
-            <div
+            {/* <div
                 id={null}
                 key="heading-1"
                 data-niche-block-id={null}
@@ -41,9 +41,8 @@ function ViewerArticle({ document, className }) {
                 data-niche-role="heading"
                 data-niche-block-widget
             >
-                <h1>MY TEST HEADING</h1>
-                <p>Some description</p>
-            </div>
+                <h1 data-niche-block-paragraph="false">MY TEST HEADING</h1>
+            </div> */}
             {(blocks || []).map((block) => {
                 const { id = null, uuid = null, type = null } = block || {};
                 const BlockComponent = blocksManager.getComponent(type);

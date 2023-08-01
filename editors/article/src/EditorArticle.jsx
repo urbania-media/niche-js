@@ -1,10 +1,10 @@
 // import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
 import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
+// import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { ComponentsProvider } from '@panneau/core/contexts';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { forwardRef, useCallback, useState, useMemo } from 'react';
+import React, { useCallback, useState, useMemo, useEffect, useRef } from 'react';
 // import { createRoot } from 'react-dom/client';
 import { renderToString } from 'react-dom/server';
 
@@ -52,26 +52,23 @@ function findParentBlock(block) {
 function EditorArticle({ document, viewer, className, onChange }) {
     const { type = 'article', components = [] } = document || {};
     const [focusedBlock, setFocusedBlock] = useState(null);
+    const editorRef = useRef(null);
+    const nicheEditorRef = useRef(null);
 
     const ViewerComponent = useViewerComponent(viewer || type || 'article');
     const blocksManager = useBlocksComponentsManager();
     const blocks = blocksManager.getComponents();
 
-    console.log('The Document Value', document);
-
-    const onEditorReady = useCallback((editor) => {
-        // console.log('Editor is ready!', editor);
-        CKEditorInspector.attach(editor);
-    }, []);
+    // console.log('The Document Value', document);
 
     const onEditorChange = useCallback(
         (event, editor) => {
             const data = editor.getData();
-
             if (data && onChange !== null) {
                 const { components: newComponents = null } = data || {};
                 const nextValue = { ...document, components: newComponents };
-                // onChange(nextValue);
+                console.log('onChange', nextValue);
+                onChange(nextValue);
             }
         },
         [onChange],
@@ -95,21 +92,22 @@ function EditorArticle({ document, viewer, className, onChange }) {
 
     const onEditorFocus = useCallback(
         (event, editor) => {
-            const target = event.source.selection.getFirstPosition();
-            // const element = editor.model.document.selection.getLastPosition();
-            // console.log('event', event, editor.model.document.selection.getFirstPosition());
-            // const target =
-            //     first !== null && first.parent
-            //         ? first.parent.document.selection.getFirstPosition()
-            // : null;
-            if (target !== null) {
-                const blockUUID = findParentBlock(target);
-                if (blockUUID !== null) {
-                    const focused =
-                        (components || []).find(({ uuid = null }) => uuid === blockUUID) || null;
-                    setFocusedBlock(focused);
+            setTimeout(() => {
+                const { selection: currentSelection = null } = editor.editing.view.document || {};
+                // const target = event.source.selection.getFirstPosition();
+                const range = currentSelection.getFirstRange();
+                const target = range.getCommonAncestor();
+
+                if (target !== null) {
+                    const blockUUID = findParentBlock(target);
+                    if (blockUUID !== null) {
+                        const focused =
+                            (components || []).find(({ uuid = null }) => uuid === blockUUID) ||
+                            null;
+                        setFocusedBlock(focused);
+                    }
                 }
-            }
+            }, 100);
         },
         [components, setFocusedBlock],
     );
@@ -129,15 +127,73 @@ function EditorArticle({ document, viewer, className, onChange }) {
         }
     });
 
-    const body = useMemo(
-        () =>
+    const renderBody = useCallback(
+        (newDocument) =>
+            // console.log('newDocument', newDocument);
             renderToString(
                 <ComponentsProvider namespace={BLOCKS_NAMESPACE} components={blocks}>
-                    <ViewerComponent document={document} />
+                    <ViewerComponent document={newDocument} />
                 </ComponentsProvider>,
             ),
-        [document],
+        [],
     );
+    const previousBody = useRef(null);
+    const body = useMemo(() => renderBody(document), [renderBody, document]);
+
+    useEffect(() => {
+        const editor = nicheEditorRef.current;
+        if (editor !== null && previousBody.current !== body) {
+            previousBody.current = body;
+
+            const { selection: currentSelection = null } = editor.editing.view.document || {};
+            const range = currentSelection.getFirstRange();
+
+            // console.log('Body changed yeesh', body);
+            editor.setData(body);
+
+            setTimeout(() => {
+                editor.model.change((writer) => {
+                    console.log('my range', range);
+                    writer.setSelection(range);
+                });
+            }, 1000);
+        }
+    }, [body, onChange]);
+
+    useEffect(() => {
+        if (nicheEditorRef.current === null && editorRef.current !== null) {
+            NicheEditor.create(editorRef.current)
+                .then((editor) => {
+                    // console.log('Editor was initialized', editor);
+                    editor.setData(body);
+
+                    const modelDocument = editor.model.document;
+                    const viewDocument = editor.editing.view.document;
+
+                    modelDocument.on('change:data', (event) => {
+                        onEditorChange(event, editor);
+                    });
+
+                    viewDocument.on('focus', (event) => {
+                        onEditorFocus(event, editor);
+                    });
+
+                    viewDocument.on('blur', (event) => {
+                        onEditorBlur(event, editor);
+                    });
+
+                    CKEditorInspector.attach(editor);
+
+                    nicheEditorRef.current = editor;
+                })
+                .catch((error) => {
+                    console.error(error.stack);
+                });
+        }
+    }, [body, onEditorChange, onEditorFocus, onEditorBlur]);
+
+    // console.log('document', document);
+    // console.log('body', body);
 
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>
@@ -167,26 +223,7 @@ function EditorArticle({ document, viewer, className, onChange }) {
                 }
             >
                 <Preview>
-                    <CKEditor
-                        editor={NicheEditor}
-                        data={body}
-                        config={{
-                            niche: {
-                                // blocksPlugins: blocksDefinitions.map({ plugin } => plugin),
-                                // blockRenderer: (type, data, domElement) => {
-                                //     console.log('render data', type, data);
-                                //     const root = createRoot(domElement);
-                                //     // const BlockComponent = blocksManager.getComponent(type);
-                                //     // const root = createRoot(domElement);
-                                //     root.render(<div>BLOCK RENDERER</div>);
-                                // },
-                            },
-                        }}
-                        onReady={onEditorReady}
-                        onChange={onEditorChange}
-                        onFocus={onEditorFocus}
-                        onBlur={onEditorBlur}
-                    />
+                    <div ref={editorRef} />
                 </Preview>
             </Editor>
         </div>
@@ -196,4 +233,4 @@ function EditorArticle({ document, viewer, className, onChange }) {
 EditorArticle.propTypes = propTypes;
 EditorArticle.defaultProps = defaultProps;
 
-export default forwardRef(EditorArticle);
+export default EditorArticle;

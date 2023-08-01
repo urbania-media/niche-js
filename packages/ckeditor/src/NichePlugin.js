@@ -81,25 +81,60 @@ export default class NichePlugin extends Plugin {
         // schema.extend('paragraph', {});
 
         // The paragraph problem
+
         conversion.for('upcast').elementToElement({
             model: (viewElement, { writer: modelWriter }) =>
+                // console.log(viewElement.name);
                 modelWriter.createElement('paragraph', {
                     tag: viewElement.name,
                     id: null,
-                    class: viewElement.parent.getAttribute('class'),
-                    uuid:
-                        viewElement.parent.parent.getAttribute('data-niche-block-uuid') || uuidV4(),
+                    class: viewElement.parent.getAttribute('class') || null,
+                    uuid: viewElement.parent.parent.getAttribute('data-niche-block-uuid'),
                     type: 'text',
                     role: 'block',
                     inline: 'true',
                 }),
+            // console.log('upcast p', viewElement.parent, viewElement.parent.parent);
             view: {
                 name: 'p',
                 // attributes: {
-                //     'data-niche-block-type': 'text',
+                //     'data-niche-block-uuid': false,
                 // },
             },
             converterPriority: 'high',
+        });
+
+        conversion.for('upcast').elementToElement({
+            model: (viewElement, { writer: modelWriter }) => {
+                // console.log('heading upcast', viewElement.name, viewElement);
+                const large = viewElement.name === 'h1' || viewElement.name === 'h2';
+                return modelWriter.createElement(large ? 'heading1' : 'heading2', {
+                    tag: viewElement.name,
+                    id: null,
+                    class: viewElement.parent.getAttribute('class') || null,
+                    uuid: viewElement.parent.parent.getAttribute('data-niche-block-uuid'),
+                    type: 'heading',
+                    role: 'block',
+                    inline: 'true',
+                });
+            },
+            view: {
+                name: /^h(1|2|3|4|5|6)/,
+                // attributes: {
+                //     'data-niche-paragraph': 'true',
+                // },
+            },
+            converterPriority: 'high',
+        });
+
+        conversion.for('editingDowncast').attributeToAttribute({
+            view: {
+                name: /^h[1-6]/,
+                key: 'class',
+            },
+            model: {
+                key: 'class',
+            },
         });
 
         conversion.for('editingDowncast').attributeToAttribute({
@@ -115,10 +150,47 @@ export default class NichePlugin extends Plugin {
 
         conversion.for('downcast').attributeToAttribute({
             view: {
+                key: 'data-niche-block-type',
+            },
+            model: {
+                key: 'type',
+            },
+        });
+
+        conversion.for('downcast').attributeToAttribute({
+            view: {
                 key: 'data-niche-block-uuid',
             },
             model: {
                 key: 'uuid',
+            },
+        });
+
+        conversion.for('downcast').attributeToAttribute({
+            view: {
+                key: 'data-niche-block-id',
+            },
+            model: {
+                key: 'id',
+            },
+        });
+
+        conversion.for('downcast').attributeToAttribute({
+            view: {
+                key: 'data-niche-block-role',
+            },
+            model: {
+                key: 'role',
+            },
+        });
+
+        conversion.for('downcast').attributeToAttribute({
+            view: {
+                key: 'data-niche-block-inline',
+                value: 'true',
+            },
+            model: {
+                key: 'inline',
             },
         });
 

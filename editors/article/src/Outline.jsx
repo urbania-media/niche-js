@@ -19,38 +19,52 @@ const defaultProps = {
 function Outline({ components, className, onClick }) {
     return (
         <div className={classNames([styles.outline, { [className]: className !== null }])}>
-            {(components || []).map((it, i) => {
-                const { type = null, body = null, size } = it || {};
-                let label = <p className={styles.outlineLabel}>{type}</p>;
-                const finalBody = body !== null ? body.replace(/<\/?[^>]+(>|$)/g, '') : null;
+            {(components || [])
+                .filter(({ role = null }) => role === 'heading')
+                .map((it, i) => {
+                    const { type = null } = it || {};
+                    return (
+                        <p className={styles.outlineLabel}>
+                            <span className={styles.pre}>Head</span>
+                            {type}
+                        </p>
+                    );
+                })}
+            <hr />
+            {(components || [])
+                .filter(({ role = null }) => role === 'block')
+                .map((it, i) => {
+                    const { type = null, body = null, size } = it || {};
+                    let label = <p className={styles.outlineLabel}>{type}</p>;
+                    const finalBody = body !== null ? body.replace(/<\/?[^>]+(>|$)/g, '') : null;
 
-                if (type === 'text') {
-                    label = (
-                        <p className={styles.outlineLabel}>
-                            <span className={styles.pre}>p</span>
-                            {finalBody}
-                        </p>
+                    if (type === 'text') {
+                        label = (
+                            <p className={styles.outlineLabel}>
+                                <span className={styles.pre}>p</span>
+                                {finalBody}
+                            </p>
+                        );
+                    }
+                    if (type === 'heading') {
+                        label = (
+                            <p className={styles.outlineLabel}>
+                                <span className={styles.pre}>{`h${size}`}</span>
+                                {finalBody}
+                            </p>
+                        );
+                    }
+                    return (
+                        <button
+                            key={`outline-${i + 1}-${it.type}`}
+                            type="button"
+                            className={styles.outlineItem}
+                            onClick={() => onClick(it)}
+                        >
+                            {label}
+                        </button>
                     );
-                }
-                if (type === 'heading') {
-                    label = (
-                        <p className={styles.outlineLabel}>
-                            <span className={styles.pre}>{`h${size}`}</span>
-                            {finalBody}
-                        </p>
-                    );
-                }
-                return (
-                    <button
-                        key={`outline-${i + 1}-${it.type}`}
-                        type="button"
-                        className={styles.outlineItem}
-                        onClick={() => onClick(it)}
-                    >
-                        {label}
-                    </button>
-                );
-            })}
+                })}
         </div>
     );
 }
