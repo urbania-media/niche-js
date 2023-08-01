@@ -1,6 +1,6 @@
 import { HtmlDataProcessor } from 'ckeditor5/src/engine';
-import isObject from 'lodash/isObject';
-import isString from 'lodash/isString';
+// import isObject from 'lodash/isObject';
+// import isString from 'lodash/isString';
 import { v4 as uuidV4 } from 'uuid';
 
 export default class NicheDataProcessor {

@@ -48,8 +48,7 @@ function ViewerArticle({ document, className }) {
                 const BlockComponent = blocksManager.getComponent(type);
                 return (
                     <div
-                        id={uuid}
-                        key={`block-${uuid}-${type}`}
+                        key={`block-${type}-${uuid}`}
                         data-niche-block-id={id}
                         data-niche-block-uuid={uuid}
                         data-niche-block-type={type}

@@ -4,7 +4,7 @@ import React from 'react';
 import BlocksProvider from '../../../packages/blocks/src/BlocksProvider';
 import Article from './ViewerArticle';
 
-import article from '../../../.storybook/data/articles/1.json';
+import article from '../../../.storybook/api/data/articles/1.json';
 
 export default {
     title: 'Viewers/Article',

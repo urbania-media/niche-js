@@ -16,21 +16,27 @@ export default class NichePlugin extends Plugin {
         this.plugins = plugins.map((CustomPlugin) => new CustomPlugin(this.editor));
         this.plugins.forEach((plugin) => plugin.init());
 
+        // The new stuff commands
         this.editor.commands.get('enter').on('afterExecute', () => {
-            const block = this.editor.model.document.selection.getSelectedBlocks().next().value;
-            // console.log('block', block, this.editor.model.document.selection.getSelectedBlocks());
-            this.editor.model.change((writer) => {
-                writer.removeAttribute('id', block);
-                writer.setAttribute('uuid', uuidV4(), block);
-            });
+            const block =
+                this.editor.model.document.selection.getSelectedBlocks().next().value || null;
+            if (block !== null) {
+                this.editor.model.change((writer) => {
+                    writer.removeAttribute('id', block);
+                    writer.setAttribute('uuid', uuidV4(), block);
+                });
+            }
         });
 
         this.editor.commands.get('insertParagraph').on('execute', () => {
-            const block = this.editor.model.document.selection.getSelectedBlocks().next().value;
-            this.editor.model.change((writer) => {
-                writer.removeAttribute('id', block);
-                writer.setAttribute('uuid', uuidV4(), block);
-            });
+            const block =
+                this.editor.model.document.selection.getSelectedBlocks().next().value || null;
+            if (block !== null) {
+                this.editor.model.change((writer) => {
+                    writer.removeAttribute('id', block);
+                    writer.setAttribute('uuid', uuidV4(), block);
+                });
+            }
         });
 
         const { schema } = this.editor.model;
@@ -81,25 +87,40 @@ export default class NichePlugin extends Plugin {
         // schema.extend('paragraph', {});
 
         // The paragraph problem
-
         conversion.for('upcast').elementToElement({
-            model: (viewElement, { writer: modelWriter }) =>
-                // console.log(viewElement.name);
-                modelWriter.createElement('paragraph', {
+            model: (viewElement, { writer: modelWriter }) => {
+                console.log('p', 'p upcast');
+                const id = viewElement?.parent?.parent
+                    ? viewElement.parent.parent.getAttribute('data-niche-block-id') || null
+                    : null;
+                const uuid = viewElement?.parent?.parent
+                    ? viewElement.parent.parent.getAttribute('data-niche-block-uuid') || null
+                    : null;
+                return modelWriter.createElement('paragraph', {
                     tag: viewElement.name,
-                    id: null,
+                    id,
                     class: viewElement.parent.getAttribute('class') || null,
-                    uuid: viewElement.parent.parent.getAttribute('data-niche-block-uuid'),
+                    uuid,
                     type: 'text',
                     role: 'block',
                     inline: 'true',
-                }),
-            // console.log('upcast p', viewElement.parent, viewElement.parent.parent);
-            view: {
-                name: 'p',
-                // attributes: {
-                //     'data-niche-block-uuid': false,
-                // },
+                });
+            },
+            // view: {
+            //     name: 'p',
+            // },
+            view: (element) => {
+                if (element.name === 'p') {
+                    const blockParent = element?.parent?.parent || null;
+                    if (
+                        blockParent !== null &&
+                        blockParent.getAttribute('data-niche-role') === 'block' &&
+                        blockParent.getAttribute('data-niche-block-type') === 'text'
+                    ) {
+                        return { name: true };
+                    }
+                }
+                return null;
             },
             converterPriority: 'high',
         });
@@ -108,21 +129,37 @@ export default class NichePlugin extends Plugin {
             model: (viewElement, { writer: modelWriter }) => {
                 // console.log('heading upcast', viewElement.name, viewElement);
                 const large = viewElement.name === 'h1' || viewElement.name === 'h2';
+                const id = viewElement?.parent?.parent
+                    ? viewElement.parent.parent.getAttribute('data-niche-block-id') || null
+                    : null;
+                const uuid = viewElement?.parent?.parent
+                    ? viewElement.parent.parent.getAttribute('data-niche-block-uuid') || null
+                    : null;
                 return modelWriter.createElement(large ? 'heading1' : 'heading2', {
                     tag: viewElement.name,
-                    id: null,
+                    id,
                     class: viewElement.parent.getAttribute('class') || null,
-                    uuid: viewElement.parent.parent.getAttribute('data-niche-block-uuid'),
+                    uuid,
                     type: 'heading',
                     role: 'block',
                     inline: 'true',
                 });
             },
-            view: {
-                name: /^h(1|2|3|4|5|6)/,
-                // attributes: {
-                //     'data-niche-paragraph': 'true',
-                // },
+            // view: {
+            //     name: /^h(1|2|3|4|5|6)/,
+            // },
+            view: (element) => {
+                if (element.name.match(/^h[(1|2|3|4|5|6)]/) !== null) {
+                    const blockParent = element?.parent?.parent || null;
+                    if (
+                        blockParent !== null &&
+                        blockParent.getAttribute('data-niche-role') === 'block' &&
+                        blockParent.getAttribute('data-niche-block-type') === 'heading'
+                    ) {
+                        return { name: true };
+                    }
+                }
+                return null;
             },
             converterPriority: 'high',
         });
@@ -145,6 +182,16 @@ export default class NichePlugin extends Plugin {
             model: {
                 name: 'paragraph',
                 key: 'class',
+            },
+        });
+
+        // Base conversions
+        conversion.for('downcast').attributeToAttribute({
+            view: {
+                key: 'data-niche-block-role',
+            },
+            model: {
+                key: 'role',
             },
         });
 
@@ -172,15 +219,6 @@ export default class NichePlugin extends Plugin {
             },
             model: {
                 key: 'id',
-            },
-        });
-
-        conversion.for('downcast').attributeToAttribute({
-            view: {
-                key: 'data-niche-block-role',
-            },
-            model: {
-                key: 'role',
             },
         });
 
@@ -281,7 +319,7 @@ export default class NichePlugin extends Plugin {
             model: 'nicheBlock',
             view: (modelElement, { writer: viewWriter }) => {
                 const block = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
-                    id: modelElement.getAttribute('uuid'),
+                    id: modelElement.getAttribute('id'),
                     class: modelElement.getAttribute('class'),
                     'data-niche-block-widget': modelElement.getAttribute('widget'),
                     'data-niche-block-id': modelElement.getAttribute('id') || null,
@@ -298,7 +336,7 @@ export default class NichePlugin extends Plugin {
             view: (modelElement, { writer: viewWriter }) => {
                 const widget = modelElement.getAttribute('widget');
                 const block = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
-                    id: modelElement.getAttribute('uuid'),
+                    id: modelElement.getAttribute('id'),
                     class: modelElement.getAttribute('class'),
                     'data-niche-block-widget': widget,
                     'data-niche-block-id': modelElement.getAttribute('id') || null,

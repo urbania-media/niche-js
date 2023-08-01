@@ -11,5 +11,6 @@ export default {
 export const Default = {
     args: {
         body: 'Hello',
+        size: 2,
     },
 };

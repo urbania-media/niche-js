@@ -117,10 +117,13 @@ function EditorArticle({ document, viewer, className, onChange }) {
     const scrollTo = useCallback((block) => {
         const { uuid: blockUUID = null } = block || {};
         if (blockUUID !== null) {
-            const element = window.document.getElementById(blockUUID) || null;
+            const element =
+                window.document.querySelector(`[data-niche-block-uuid="${blockUUID}"]`) || null;
             if (element !== null) {
                 element.scrollIntoView({ behavior: 'smooth' });
             }
+        }
+        if (blockUUID !== null) {
             const focused =
                 (components || []).find(({ uuid = null }) => uuid === blockUUID) || null;
             setFocusedBlock(focused);
@@ -129,7 +132,6 @@ function EditorArticle({ document, viewer, className, onChange }) {
 
     const renderBody = useCallback(
         (newDocument) =>
-            // console.log('newDocument', newDocument);
             renderToString(
                 <ComponentsProvider namespace={BLOCKS_NAMESPACE} components={blocks}>
                     <ViewerComponent document={newDocument} />
@@ -142,13 +144,13 @@ function EditorArticle({ document, viewer, className, onChange }) {
 
     useEffect(() => {
         const editor = nicheEditorRef.current;
+        console.log('Body could change', body, previousBody.current);
         if (editor !== null && previousBody.current !== body) {
             previousBody.current = body;
-
             const { selection: currentSelection = null } = editor.editing.view.document || {};
             const range = currentSelection.getFirstRange();
 
-            // console.log('Body changed yeesh', body);
+            console.log('Body has changed yeesh');
             editor.setData(body);
 
             setTimeout(() => {

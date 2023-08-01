@@ -36,7 +36,8 @@ function Outline({ components, className, onClick }) {
                 .map((it, i) => {
                     const { type = null, body = null, size } = it || {};
                     let label = <p className={styles.outlineLabel}>{type}</p>;
-                    const finalBody = body !== null ? body.replace(/<\/?[^>]+(>|$)/g, '') : null;
+                    const partialBody = body !== null ? body.replace(/<\/?[^>]+(>|$)/g, '') : null;
+                    const finalBody = partialBody === '&nbsp;' ? 'Empty' : partialBody;
 
                     if (type === 'text') {
                         label = (
