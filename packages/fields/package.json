@@ -1,6 +1,6 @@
 {
     "name": "@niche-js/fields",
-    "version": "0.0.24",
+    "version": "0.0.25",
     "private": false,
     "description": "",
     "keywords": [
@@ -61,7 +61,7 @@
     },
     "dependencies": {
         "@babel/runtime": "^7.12.5",
-        "@niche-js/core": "^0.0.24",
+        "@niche-js/core": "^0.0.25",
         "@panneau/fields": "^3.0.13",
         "prop-types": "^15.7.2"
     },
