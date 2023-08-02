@@ -36,10 +36,11 @@ function ViewerArticle({ document, className }) {
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>
             {(headers || []).map((heading) => {
-                const { id, title, subtitle } = heading || {};
+                const { id = null, uuid = null, title, subtitle } = heading || {};
                 return (
                     <div
-                        key="headers-1"
+                        className="header"
+                        key={`header-${id}-${uuid}`}
                         data-niche-id={id}
                         data-niche-uuid="myuuid"
                         data-niche-type="article"

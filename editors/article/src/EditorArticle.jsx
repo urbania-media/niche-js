@@ -37,13 +37,14 @@ const defaultProps = {
 };
 
 function findParentBlock(block) {
-    const nicheId = block.getAttribute ? block.getAttribute('data-niche-block-uuid') || null : null;
+    // Works for both kind of views
+    const nicheId = block.getAttribute
+        ? block.getAttribute('uuid') || block.getAttribute('data-niche-uuid')
+        : null;
     if (nicheId !== null) {
-        // console.log('target', nicheId);
         return nicheId;
     }
     if (block.parent) {
-        // console.log('parent', block.parent);
         return findParentBlock(block.parent);
     }
     return null;
@@ -92,22 +93,17 @@ function EditorArticle({ document, viewer, className, onChange }) {
 
     const onEditorFocus = useCallback(
         (event, editor) => {
-            setTimeout(() => {
-                const { selection: currentSelection = null } = editor.editing.view.document || {};
-                // const target = event.source.selection.getFirstPosition();
-                const range = currentSelection.getFirstRange();
-                const target = range.getCommonAncestor();
-
-                if (target !== null) {
-                    const blockUUID = findParentBlock(target);
-                    if (blockUUID !== null) {
-                        const focused =
-                            (components || []).find(({ uuid = null }) => uuid === blockUUID) ||
-                            null;
-                        setFocusedBlock(focused);
-                    }
+            const { selection: currentSelection = null } = editor.editing.model.document || {};
+            const range = currentSelection.getFirstRange() || null;
+            const target = range !== null ? range.getCommonAncestor() : null;
+            if (target !== null) {
+                const blockUUID = findParentBlock(target);
+                if (blockUUID !== null) {
+                    const focused =
+                        (components || []).find(({ uuid = null }) => uuid === blockUUID) || null;
+                    setFocusedBlock(focused);
                 }
-            }, 100);
+            }
         },
         [components, setFocusedBlock],
     );
@@ -118,7 +114,7 @@ function EditorArticle({ document, viewer, className, onChange }) {
         const { uuid: blockUUID = null } = block || {};
         if (blockUUID !== null) {
             const element =
-                window.document.querySelector(`[data-niche-block-uuid="${blockUUID}"]`) || null;
+                window.document.querySelector(`[data-niche-uuid="${blockUUID}"]`) || null;
             if (element !== null) {
                 element.scrollIntoView({ behavior: 'smooth' });
             }
@@ -147,11 +143,19 @@ function EditorArticle({ document, viewer, className, onChange }) {
         if (editor !== null && previousBody.current !== body) {
             previousBody.current = body;
             const { selection: currentSelection = null } = editor.editing.model.document || {};
-            const range = currentSelection.getFirstRange().clone();
+            const range = currentSelection.getFirstRange();
             editor.setData(body);
+
             editor.model.change((writer) => {
-                editor.editing.view.focus();
-                writer.setSelection(range);
+                try {
+                    console.log('focus state', editor.editing.view.document.isFocused);
+                    if (!editor.editing.view.document.isFocused) {
+                        // editor.editing.view.focus();
+                    }
+                    writer.setSelection(range);
+                } catch (e) {
+                    console.log('failed to focus on range', range);
+                }
             });
         }
     }, [body, onChange]);
@@ -170,9 +174,15 @@ function EditorArticle({ document, viewer, className, onChange }) {
                         onEditorChange(event, editor);
                     });
 
-                    viewDocument.on('focus', (event) => {
-                        onEditorFocus(event, editor);
-                    });
+                    // viewDocument.on('focus', (event) =>
+                    //     // console.log('actual focus');
+                    //     onEditorFocus(event, editor),
+                    // );
+
+                    viewDocument.on('click', (event) =>
+                        // console.log('actual focus click');
+                        onEditorFocus(event, editor),
+                    );
 
                     viewDocument.on('blur', (event) => {
                         onEditorBlur(event, editor);
