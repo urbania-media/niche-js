@@ -68,7 +68,7 @@ function EditorArticle({ document, viewer, className, onChange }) {
             if (data && onChange !== null) {
                 const { components: newComponents = null } = data || {};
                 const nextValue = { ...document, components: newComponents };
-                console.log('onChange', nextValue);
+                // console.log('onChange', nextValue);
                 onChange(nextValue);
             }
         },
@@ -148,7 +148,7 @@ function EditorArticle({ document, viewer, className, onChange }) {
 
             editor.model.change((writer) => {
                 try {
-                    console.log('focus state', editor.editing.view.document.isFocused);
+                    // console.log('focus state', editor.editing.view.document.isFocused);
                     if (!editor.editing.view.document.isFocused) {
                         // editor.editing.view.focus();
                     }

@@ -126,6 +126,7 @@ export default class NicheDataProcessor {
                 null;
 
             if (editableKey !== null) {
+                console.log('lol', editableKey, this.getInnerHTML(subChild));
                 return {
                     ...acc,
                     [editableKey]: this.getInnerHTML(subChild),

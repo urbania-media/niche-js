@@ -36,6 +36,19 @@ export default class NichePlugin extends Plugin {
             }
         });
 
+        this.editor.commands.get('delete').on('execute', () => {
+            const block =
+                this.editor.model.document.selection.getSelectedBlocks().next().value || null;
+
+            if (block !== null) {
+                console.log('delete block', block);
+                // this.editor.model.change((writer) => {
+                //     writer.removeAttribute('id', block);
+                //     writer.setAttribute('uuid', uuidV4(), block);
+                // });
+            }
+        });
+
         const { schema } = this.editor.model;
         const { conversion } = this.editor;
 
@@ -49,6 +62,7 @@ export default class NichePlugin extends Plugin {
         schema.register('nicheHeader', {
             inheritAllFrom: '$container',
             isLimit: true,
+            isObject: true,
             allowChildren: ['$inlineObject', '$blockObject'],
             allowAttributes: ['tag', 'class', 'id', 'type', 'role', 'widget'],
         });
@@ -300,8 +314,7 @@ export default class NichePlugin extends Plugin {
                 const headerContainer = viewElement;
                 const header = headerContainer.getChild(0);
                 const widget = header.getAttribute('data-niche-widget') || null;
-                console.log('hello friend!', headerContainer, header);
-
+                // console.log('hello friend!', headerContainer, header);
                 return modelWriter.createElement('nicheHeader', {
                     tag: headerContainer.name,
                     class: header.getAttribute('class'),

@@ -48,8 +48,14 @@ function ViewerArticle({ document, className }) {
                         data-niche-widget
                     >
                         <div className="my-article-header">
-                            <div data-niche-editable-inline="title">{title}</div>
-                            <div data-niche-editable-inline="subtitle">{subtitle}</div>
+                            <div
+                                data-niche-editable-inline="title"
+                                dangerouslySetInnerHTML={{ __html: title }}
+                            />
+                            <div
+                                data-niche-editable-inline="subtitle"
+                                dangerouslySetInnerHTML={{ __html: subtitle }}
+                            />
                         </div>
                     </div>
                 );
