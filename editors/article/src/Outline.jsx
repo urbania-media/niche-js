@@ -20,11 +20,11 @@ function Outline({ components, className, onClick }) {
     return (
         <div className={classNames([styles.outline, { [className]: className !== null }])}>
             {(components || [])
-                .filter(({ role = null }) => role === 'heading')
+                .filter(({ role = null }) => role === 'header')
                 .map((it, i) => {
                     const { type = null } = it || {};
                     return (
-                        <p className={styles.outlineLabel}>
+                        <p key={`header-${i + 1}-${it.type}`} className={styles.outlineLabel}>
                             <span className={styles.pre}>Head</span>
                             {type}
                         </p>

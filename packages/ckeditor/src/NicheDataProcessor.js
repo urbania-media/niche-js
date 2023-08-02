@@ -22,9 +22,8 @@ export default class NicheDataProcessor {
     // }
 
     toView(data = null) {
-        const finalData = data;
         // console.log('to view', data);
-        return this.htmlDataProcessor.toView(finalData);
+        return this.htmlDataProcessor.toView(data);
     }
 
     toData(viewFragment = null) {

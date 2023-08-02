@@ -21,7 +21,7 @@ function Image({ media, className }) {
     return (
         <div
             className={classNames([styles.container, { [className]: className !== null }])}
-            data-niche-block-widget
+            data-niche-widget
         >
             {url !== null ? (
                 <img

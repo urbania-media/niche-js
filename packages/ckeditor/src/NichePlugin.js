@@ -2,9 +2,6 @@ import { Plugin } from '@ckeditor/ckeditor5-core';
 import { Widget, toWidget, toWidgetEditable } from '@ckeditor/ckeditor5-widget';
 import { v4 as uuidV4 } from 'uuid';
 
-// import EnterCommand from './EnterCommand';
-// import InsertParagraphCommand from './InsertParagraphCommand';
-
 /* eslint-disable no-underscore-dangle */
 export default class NichePlugin extends Plugin {
     static get requires() {
@@ -16,7 +13,7 @@ export default class NichePlugin extends Plugin {
         this.plugins = plugins.map((CustomPlugin) => new CustomPlugin(this.editor));
         this.plugins.forEach((plugin) => plugin.init());
 
-        // The new stuff commands
+        // The commands
         this.editor.commands.get('enter').on('afterExecute', () => {
             const block =
                 this.editor.model.document.selection.getSelectedBlocks().next().value || null;
@@ -56,7 +53,7 @@ export default class NichePlugin extends Plugin {
             allowAttributes: ['tag', 'class', 'id', 'type', 'role', 'widget'],
         });
 
-        // Fields
+        // Editable fields
         schema.register('nicheEditableInline', {
             allowIn: ['nicheBlock', 'nicheHeader'],
             allowContentOf: '$block',
@@ -78,6 +75,7 @@ export default class NichePlugin extends Plugin {
         });
 
         // Inline blocks
+
         // The paragraph problem
         conversion.for('upcast').elementToElement({
             model: (viewElement, { writer: modelWriter }) => {
@@ -241,7 +239,7 @@ export default class NichePlugin extends Plugin {
             model: (viewElement, { writer: modelWriter }) => {
                 const blockContainer = viewElement;
                 const block = blockContainer.getChild(0);
-                const widget = block.getAttribute('data-niche-block-widget') || null;
+                const widget = block.getAttribute('data-niche-widget') || null;
                 return modelWriter.createElement('nicheBlock', {
                     tag: block.name,
                     class: block.getAttribute('class'),
@@ -254,7 +252,6 @@ export default class NichePlugin extends Plugin {
             },
             view: {
                 attributes: {
-                    // 'data-niche-block-widget': 'true',
                     'data-niche-role': 'block',
                     'data-niche-type': /.*/,
                     'data-niche-block-inline': 'false',
@@ -268,7 +265,7 @@ export default class NichePlugin extends Plugin {
                 const block = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
                     id: modelElement.getAttribute('id'),
                     class: modelElement.getAttribute('class'),
-                    'data-niche-block-widget': modelElement.getAttribute('widget'),
+                    'data-niche-widget': modelElement.getAttribute('widget'),
                     'data-niche-id': modelElement.getAttribute('id') || null,
                     'data-niche-uuid': modelElement.getAttribute('uuid'),
                     'data-niche-type': modelElement.getAttribute('type'),
@@ -285,7 +282,7 @@ export default class NichePlugin extends Plugin {
                 const block = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
                     id: modelElement.getAttribute('id'),
                     class: modelElement.getAttribute('class'),
-                    'data-niche-block-widget': widget,
+                    'data-niche-widget': widget,
                     'data-niche-id': modelElement.getAttribute('id') || null,
                     'data-niche-uuid': modelElement.getAttribute('uuid'),
                     'data-niche-type': modelElement.getAttribute('type'),
@@ -298,64 +295,63 @@ export default class NichePlugin extends Plugin {
         /**
          * Niche Headers
          */
-        // conversion.for('upcast').elementToElement({
-        //     model: (viewElement, { writer: modelWriter }) => {
-        //         const headerContainer = viewElement;
-        //         const header = headerContainer.getChild(0);
-        //         const widget = header.getAttribute('data-niche-header-widget') || null;
-        //         console.log('hello!', headerContainer, header);
+        conversion.for('upcast').elementToElement({
+            model: (viewElement, { writer: modelWriter }) => {
+                const headerContainer = viewElement;
+                const header = headerContainer.getChild(0);
+                const widget = header.getAttribute('data-niche-widget') || null;
+                console.log('hello friend!', headerContainer, header);
 
-        //         return modelWriter.createElement('nicheHeader', {
-        //             tag: headerContainer.name,
-        //             class: header.getAttribute('class'),
-        //             widget: widget !== null,
-        //             id: headerContainer.getAttribute('data-niche-header-id') || null,
-        //             uuid: headerContainer.getAttribute('data-niche-header-uuid'),
-        //             type: headerContainer.getAttribute('data-niche-header-type'),
-        //             role: 'header',
-        //         });
-        //     },
-        //     view: {
-        //         attributes: {
-        //             // 'data-niche-header-widget': 'true',
-        //             // 'data-niche-header-type': /.*/,
-        //             'data-niche-role': 'header',
-        //         },
-        //     },
-        // });
+                return modelWriter.createElement('nicheHeader', {
+                    tag: headerContainer.name,
+                    class: header.getAttribute('class'),
+                    widget: widget !== null,
+                    id: headerContainer.getAttribute('data-niche-id') || null,
+                    uuid: headerContainer.getAttribute('data-niche-uuid'),
+                    type: headerContainer.getAttribute('data-niche-type'),
+                    role: 'header',
+                });
+            },
+            view: {
+                attributes: {
+                    'data-niche-type': true,
+                    'data-niche-role': 'header',
+                },
+            },
+        });
 
-        // conversion.for('dataDowncast').elementToElement({
-        //     model: 'nicheHeader',
-        //     view: (modelElement, { writer: viewWriter }) => {
-        //         const header = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
-        //             id: modelElement.getAttribute('id'),
-        //             class: modelElement.getAttribute('class'),
-        //             'data-niche-header-widget': modelElement.getAttribute('widget'),
-        //             'data-niche-header-id': modelElement.getAttribute('id') || null,
-        //             'data-niche-header-uuid': modelElement.getAttribute('uuid'),
-        //             'data-niche-header-type': modelElement.getAttribute('type'),
-        //             'data-niche-role': modelElement.getAttribute('role'),
-        //         });
-        //         return header;
-        //     },
-        // });
+        conversion.for('dataDowncast').elementToElement({
+            model: 'nicheHeader',
+            view: (modelElement, { writer: viewWriter }) => {
+                const header = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
+                    id: modelElement.getAttribute('id'),
+                    class: modelElement.getAttribute('class'),
+                    'data-niche-widget': modelElement.getAttribute('widget'),
+                    'data-niche-id': modelElement.getAttribute('id') || null,
+                    'data-niche-uuid': modelElement.getAttribute('uuid'),
+                    'data-niche-type': modelElement.getAttribute('type'),
+                    'data-niche-role': modelElement.getAttribute('role'),
+                });
+                return header;
+            },
+        });
 
-        // conversion.for('editingDowncast').elementToElement({
-        //     model: 'nicheHeader',
-        //     view: (modelElement, { writer: viewWriter }) => {
-        //         const widget = modelElement.getAttribute('widget');
-        //         const header = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
-        //             id: modelElement.getAttribute('id'),
-        //             class: modelElement.getAttribute('class'),
-        //             'data-niche-header-widget': widget,
-        //             'data-niche-header-id': modelElement.getAttribute('id') || null,
-        //             'data-niche-header-uuid': modelElement.getAttribute('uuid'),
-        //             'data-niche-header-type': modelElement.getAttribute('type'),
-        //             'data-niche-role': modelElement.getAttribute('role'),
-        //         });
-        //         return widget ? toWidget(header, viewWriter) : header;
-        //     },
-        // });
+        conversion.for('editingDowncast').elementToElement({
+            model: 'nicheHeader',
+            view: (modelElement, { writer: viewWriter }) => {
+                const widget = modelElement.getAttribute('widget');
+                const header = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
+                    id: modelElement.getAttribute('id'),
+                    class: modelElement.getAttribute('class'),
+                    'data-niche-widget': widget,
+                    'data-niche-id': modelElement.getAttribute('id') || null,
+                    'data-niche-uuid': modelElement.getAttribute('uuid'),
+                    'data-niche-type': modelElement.getAttribute('type'),
+                    'data-niche-role': modelElement.getAttribute('role'),
+                });
+                return widget ? toWidget(header, viewWriter) : header;
+            },
+        });
 
         /**
          * Niche inline editable tags

@@ -4,6 +4,13 @@
     "components": [
         {
             "id": 1,
+            "role": "header",
+            "type": "article",
+            "title": "Trash humpers: the legacy",
+            "subtitle": "Life is hard when yr a trash humper."
+        },
+        {
+            "id": 1,
             "role": "block",
             "type": "heading",
             "body": "Trash humpers 2: the prequel",

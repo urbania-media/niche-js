@@ -26,7 +26,7 @@ function Embed({ embed, className }) {
     return (
         <div
             className={classNames([styles.container, { [className]: className !== null }])}
-            data-niche-block-widget
+            data-niche-widget
         >
             Embed block
             {iframeUrl !== null ? (

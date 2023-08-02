@@ -29,8 +29,8 @@ const defaultProps = {
 function ViewerArticle({ document, className }) {
     const { components = null } = document || {};
     const blocksManager = useBlocksComponentsManager();
-    const headers = [];
-    // const headers = (components || []).filter(({ role = null }) => role === 'header');
+
+    const headers = (components || []).filter(({ role = null }) => role === 'header');
     const blocks = (components || []).filter(({ role = null }) => role === 'block');
 
     return (
@@ -46,13 +46,9 @@ function ViewerArticle({ document, className }) {
                         data-niche-role="header"
                         data-niche-widget
                     >
-                        <div className="my-header">
-                            <div data-niche-editable-inline="title">
-                                <h2>{title}</h2>
-                            </div>
-                            <div data-niche-editable-inline="subtitle">
-                                <p>{subtitle}</p>
-                            </div>
+                        <div className="my-article-header">
+                            <div data-niche-editable-inline="title">{title}</div>
+                            <div data-niche-editable-inline="subtitle">{subtitle}</div>
                         </div>
                     </div>
                 );
