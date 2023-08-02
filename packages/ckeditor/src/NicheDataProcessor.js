@@ -1,6 +1,4 @@
 import { HtmlDataProcessor } from 'ckeditor5/src/engine';
-// import isObject from 'lodash/isObject';
-// import isString from 'lodash/isString';
 import { v4 as uuidV4 } from 'uuid';
 
 export default class NicheDataProcessor {
@@ -12,7 +10,7 @@ export default class NicheDataProcessor {
 
     /**
      * Keeps the specified element in the output as HTML. This is useful if the editor contains
-     * features producing HTML that is not a part of the Markdown standard.
+     * features producing HTML that is not a part of the standard.
      *
      * By default, all HTML tags are removed.
      *
@@ -35,32 +33,21 @@ export default class NicheDataProcessor {
         const components = [...new Array(viewFragment.childCount).keys()]
             .map((index) => {
                 const child = viewFragment.getChild(index);
-                const id =
-                    child.getAttribute('data-niche-block-id') ||
-                    child.getAttribute('data-niche-header-id') ||
-                    null;
-                const uuid =
-                    child.getAttribute('data-niche-block-uuid') ||
-                    child.getAttribute('data-niche-header-uuid') ||
-                    uuidV4();
-                const type =
-                    child.getAttribute('data-niche-block-type') ||
-                    child.getAttribute('data-niche-header-type') ||
-                    null;
+                const id = child.getAttribute('data-niche-id') || null;
+                const uuid = child.getAttribute('data-niche-uuid') || uuidV4();
+                const type = child.getAttribute('data-niche-type') || null;
                 const role = child.getAttribute('data-niche-role') || null;
 
                 const body = this.getInnerHTML(child) || '';
                 const headingNameMatch = child.name.match(/^h([1-6])/);
+                const hasHeadingMatch = headingNameMatch !== null && headingNameMatch.length > 1;
 
-                if (
-                    type === 'heading' ||
-                    (headingNameMatch !== null && headingNameMatch.length > 0)
-                ) {
+                // General cases for new paragraphs/headings
+                if (type === 'heading' || hasHeadingMatch) {
                     const size =
                         headingNameMatch !== null && headingNameMatch.length > 1
                             ? parseInt(headingNameMatch[1], 10)
                             : null;
-
                     return {
                         id,
                         uuid,
@@ -68,7 +55,6 @@ export default class NicheDataProcessor {
                         role: 'block',
                         size,
                         body,
-                        // `<h${size || 1}>${body}<h${size || 1}>`,
                     };
                 }
 
@@ -82,6 +68,7 @@ export default class NicheDataProcessor {
                     };
                 }
 
+                // Default case
                 if (type !== null && role !== null) {
                     return {
                         id,
@@ -109,6 +96,7 @@ export default class NicheDataProcessor {
         if (!child.childCount) {
             return null;
         }
+
         return [...new Array(child.childCount).keys()].reduce((acc, index) => {
             const subChild = child.getChild(index) || {};
             if (!subChild.getAttribute) {
@@ -124,7 +112,7 @@ export default class NicheDataProcessor {
                 };
             }
 
-            // TODO: Figure out a better rule
+            // TODO: Figure out a better rule for sub children
             if (subChild.name === 'figure') {
                 const attributes = this.getFieldsFromChild(subChild);
                 return {

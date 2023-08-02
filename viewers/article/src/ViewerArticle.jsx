@@ -40,11 +40,11 @@ function ViewerArticle({ document, className }) {
                 return (
                     <div
                         key="headers-1"
-                        data-niche-header-id={id}
-                        data-niche-header-uuid="myuuid"
-                        data-niche-header-type="article"
+                        data-niche-id={id}
+                        data-niche-uuid="myuuid"
+                        data-niche-type="article"
                         data-niche-role="header"
-                        data-niche-block-widget
+                        data-niche-widget
                     >
                         <div className="my-header">
                             <div data-niche-editable-inline="title">
@@ -63,9 +63,9 @@ function ViewerArticle({ document, className }) {
                 return (
                     <div
                         key={`block-${type}-${uuid}`}
-                        data-niche-block-id={id}
-                        data-niche-block-uuid={uuid}
-                        data-niche-block-type={type}
+                        data-niche-id={id}
+                        data-niche-uuid={uuid}
+                        data-niche-type={type}
                         data-niche-role="block"
                         data-niche-block-inline={type === 'text' || type === 'heading'}
                     >

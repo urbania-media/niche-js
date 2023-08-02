@@ -42,68 +42,50 @@ export default class NichePlugin extends Plugin {
         const { schema } = this.editor.model;
         const { conversion } = this.editor;
 
-        schema.register('nicheBlockInline', {
-            inheritAllFrom: '$container',
-            // allowIn: '$root',
-            // allowContentOf: '$container',
-            // isLimit: false,
-            // isObject: true,
-            isInline: true,
-            isObject: true,
-            isContent: false,
-            allowChildren: [],
-            allowAttributes: ['tag', 'class', 'id', 'type', 'inline'],
-        });
-
+        // The main elements
         schema.register('nicheBlock', {
             inheritAllFrom: '$container',
-            // allowIn: 'root',
-            // allowContentOf: '$container',
-            // isLimit: false,
-            // isObject: true,
             allowChildren: ['$inlineObject', '$blockObject'],
-            allowAttributes: ['tag', 'class', 'id', 'type', 'widget'],
+            allowAttributes: ['tag', 'class', 'id', 'type', 'role', 'widget'],
         });
 
         schema.register('nicheHeader', {
             inheritAllFrom: '$container',
-            allowIn: 'root',
-            // allowContentOf: '$container',
             isLimit: true,
-            // isObject: true,
             allowChildren: ['$inlineObject', '$blockObject'],
-            allowAttributes: ['tag', 'class', 'id', 'type', 'widget'],
+            allowAttributes: ['tag', 'class', 'id', 'type', 'role', 'widget'],
         });
 
+        // Fields
         schema.register('nicheEditableInline', {
-            allowIn: 'nicheBlock',
+            allowIn: ['nicheBlock', 'nicheHeader'],
             allowContentOf: '$block',
             isLimit: true,
             allowAttributes: ['tag', 'class', 'key'],
         });
 
         schema.register('nicheEditable', {
-            allowIn: 'nicheBlock',
+            allowIn: ['nicheBlock', 'nicheHeader'],
             allowContentOf: '$root',
             isLimit: true,
             allowAttributes: ['tag', 'class', 'key'],
         });
 
-        // TODO: Extend these?
+        // Extend these?
         // schema.extend('paragraph', {});
         schema.extend('imageBlock', {
             allowAttributes: ['alt', 'src', 'srcset', 'data-image'],
         });
-        // schema.extend('paragraph', {});
 
+        // Inline blocks
         // The paragraph problem
         conversion.for('upcast').elementToElement({
             model: (viewElement, { writer: modelWriter }) => {
                 const id = viewElement?.parent?.parent
-                    ? viewElement.parent.parent.getAttribute('data-niche-block-id') || null
+                    ? viewElement.parent.parent.getAttribute('data-niche-id') || null
                     : null;
                 const uuid = viewElement?.parent?.parent
-                    ? viewElement.parent.parent.getAttribute('data-niche-block-uuid') || null
+                    ? viewElement.parent.parent.getAttribute('data-niche-uuid') || null
                     : null;
                 return modelWriter.createElement('paragraph', {
                     tag: viewElement.name,
@@ -121,7 +103,7 @@ export default class NichePlugin extends Plugin {
                     if (
                         blockParent !== null &&
                         blockParent.getAttribute('data-niche-role') === 'block' &&
-                        blockParent.getAttribute('data-niche-block-type') === 'text'
+                        blockParent.getAttribute('data-niche-type') === 'text'
                     ) {
                         return { name: true };
                     }
@@ -131,6 +113,7 @@ export default class NichePlugin extends Plugin {
             converterPriority: 'high',
         });
 
+        // The heading problem
         conversion.for('upcast').elementToElement({
             model: (viewElement, { writer: modelWriter }) => {
                 // NOTE: Headings are truly fucked in ckeditor
@@ -150,10 +133,10 @@ export default class NichePlugin extends Plugin {
                         break;
                 }
                 const id = viewElement?.parent?.parent
-                    ? viewElement.parent.parent.getAttribute('data-niche-block-id') || null
+                    ? viewElement.parent.parent.getAttribute('data-niche-id') || null
                     : null;
                 const uuid = viewElement?.parent?.parent
-                    ? viewElement.parent.parent.getAttribute('data-niche-block-uuid') || null
+                    ? viewElement.parent.parent.getAttribute('data-niche-uuid') || null
                     : null;
                 return modelWriter.createElement(heading, {
                     tag: viewElement.name,
@@ -172,7 +155,7 @@ export default class NichePlugin extends Plugin {
                     if (
                         blockParent !== null &&
                         blockParent.getAttribute('data-niche-role') === 'block' &&
-                        blockParent.getAttribute('data-niche-block-type') === 'heading'
+                        blockParent.getAttribute('data-niche-type') === 'heading'
                     ) {
                         return { name: true };
                     }
@@ -210,7 +193,7 @@ export default class NichePlugin extends Plugin {
                 values: 'block',
             },
             view: {
-                key: 'data-niche-block-role',
+                key: 'data-niche-role',
             },
         });
 
@@ -219,7 +202,7 @@ export default class NichePlugin extends Plugin {
                 key: 'type',
             },
             view: {
-                key: 'data-niche-block-type',
+                key: 'data-niche-type',
             },
         });
 
@@ -228,7 +211,7 @@ export default class NichePlugin extends Plugin {
                 key: 'uuid',
             },
             view: {
-                key: 'data-niche-block-uuid',
+                key: 'data-niche-uuid',
             },
         });
 
@@ -237,7 +220,7 @@ export default class NichePlugin extends Plugin {
                 key: 'id',
             },
             view: {
-                key: 'data-niche-block-id',
+                key: 'data-niche-id',
             },
         });
 
@@ -252,62 +235,6 @@ export default class NichePlugin extends Plugin {
         });
 
         /**
-         * Niche inline blocks
-         */
-        // conversion.for('upcast').elementToElement({
-        //     model: (viewElement, { writer: modelWriter }) => {
-        //         const blockContainer = viewElement;
-        //         const block = blockContainer.getChild(0);
-        //         return modelWriter.createElement('nicheBlockInline', {
-        //             tag: block.name,
-        //             class: block.getAttribute('class'),
-        //             id: blockContainer.getAttribute('data-niche-block-id') || null,
-        //             uuid: blockContainer.getAttribute('data-niche-block-uuid'),
-        //             type: blockContainer.getAttribute('data-niche-block-type'),
-        //             inline: 'true',
-        //             role: 'block',
-        //         });
-        //     },
-        //     view: {
-        //         attributes: {
-        //             'data-niche-block-inline': 'true',
-        //         },
-        //     },
-        // });
-
-        // conversion.for('dataDowncast').elementToElement({
-        //     model: 'nicheBlockInline',
-        //     view: (modelElement, { writer: viewWriter }) => {
-        //         const block = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
-        //             id: modelElement.getAttribute('uuid'),
-        //             class: modelElement.getAttribute('class'),
-        //             'data-niche-block-id': modelElement.getAttribute('id') || null,
-        //             'data-niche-block-uuid': modelElement.getAttribute('uuid'),
-        //             'data-niche-block-type': modelElement.getAttribute('type'),
-        //             'data-niche-block-inline': 'true',
-        //             'data-niche-role': modelElement.getAttribute('role'),
-        //         });
-        //         return block;
-        //     },
-        // });
-
-        // conversion.for('editingDowncast').elementToElement({
-        //     model: 'nicheBlockInline',
-        //     view: (modelElement, { writer: viewWriter }) => {
-        //         const block = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
-        //             id: modelElement.getAttribute('uuid'),
-        //             class: modelElement.getAttribute('class'),
-        //             'data-niche-block-id': modelElement.getAttribute('id') || null,
-        //             'data-niche-block-uuid': modelElement.getAttribute('uuid'),
-        //             'data-niche-block-type': modelElement.getAttribute('type'),
-        //             'data-niche-role': modelElement.getAttribute('role'),
-        //             'data-niche-block-inline': 'true',
-        //         });
-        //         return block;
-        //     },
-        // });
-
-        /**
          * Niche blocks
          */
         conversion.for('upcast').elementToElement({
@@ -319,16 +246,17 @@ export default class NichePlugin extends Plugin {
                     tag: block.name,
                     class: block.getAttribute('class'),
                     widget: widget !== null,
-                    id: blockContainer.getAttribute('data-niche-block-id') || null,
-                    uuid: blockContainer.getAttribute('data-niche-block-uuid'),
-                    type: blockContainer.getAttribute('data-niche-block-type'),
+                    id: blockContainer.getAttribute('data-niche-id') || null,
+                    uuid: blockContainer.getAttribute('data-niche-uuid'),
+                    type: blockContainer.getAttribute('data-niche-type'),
                     role: 'block',
                 });
             },
             view: {
                 attributes: {
                     // 'data-niche-block-widget': 'true',
-                    'data-niche-block-type': /.*/,
+                    'data-niche-role': 'block',
+                    'data-niche-type': /.*/,
                     'data-niche-block-inline': 'false',
                 },
             },
@@ -341,9 +269,9 @@ export default class NichePlugin extends Plugin {
                     id: modelElement.getAttribute('id'),
                     class: modelElement.getAttribute('class'),
                     'data-niche-block-widget': modelElement.getAttribute('widget'),
-                    'data-niche-block-id': modelElement.getAttribute('id') || null,
-                    'data-niche-block-uuid': modelElement.getAttribute('uuid'),
-                    'data-niche-block-type': modelElement.getAttribute('type'),
+                    'data-niche-id': modelElement.getAttribute('id') || null,
+                    'data-niche-uuid': modelElement.getAttribute('uuid'),
+                    'data-niche-type': modelElement.getAttribute('type'),
                     'data-niche-role': modelElement.getAttribute('role'),
                 });
                 return block;
@@ -358,9 +286,9 @@ export default class NichePlugin extends Plugin {
                     id: modelElement.getAttribute('id'),
                     class: modelElement.getAttribute('class'),
                     'data-niche-block-widget': widget,
-                    'data-niche-block-id': modelElement.getAttribute('id') || null,
-                    'data-niche-block-uuid': modelElement.getAttribute('uuid'),
-                    'data-niche-block-type': modelElement.getAttribute('type'),
+                    'data-niche-id': modelElement.getAttribute('id') || null,
+                    'data-niche-uuid': modelElement.getAttribute('uuid'),
+                    'data-niche-type': modelElement.getAttribute('type'),
                     'data-niche-role': modelElement.getAttribute('role'),
                 });
                 return widget ? toWidget(block, viewWriter) : block;
@@ -509,7 +437,7 @@ export default class NichePlugin extends Plugin {
     }
 
     findBlockNode(node) {
-        const type = node.getAttribute('data-niche-block-type') || null;
+        const type = node.getAttribute('data-niche-type') || null;
         if (type !== null) {
             return node;
         }
