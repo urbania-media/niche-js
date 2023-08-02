@@ -144,21 +144,15 @@ function EditorArticle({ document, viewer, className, onChange }) {
 
     useEffect(() => {
         const editor = nicheEditorRef.current;
-        console.log('Body could change', body, previousBody.current);
         if (editor !== null && previousBody.current !== body) {
             previousBody.current = body;
-            const { selection: currentSelection = null } = editor.editing.view.document || {};
-            const range = currentSelection.getFirstRange();
-
-            console.log('Body has changed yeesh');
+            const { selection: currentSelection = null } = editor.editing.model.document || {};
+            const range = currentSelection.getFirstRange().clone();
             editor.setData(body);
-
-            setTimeout(() => {
-                editor.model.change((writer) => {
-                    console.log('my range', range);
-                    writer.setSelection(range);
-                });
-            }, 1000);
+            editor.model.change((writer) => {
+                editor.editing.view.focus();
+                writer.setSelection(range);
+            });
         }
     }, [body, onChange]);
 

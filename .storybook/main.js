@@ -96,12 +96,11 @@ module.exports = {
                             },
                         ],
                     },
-                    ...config.module.rules
+                    ...config.module.rules,
                 ],
             },
         ];
-
-        console.log(config.resolve.alias);
+        // console.log(config.resolve.alias);
         return config;
     },
 };

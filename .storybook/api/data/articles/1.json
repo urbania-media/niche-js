@@ -6,11 +6,11 @@
             "id": 1,
             "role": "block",
             "type": "heading",
-            "body": "Trash humpers -1: the prequel",
-            "size": 1
+            "body": "Trash humpers 2: the prequel",
+            "size": 2
         },
         {
-            "id": 2,
+            "id": 666,
             "role": "block",
             "type": "heading",
             "body": "Trash humpers 3: the sequel",

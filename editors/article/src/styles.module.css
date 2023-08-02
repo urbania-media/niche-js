@@ -63,6 +63,14 @@
             max-width: 320px;
         }
     }
+
+    &.urbania {
+        --theme-text-color: #FC0;
+    }
+
+    &.quatre95 {
+        --theme-text-color: #00F;
+    }
 }
 
 .sizeButton {

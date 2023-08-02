@@ -32,15 +32,26 @@ export default class NicheDataProcessor {
     toData(viewFragment = null) {
         console.log('to data', viewFragment.childCount, viewFragment);
 
-        const blocks = [...new Array(viewFragment.childCount).keys()]
+        const components = [...new Array(viewFragment.childCount).keys()]
             .map((index) => {
                 const child = viewFragment.getChild(index);
-                const id = child.getAttribute('data-niche-block-id') || null;
-                const uuid = child.getAttribute('data-niche-block-uuid') || uuidV4();
-                const type = child.getAttribute('data-niche-block-type') || null;
+                const id =
+                    child.getAttribute('data-niche-block-id') ||
+                    child.getAttribute('data-niche-header-id') ||
+                    null;
+                const uuid =
+                    child.getAttribute('data-niche-block-uuid') ||
+                    child.getAttribute('data-niche-header-uuid') ||
+                    uuidV4();
+                const type =
+                    child.getAttribute('data-niche-block-type') ||
+                    child.getAttribute('data-niche-header-type') ||
+                    null;
+                const role = child.getAttribute('data-niche-role') || null;
 
                 const body = this.getInnerHTML(child) || '';
-                const headingNameMatch = child.name.match(/^h([0-9])/);
+                const headingNameMatch = child.name.match(/^h([1-6])/);
+
                 if (
                     type === 'heading' ||
                     (headingNameMatch !== null && headingNameMatch.length > 0)
@@ -49,13 +60,15 @@ export default class NicheDataProcessor {
                         headingNameMatch !== null && headingNameMatch.length > 1
                             ? parseInt(headingNameMatch[1], 10)
                             : null;
+
                     return {
                         id,
                         uuid,
                         type: 'heading',
                         role: 'block',
                         size,
-                        body, // `<h${size || 1}>${body}<h${size || 1}>`,
+                        body,
+                        // `<h${size || 1}>${body}<h${size || 1}>`,
                     };
                 }
 
@@ -69,33 +82,38 @@ export default class NicheDataProcessor {
                     };
                 }
 
-                if (type !== null) {
+                if (type !== null && role !== null) {
                     return {
                         id,
                         uuid,
                         type,
-                        role: 'block',
+                        role,
                         ...this.getFieldsFromChild(child),
                     };
                 }
 
-                console.log('BLOCK NOT FOUND', child);
+                console.log('COMP NOT FOUND', child);
 
                 return null;
             })
             .filter((block) => block !== null);
 
-        console.log(blocks);
+        console.log('all components', components);
 
         return {
-            components: blocks,
+            components,
         };
     }
 
     getFieldsFromChild(child) {
+        if (!child.childCount) {
+            return null;
+        }
         return [...new Array(child.childCount).keys()].reduce((acc, index) => {
             const subChild = child.getChild(index) || {};
-            const { name = null } = subChild;
+            if (!subChild.getAttribute) {
+                return acc;
+            }
 
             if (subChild.name === 'img') {
                 return {
@@ -106,7 +124,8 @@ export default class NicheDataProcessor {
                 };
             }
 
-            if (name === 'figure') {
+            // TODO: Figure out a better rule
+            if (subChild.name === 'figure') {
                 const attributes = this.getFieldsFromChild(subChild);
                 return {
                     ...acc,

@@ -65,6 +65,16 @@ export default class NichePlugin extends Plugin {
             allowAttributes: ['tag', 'class', 'id', 'type', 'widget'],
         });
 
+        schema.register('nicheHeader', {
+            inheritAllFrom: '$container',
+            allowIn: 'root',
+            // allowContentOf: '$container',
+            isLimit: true,
+            // isObject: true,
+            allowChildren: ['$inlineObject', '$blockObject'],
+            allowAttributes: ['tag', 'class', 'id', 'type', 'widget'],
+        });
+
         schema.register('nicheEditableInline', {
             allowIn: 'nicheBlock',
             allowContentOf: '$block',
@@ -89,7 +99,6 @@ export default class NichePlugin extends Plugin {
         // The paragraph problem
         conversion.for('upcast').elementToElement({
             model: (viewElement, { writer: modelWriter }) => {
-                console.log('p', 'p upcast');
                 const id = viewElement?.parent?.parent
                     ? viewElement.parent.parent.getAttribute('data-niche-block-id') || null
                     : null;
@@ -106,9 +115,6 @@ export default class NichePlugin extends Plugin {
                     inline: 'true',
                 });
             },
-            // view: {
-            //     name: 'p',
-            // },
             view: (element) => {
                 if (element.name === 'p') {
                     const blockParent = element?.parent?.parent || null;
@@ -127,15 +133,29 @@ export default class NichePlugin extends Plugin {
 
         conversion.for('upcast').elementToElement({
             model: (viewElement, { writer: modelWriter }) => {
-                // console.log('heading upcast', viewElement.name, viewElement);
-                const large = viewElement.name === 'h1' || viewElement.name === 'h2';
+                // NOTE: Headings are truly fucked in ckeditor
+                //  h2 -> h1, h3 -> h2, etc.
+                let heading = 'heading1';
+                switch (viewElement.name) {
+                    case 'h2':
+                        heading = 'heading1';
+                        break;
+                    case 'h3':
+                        heading = 'heading2';
+                        break;
+                    case 'h4':
+                        heading = 'heading3';
+                        break;
+                    default:
+                        break;
+                }
                 const id = viewElement?.parent?.parent
                     ? viewElement.parent.parent.getAttribute('data-niche-block-id') || null
                     : null;
                 const uuid = viewElement?.parent?.parent
                     ? viewElement.parent.parent.getAttribute('data-niche-block-uuid') || null
                     : null;
-                return modelWriter.createElement(large ? 'heading1' : 'heading2', {
+                return modelWriter.createElement(heading, {
                     tag: viewElement.name,
                     id,
                     class: viewElement.parent.getAttribute('class') || null,
@@ -145,11 +165,9 @@ export default class NichePlugin extends Plugin {
                     inline: 'true',
                 });
             },
-            // view: {
-            //     name: /^h(1|2|3|4|5|6)/,
-            // },
             view: (element) => {
-                if (element.name.match(/^h[(1|2|3|4|5|6)]/) !== null) {
+                const match = element.name.match(/^h[(1|2|3|4|5|6)]/);
+                if (match !== null) {
                     const blockParent = element?.parent?.parent || null;
                     if (
                         blockParent !== null &&
@@ -187,48 +205,49 @@ export default class NichePlugin extends Plugin {
 
         // Base conversions
         conversion.for('downcast').attributeToAttribute({
+            model: {
+                key: 'role',
+                values: 'block',
+            },
             view: {
                 key: 'data-niche-block-role',
             },
-            model: {
-                key: 'role',
-            },
         });
 
         conversion.for('downcast').attributeToAttribute({
-            view: {
-                key: 'data-niche-block-type',
-            },
             model: {
                 key: 'type',
             },
+            view: {
+                key: 'data-niche-block-type',
+            },
         });
 
         conversion.for('downcast').attributeToAttribute({
-            view: {
-                key: 'data-niche-block-uuid',
-            },
             model: {
                 key: 'uuid',
             },
+            view: {
+                key: 'data-niche-block-uuid',
+            },
         });
 
         conversion.for('downcast').attributeToAttribute({
-            view: {
-                key: 'data-niche-block-id',
-            },
             model: {
                 key: 'id',
             },
+            view: {
+                key: 'data-niche-block-id',
+            },
         });
 
         conversion.for('downcast').attributeToAttribute({
+            model: {
+                key: 'inline',
+            },
             view: {
                 key: 'data-niche-block-inline',
                 value: 'true',
-            },
-            model: {
-                key: 'inline',
             },
         });
 
@@ -349,6 +368,68 @@ export default class NichePlugin extends Plugin {
         });
 
         /**
+         * Niche Headers
+         */
+        // conversion.for('upcast').elementToElement({
+        //     model: (viewElement, { writer: modelWriter }) => {
+        //         const headerContainer = viewElement;
+        //         const header = headerContainer.getChild(0);
+        //         const widget = header.getAttribute('data-niche-header-widget') || null;
+        //         console.log('hello!', headerContainer, header);
+
+        //         return modelWriter.createElement('nicheHeader', {
+        //             tag: headerContainer.name,
+        //             class: header.getAttribute('class'),
+        //             widget: widget !== null,
+        //             id: headerContainer.getAttribute('data-niche-header-id') || null,
+        //             uuid: headerContainer.getAttribute('data-niche-header-uuid'),
+        //             type: headerContainer.getAttribute('data-niche-header-type'),
+        //             role: 'header',
+        //         });
+        //     },
+        //     view: {
+        //         attributes: {
+        //             // 'data-niche-header-widget': 'true',
+        //             // 'data-niche-header-type': /.*/,
+        //             'data-niche-role': 'header',
+        //         },
+        //     },
+        // });
+
+        // conversion.for('dataDowncast').elementToElement({
+        //     model: 'nicheHeader',
+        //     view: (modelElement, { writer: viewWriter }) => {
+        //         const header = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
+        //             id: modelElement.getAttribute('id'),
+        //             class: modelElement.getAttribute('class'),
+        //             'data-niche-header-widget': modelElement.getAttribute('widget'),
+        //             'data-niche-header-id': modelElement.getAttribute('id') || null,
+        //             'data-niche-header-uuid': modelElement.getAttribute('uuid'),
+        //             'data-niche-header-type': modelElement.getAttribute('type'),
+        //             'data-niche-role': modelElement.getAttribute('role'),
+        //         });
+        //         return header;
+        //     },
+        // });
+
+        // conversion.for('editingDowncast').elementToElement({
+        //     model: 'nicheHeader',
+        //     view: (modelElement, { writer: viewWriter }) => {
+        //         const widget = modelElement.getAttribute('widget');
+        //         const header = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
+        //             id: modelElement.getAttribute('id'),
+        //             class: modelElement.getAttribute('class'),
+        //             'data-niche-header-widget': widget,
+        //             'data-niche-header-id': modelElement.getAttribute('id') || null,
+        //             'data-niche-header-uuid': modelElement.getAttribute('uuid'),
+        //             'data-niche-header-type': modelElement.getAttribute('type'),
+        //             'data-niche-role': modelElement.getAttribute('role'),
+        //         });
+        //         return widget ? toWidget(header, viewWriter) : header;
+        //     },
+        // });
+
+        /**
          * Niche inline editable tags
          */
         conversion.for('upcast').elementToElement({
@@ -360,7 +441,7 @@ export default class NichePlugin extends Plugin {
                 }),
             view: {
                 attributes: {
-                    'data-niche-editable-inline': /.*/,
+                    'data-niche-editable-inline': true,
                 },
             },
         });

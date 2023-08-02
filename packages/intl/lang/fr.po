@@ -15,4 +15,4 @@ msgstr ""
 #: 0aV7v8
 msgctxt "0aV7v8"
 msgid "Image label"
-msgstr ""
+msgstr "Étiquette d'image"

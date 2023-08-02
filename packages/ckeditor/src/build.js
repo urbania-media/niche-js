@@ -33,6 +33,7 @@ NicheEditor.builtinPlugins = [
     Italic,
     Heading,
     List,
+
     // Image,
     ImageBlock,
     ImageToolbar,
