@@ -12,12 +12,11 @@
 
 .left, .right {
     width: 20%;
-
-    /* height: 100%; */
     background-color: #ededed;
     overflow-y: scroll;
 }
 
+/* stylelint-disable-next-line selector-pseudo-class-no-unknown, selector-class-pattern */
 :global(.ck.ck-content) {
     position: relative;
     width: 100%;

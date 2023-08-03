@@ -16,11 +16,10 @@ const defaultProps = {
 function Article({ className }) {
     const title = 'Le REM et l’importance d’un début réussi';
     const subtitle = 'Une virée à Brossard entre deux pannes majeures.';
-
     return (
         <header className={classNames([styles.container, { [className]: className !== null }])}>
-            <div className={styles.title} dangerouslySetInnerHTML={{ __html: title }} />
-            <div className={styles.subtitle} dangerouslySetInnerHTML={{ __html: subtitle }} />
+            <div className={styles.title}>{title}</div>
+            <div className={styles.subtitle}>{subtitle}</div>
         </header>
     );
 }

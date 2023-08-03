@@ -17,10 +17,10 @@ const defaultProps = {
 };
 
 function Preview({ destinations, className, children }) {
-    // const [size, setSize] = useState('normal');
-    // const onClickSize = useCallback(() => {
-    //     setSize(size === 'normal' ? 'small' : 'normal');
-    // }, [size, setSize]);
+    const [size, setSize] = useState('normal');
+    const onClickSize = useCallback(() => {
+        setSize(size === 'normal' ? 'small' : 'normal');
+    }, [size, setSize]);
 
     // const [theme, setTheme] = useState('urbania');
     // const onClickTheme = useCallback(() => {
@@ -32,17 +32,14 @@ function Preview({ destinations, className, children }) {
             className={classNames([
                 styles.container,
                 {
-                    // [styles[`${size}`]]: size !== null,
+                    [styles[`${size}`]]: size !== null,
                     [className]: className !== null,
                 },
             ])}
         >
             <div className="mb-1">
-                <button type="button" className="btn btn-primary">
+                <button type="button" className="btn btn-primary" onClick={onClickSize}>
                     Change size
-                </button>
-                <button type="button" className="btn btn-secondary">
-                    Change theme
                 </button>
             </div>
             <div className={styles.editor}>{children}</div>
