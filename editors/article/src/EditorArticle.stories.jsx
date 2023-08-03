@@ -46,7 +46,7 @@ export const Empty = {
     render: () => {
         const [currentDocument, onChange] = useState();
         return (
-            <div style={{ width: 800, height: 600, margin: 'auto' }}>
+            <div style={{ width: 960, height: 600, margin: 'auto' }}>
                 <Article document={currentDocument} onChange={onChange} />
             </div>
         );
@@ -60,7 +60,7 @@ export const Simple = {
     render: ({ document = null }) => {
         const [currentDocument, onChange] = useState(getInitialDocument(document));
         return (
-            <div style={{ width: 800, height: 600, margin: 'auto' }}>
+            <div style={{ width: 960, height: 600, margin: 'auto' }}>
                 <Article document={currentDocument} onChange={onChange} />
             </div>
         );
@@ -74,7 +74,7 @@ export const Urbania = {
     render: ({ document = null }) => {
         const [currentDocument, onChange] = useState(getInitialDocument(document));
         return (
-            <div style={{ width: 800, height: 900, margin: 'auto' }}>
+            <div style={{ width: 960, height: 800, margin: 'auto' }}>
                 <Article document={currentDocument} onChange={onChange} />
             </div>
         );

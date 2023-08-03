@@ -24,13 +24,14 @@ const defaultProps = {
 
 function Editor({ left, right, preview, className, children }) {
     // console.log('editor render', left, right, children);
+
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>
-            <aside className={styles.left}>{left}</aside>
+            {left !== null ? <aside className={styles.left}>{left}</aside> : null}
             <main className={styles.main}>
                 {preview ? <Preview>{children}</Preview> : children}
             </main>
-            <aside className={styles.right}>{right}</aside>
+            {right !== null ? <aside className={styles.right}>{right}</aside> : null}
         </div>
     );
 }

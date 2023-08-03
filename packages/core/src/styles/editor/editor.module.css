@@ -6,13 +6,16 @@
 }
 
 .main {
-    width: 66%;
+    width: 60%;
     flex-grow: 1;
 }
 
 .left, .right {
-    width: 16.66%;
-    background-color: #ededed
+    width: 20%;
+
+    /* height: 100%; */
+    background-color: #ededed;
+    overflow-y: scroll;
 }
 
 :global(.ck.ck-content) {

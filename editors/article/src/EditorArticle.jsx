@@ -26,6 +26,7 @@ import styles from './styles.module.css';
 const propTypes = {
     document: PropTypes.shape({}),
     viewer: PropTypes.string,
+    destinations: PropTypes.arrayOf(PropTypes.shape({})),
     className: PropTypes.string,
     onChange: PropTypes.func,
 };
@@ -33,6 +34,7 @@ const propTypes = {
 const defaultProps = {
     document: null,
     viewer: null,
+    destinations: null,
     className: null,
     onChange: null,
 };
@@ -51,7 +53,7 @@ function findParentBlock(block) {
     return null;
 }
 
-function EditorArticle({ document, viewer, className, onChange }) {
+function EditorArticle({ document, viewer, destinations, className, onChange }) {
     const { type = 'article', components = [] } = document || {};
     const [focusedBlock, setFocusedBlock] = useState(null);
     const editorRef = useRef(null);
@@ -187,6 +189,7 @@ function EditorArticle({ document, viewer, className, onChange }) {
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>
             <Editor
+                destinations={destinations}
                 left={<Outline components={components} onClick={onOutlineClick} />}
                 right={
                     <div className={styles.right}>

@@ -1,7 +1,7 @@
 // import withGoogleKeys from './decorators/withGoogleKeys';
 import withIntlProvider from './decorators/withIntlProvider';
 
-import '../packages/core/assets/css/styles.css';
+import '../packages/core/src/styles/styles.css';
 import './fonts/fonts.css';
 
 const preview = {
