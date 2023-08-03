@@ -18,29 +18,29 @@ const files = {
         },
     },
 
-    // 'components.js': {
-    //     prependPlugins: [
-    //         alias({
-    //             entries: [
-    //                 {
-    //                     find: /^(\.\.\/)*\.\.\/\.\.\/(contexts|utils|hooks)\/?$/,
-    //                     replacement: '@niche-js/core/$2',
-    //                 },
-    //                 {
-    //                     find: /(\.\.\/)*\.\.\/\.\.\/lib\/?$/,
-    //                     replacement: '@niche-js/core',
-    //                 },
-    //             ],
-    //         }),
-    //     ],
-    //     resolveOptions: {
-    //         extensions: ['.mjs', '.js', '.jsx', '.json', '.node'],
-    //         resolveOnly: [
-    //             new RegExp(path.join(process.cwd(), './src/components')),
-    //             new RegExp(path.join(process.cwd(), './src/styles')),
-    //         ],
-    //     },
-    // },
+    'components.js': {
+        prependPlugins: [
+            alias({
+                entries: [
+                    {
+                        find: /^(\.\.\/)*\.\.\/\.\.\/(contexts|utils|hooks)\/?$/,
+                        replacement: '@niche-js/core/$2',
+                    },
+                    {
+                        find: /(\.\.\/)*\.\.\/\.\.\/lib\/?$/,
+                        replacement: '@niche-js/core',
+                    },
+                ],
+            }),
+        ],
+        resolveOptions: {
+            extensions: ['.mjs', '.js', '.jsx', '.json', '.node'],
+            resolveOnly: [
+                new RegExp(path.join(process.cwd(), './src/components')),
+                new RegExp(path.join(process.cwd(), './src/styles')),
+            ],
+        },
+    },
 
     'contexts.js': {
         prependPlugins: [
@@ -70,29 +70,29 @@ const files = {
         },
     },
 
-    // 'hooks.js': {
-    //     prependPlugins: [
-    //         alias({
-    //             entries: [
-    //                 {
-    //                     find: /\.\.\/(contexts|utils)\/?$/,
-    //                     replacement: '@niche-js/core/$1',
-    //                 },
-    //                 {
-    //                     find: /\.\.\/lib\/?$/,
-    //                     replacement: '@niche-js/core',
-    //                 },
-    //             ],
-    //         }),
-    //     ],
-    //     resolveOptions: {
-    //         extensions: ['.mjs', '.js', '.jsx', '.json', '.node'],
-    //         resolveOnly: [
-    //             path.join(process.cwd(), './src/lib/EventsManager'),
-    //             new RegExp(path.join(process.cwd(), './src/hooks')),
-    //         ],
-    //     },
-    // },
+    'hooks.js': {
+        prependPlugins: [
+            alias({
+                entries: [
+                    {
+                        find: /\.\.\/(contexts|utils)\/?$/,
+                        replacement: '@niche-js/core/$1',
+                    },
+                    {
+                        find: /\.\.\/lib\/?$/,
+                        replacement: '@niche-js/core',
+                    },
+                ],
+            }),
+        ],
+        resolveOptions: {
+            extensions: ['.mjs', '.js', '.jsx', '.json', '.node'],
+            resolveOnly: [
+                path.join(process.cwd(), './src/lib/EventsManager'),
+                new RegExp(path.join(process.cwd(), './src/hooks')),
+            ],
+        },
+    },
 };
 
 export default Object.keys(files).reduce(

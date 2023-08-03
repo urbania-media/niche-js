@@ -54,7 +54,6 @@
         "@ckeditor/ckeditor5-react": "^6.1.0",
         "@niche-js/ckeditor": "^0.0.27",
         "@niche-js/core": "^0.0.27",
-        "@niche-js/editor-editor": "^0.0.27",
         "@niche-js/fields": "^0.0.27",
         "@panneau/core": "^3.0.9",
         "classnames": "^2.2.6",

@@ -4,8 +4,7 @@ export const EDITORS_NAMESPACE = 'editors';
 export const VIEWERS_NAMESPACE = 'viewers';
 export const COMPONENTS_NAMESPACE = 'components';
 export const BLOCKS_NAMESPACE = 'blocks';
-
-// export const SCREENS_NAMESPACE = 'components.screens';
+export const HEADERS_NAMESPACE = 'headers';
 
 /**
  * Editors hooks
@@ -50,3 +49,14 @@ export const useBlocksComponents = (defaultComponents = {}) =>
 
 export const useBlockComponent = (name, defaultComponent = null) =>
     useComponent(name, defaultComponent, BLOCKS_NAMESPACE);
+
+/**
+ * Headers hooks
+ */
+export const useHeadersComponentsManager = () => useComponentsManager(HEADERS_NAMESPACE);
+
+export const useHeadersComponents = (defaultComponents = {}) =>
+    useComponents(HEADERS_NAMESPACE, defaultComponents);
+
+export const useHeaderComponent = (name, defaultComponent = null) =>
+    useComponent(name, defaultComponent, HEADERS_NAMESPACE);

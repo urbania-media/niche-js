@@ -1,5 +1,6 @@
 import { Bold, Italic } from '@ckeditor/ckeditor5-basic-styles';
 import { BalloonEditor as BaseEditor } from '@ckeditor/ckeditor5-editor-balloon';
+// import { MultiRootEditor as BaseEditor } from '@ckeditor/ckeditor5-editor-multi-root';
 import { Essentials } from '@ckeditor/ckeditor5-essentials';
 import { Heading } from '@ckeditor/ckeditor5-heading';
 import {

@@ -1,73 +1,13 @@
 {
-    "id": "1",
-    "title": "Les amis de la forêt",
+    "id": "2",
+    "title": "Les amis de la forêt 2.0",
     "components": [
         {
-            "id": 1,
-            "role": "header",
-            "type": "article",
-            "title": "Trash humpers: the legacy",
-            "subtitle": "Life is hard when yr a trash humper."
-        },
-        {
-            "id": 1,
-            "role": "block",
-            "type": "heading",
-            "body": "Trash humpers 2: the prequel",
-            "size": 2
-        },
-        {
-            "id": 666,
-            "role": "block",
-            "type": "heading",
-            "body": "Trash humpers 3: the sequel",
-            "size": 3
-        },
-        {
-            "id": null,
             "role": "block",
             "type": "text",
-            "body": "<p>We believe in Mr. Korine to deliver on his new screenplay.</p>"
-        },
-        {
-            "id": 10,
-            "role": "block",
-            "type": "quote",
-            "body": "The message is the medium.",
-            "caption": "Marshall McLuhan"
-        },
-        {
-            "id": null,
-            "role": "block",
-            "type": "text",
-            "body": "<p>Trash humpers is the best movie ever, even better than Gummo.</p>"
-        },
-        {
-            "id": 12,
-            "role": "block",
-            "type": "image",
-            "media": {
-                "url": "https://picsum.photos/200/300"
-            }
-        },
-        {
-            "id": null,
-            "role": "block",
-            "type": "embed",
-            "embed": {
-                "provider": "youtube",
-                "url": "https://www.youtube.com/watch?v=Xw5AiRVqfqk",
-                "iframeUrl": "https://www.youtube.com/embed/Xw5AiRVqfqk",
-                "html": "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/Xw5AiRVqfqk\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>"
-            }
-        },
-        {
-            "id": 17,
-            "role": "block",
-            "type": "text",
-            "body": "<p>We really like trash humpers it is great.</p>"
+            "body": "<p>Hello my text</p>"
         }
     ],
-    "created_at": "2023-02-02 00:00:00",
-    "updated_at": "2023-02-02 00:00:00"
+    "created_at": "2023-02-01 00:00:00",
+    "updated_at": "2023-02-01 00:00:00"
 }

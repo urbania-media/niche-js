@@ -28,6 +28,7 @@
     "license": "ISC",
     "main": "lib/index.js",
     "module": "es/index.js",
+    "style": "assets/css/styles.css",
     "exports": {
         ".": "./lib/index.js",
         "./components": "./lib/components.js",
@@ -85,7 +86,9 @@
         "prop-types": "^15.8.1",
         "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
         "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0",
-        "react-intl": "^6.3.0"
+        "react-intl": "^6.3.0",
+        "screenfull": "^6.0.2",
+        "uuid": "^9.0.0"
     },
     "publishConfig": {
         "access": "public",

@@ -9,15 +9,16 @@ import React, { useCallback, useState, useMemo, useEffect, useRef } from 'react'
 import { renderToString } from 'react-dom/server';
 
 import NicheEditor from '@niche-js/ckeditor/build';
+import { Editor } from '@niche-js/core/components';
 import {
     useViewerComponent,
     useBlocksComponentsManager,
     BLOCKS_NAMESPACE,
+    EditorProvider,
 } from '@niche-js/core/contexts';
-import Editor from '@niche-js/editor-editor';
 
 import Outline from './Outline';
-import Preview from './Preview';
+// import Preview from './Preview';
 import Settings from './Settings';
 
 import styles from './styles.module.css';
@@ -60,8 +61,6 @@ function EditorArticle({ document, viewer, className, onChange }) {
     const blocksManager = useBlocksComponentsManager();
     const blocks = blocksManager.getComponents();
 
-    // console.log('The Document Value', document);
-
     const onEditorChange = useCallback(
         (event, editor) => {
             const data = editor.getData();
@@ -91,7 +90,7 @@ function EditorArticle({ document, viewer, className, onChange }) {
         [onChange, document, focusedBlock],
     );
 
-    const onEditorFocus = useCallback(
+    const onEditorClick = useCallback(
         (event, editor) => {
             const { selection: currentSelection = null } = editor.editing.model.document || {};
             const range = currentSelection.getFirstRange() || null;
@@ -108,9 +107,7 @@ function EditorArticle({ document, viewer, className, onChange }) {
         [components, setFocusedBlock],
     );
 
-    const onEditorBlur = useCallback(() => {}, [setFocusedBlock]);
-
-    const scrollTo = useCallback((block) => {
+    const onOutlineClick = useCallback((block) => {
         const { uuid: blockUUID = null } = block || {};
         if (blockUUID !== null) {
             const element =
@@ -126,17 +123,18 @@ function EditorArticle({ document, viewer, className, onChange }) {
         }
     });
 
-    const renderBody = useCallback(
-        (newDocument) =>
-            renderToString(
-                <ComponentsProvider namespace={BLOCKS_NAMESPACE} components={blocks}>
-                    <ViewerComponent document={newDocument} />
-                </ComponentsProvider>,
-            ),
-        [],
-    );
     const previousBody = useRef(null);
-    const body = useMemo(() => renderBody(document), [renderBody, document]);
+    const body = useMemo(
+        () =>
+            renderToString(
+                <EditorProvider>
+                    <ComponentsProvider namespace={BLOCKS_NAMESPACE} components={blocks}>
+                        <ViewerComponent document={document} />
+                    </ComponentsProvider>
+                </EditorProvider>,
+            ),
+        [document],
+    );
 
     useEffect(() => {
         const editor = nicheEditorRef.current;
@@ -145,16 +143,15 @@ function EditorArticle({ document, viewer, className, onChange }) {
             const { selection: currentSelection = null } = editor.editing.model.document || {};
             const range = currentSelection.getFirstRange();
             editor.setData(body);
-
             editor.model.change((writer) => {
                 try {
                     // console.log('focus state', editor.editing.view.document.isFocused);
-                    if (!editor.editing.view.document.isFocused) {
-                        // editor.editing.view.focus();
-                    }
+                    // if (!editor.editing.view.document.isFocused) {
+                    // editor.editing.view.focus();
+                    // }
                     writer.setSelection(range);
                 } catch (e) {
-                    console.log('failed to focus on range', range);
+                    // console.log('failed to focus on range', e, range);
                 }
             });
         }
@@ -164,47 +161,33 @@ function EditorArticle({ document, viewer, className, onChange }) {
         if (nicheEditorRef.current === null && editorRef.current !== null) {
             NicheEditor.create(editorRef.current)
                 .then((editor) => {
-                    // console.log('Editor was initialized', editor);
+                    console.log('Editor was initialized', editor);
+
                     editor.setData(body);
 
                     const modelDocument = editor.model.document;
-                    const viewDocument = editor.editing.view.document;
-
                     modelDocument.on('change:data', (event) => {
                         onEditorChange(event, editor);
                     });
 
-                    // viewDocument.on('focus', (event) =>
-                    //     // console.log('actual focus');
-                    //     onEditorFocus(event, editor),
-                    // );
-
-                    viewDocument.on('click', (event) =>
-                        // console.log('actual focus click');
-                        onEditorFocus(event, editor),
-                    );
-
-                    viewDocument.on('blur', (event) => {
-                        onEditorBlur(event, editor);
-                    });
+                    const viewDocument = editor.editing.view.document;
+                    viewDocument.on('click', (event) => onEditorClick(event, editor));
 
                     CKEditorInspector.attach(editor);
-
                     nicheEditorRef.current = editor;
                 })
                 .catch((error) => {
                     console.error(error.stack);
                 });
         }
-    }, [body, onEditorChange, onEditorFocus, onEditorBlur]);
+    }, [body, onEditorChange, onEditorClick]);
 
-    // console.log('document', document);
-    // console.log('body', body);
+    console.log('editor article body', body);
 
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>
             <Editor
-                left={<Outline components={components} onClick={scrollTo} />}
+                left={<Outline components={components} onClick={onOutlineClick} />}
                 right={
                     <div className={styles.right}>
                         {focusedBlock !== null && focusedBlock?.type ? (
@@ -228,9 +211,7 @@ function EditorArticle({ document, viewer, className, onChange }) {
                     </div>
                 }
             >
-                <Preview>
-                    <div ref={editorRef} />
-                </Preview>
+                <div ref={editorRef} />
             </Editor>
         </div>
     );

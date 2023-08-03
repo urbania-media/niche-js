@@ -1,8 +1,8 @@
 .container {
-    color: #c0a;
+    padding: 20px 0;
 }
 
 .iframeContainer {
-    display: inline-block;
-    border: 2px solid #c0a;
+    display: block;
+    max-width: 100%;
 }

@@ -3,6 +3,8 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import { Widget, Editable } from '@niche-js/core/components';
+
 import styles from './styles.module.css';
 
 const propTypes = {
@@ -19,22 +21,23 @@ const defaultProps = {
 
 function Quote({ body, caption, className }) {
     return (
-        <figure
+        <Widget
+            tag="figure"
             className={classNames([styles.container, { [className]: className !== null }])}
-            data-niche-widget
-            // data-cke-ignore-events="true"
         >
-            <blockquote
+            <Editable
+                tag="blockquote"
+                name="body"
                 className={styles.body}
-                data-niche-editable="body"
                 dangerouslySetInnerHTML={{ __html: body }}
             />
-            <figcaption
+            <Editable
+                tag="figcaption"
+                name="caption"
                 className={styles.caption}
-                data-niche-editable-inline="caption"
                 dangerouslySetInnerHTML={{ __html: caption }}
             />
-        </figure>
+        </Widget>
     );
 }
 

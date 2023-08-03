@@ -1,6 +1,5 @@
 .container {
     padding: 10px;
-
-    /* color: #FC0; */
-    color: var(--theme-text-color);
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: .01em;
 }

@@ -2,6 +2,8 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import { Widget } from '@niche-js/core/components';
+
 import styles from './styles.module.css';
 
 const propTypes = {
@@ -22,11 +24,11 @@ const defaultProps = {
 
 function Images({ items, className }) {
     return (
-        <div className={classNames([styles.container, { [className]: className !== null }])}>
+        <Widget className={classNames([styles.container, { [className]: className !== null }])}>
             {items !== null
                 ? items.map(({ media }) => <img src={media.url} alt={media.alt || 'Media'} />)
                 : null}
-        </div>
+        </Widget>
     );
 }
 

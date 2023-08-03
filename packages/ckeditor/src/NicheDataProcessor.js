@@ -27,7 +27,7 @@ export default class NicheDataProcessor {
     }
 
     toData(viewFragment = null) {
-        console.log('to data', viewFragment.childCount, viewFragment);
+        // console.log('to data', viewFragment.childCount, viewFragment);
 
         const components = [...new Array(viewFragment.childCount).keys()]
             .map((index) => {
@@ -78,7 +78,7 @@ export default class NicheDataProcessor {
                     };
                 }
 
-                console.log('COMP NOT FOUND', child);
+                console.log('COMPONENT NOT FOUND', child);
 
                 return null;
             })
@@ -126,7 +126,7 @@ export default class NicheDataProcessor {
                 null;
 
             if (editableKey !== null) {
-                console.log('lol', editableKey, this.getInnerHTML(subChild));
+                // console.log('editableKey', editableKey, this.getInnerHTML(subChild));
                 return {
                     ...acc,
                     [editableKey]: this.getInnerHTML(subChild),

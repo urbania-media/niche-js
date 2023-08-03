@@ -16,7 +16,7 @@ export default class NichePlugin extends Plugin {
         // The commands
         this.editor.commands.get('enter').on('afterExecute', () => {
             const block =
-                this.editor.model.document.selection.getSelectedBlocks().next().value || null;
+                this.editor.model.document.selection.getSelectedBlocks().next()?.value || null;
             if (block !== null) {
                 this.editor.model.change((writer) => {
                     writer.removeAttribute('id', block);
@@ -27,7 +27,7 @@ export default class NichePlugin extends Plugin {
 
         this.editor.commands.get('insertParagraph').on('execute', () => {
             const block =
-                this.editor.model.document.selection.getSelectedBlocks().next().value || null;
+                this.editor.model.document.selection.getSelectedBlocks().next()?.value || null;
             if (block !== null) {
                 this.editor.model.change((writer) => {
                     writer.removeAttribute('id', block);
@@ -36,18 +36,14 @@ export default class NichePlugin extends Plugin {
             }
         });
 
-        this.editor.commands.get('delete').on('execute', () => {
-            const block =
-                this.editor.model.document.selection.getSelectedBlocks().next().value || null;
-
-            if (block !== null) {
-                console.log('delete block', block);
-                // this.editor.model.change((writer) => {
-                //     writer.removeAttribute('id', block);
-                //     writer.setAttribute('uuid', uuidV4(), block);
-                // });
-            }
-        });
+        // this.editor.commands.get('delete').forceDisabled();
+        // this.editor.commands.get('delete').clearForceDisabled();
+        // this.editor.commands.get('delete').on('execute', (e) => {
+        //     console.log('delete', e);
+        // });
+        // this.editor.model.document.selection.on('change:range', (...args) => {
+        //     console.log('change range', args);
+        // });
 
         const { schema } = this.editor.model;
         const { conversion } = this.editor;
@@ -63,6 +59,7 @@ export default class NichePlugin extends Plugin {
             inheritAllFrom: '$container',
             isLimit: true,
             isObject: true,
+            // isSelectable: false,
             allowChildren: ['$inlineObject', '$blockObject'],
             allowAttributes: ['tag', 'class', 'id', 'type', 'role', 'widget'],
         });

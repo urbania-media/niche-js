@@ -3,6 +3,8 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { useRef } from 'react';
 
+import { Widget } from '@niche-js/core/components';
+
 import styles from './styles.module.css';
 
 const propTypes = {
@@ -24,11 +26,7 @@ function Embed({ embed, className }) {
     const refEmbed = useRef();
     const { iframeUrl = null, html = null } = embed || {};
     return (
-        <div
-            className={classNames([styles.container, { [className]: className !== null }])}
-            data-niche-widget
-        >
-            Embed block
+        <Widget className={classNames([styles.container, { [className]: className !== null }])}>
             {iframeUrl !== null ? (
                 <div className={styles.iframeContainer}>
                     <iframe
@@ -39,6 +37,8 @@ function Embed({ embed, className }) {
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
                         title="Embed"
+                        width="320"
+                        height="240"
                     />
                 </div>
             ) : null}
@@ -48,7 +48,7 @@ function Embed({ embed, className }) {
                     dangerouslySetInnerHTML={{ __html: html }}
                 />
             ) : null}
-        </div>
+        </Widget>
     );
 }
 

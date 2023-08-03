@@ -1,0 +1,658 @@
+{
+    "id": "16618",
+    "type": "article",
+    "title": "On a test\u00e9 un \u00ab side hustle \u00bb qui promet un revenu passif sans effort",
+    "subtitle": "\u00ab Voici une technique si simple que m\u00eame une roche serait capable de la mettre en application. \u00bb",
+    "image": {
+        "id": "24388",
+        "type": "image",
+        "name": "media202308thumbs-sidehustles-site-6",
+        "url": "https://v2.urbania.ca/storage/image/2023-08-03/23372-085346.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sizes": [
+            {
+                "id": "original",
+                "url": "https://v2.urbania.ca/storage/image/2023-08-03/23372-085346.jpg",
+                "width": 1920,
+                "height": 1080
+            },
+            {
+                "id": "thumbnail",
+                "url": "https://v2.urbania.ca/storage/image/2023-08-03/23372-085346-filters(thumbnail).jpg",
+                "width": 200,
+                "height": 200
+            },
+            {
+                "id": "small",
+                "url": "https://v2.urbania.ca/storage/image/2023-08-03/23372-085346-filters(small).jpg",
+                "width": 500,
+                "height": 281
+            },
+            {
+                "id": "medium",
+                "url": "https://v2.urbania.ca/storage/image/2023-08-03/23372-085346-filters(medium).jpg",
+                "width": 800,
+                "height": 450
+            },
+            {
+                "id": "large",
+                "url": "https://v2.urbania.ca/storage/image/2023-08-03/23372-085346-filters(large).jpg",
+                "width": 1600,
+                "height": 900
+            }
+        ]
+    },
+    "images": {
+        "default": {
+            "id": "24389",
+            "type": "image",
+            "name": "media202308thumbs-sidehustles-site-6",
+            "url": "https://v2.urbania.ca/storage/image/2023-08-03/23373-085346.jpg",
+            "width": 1920,
+            "height": 1080,
+            "sizes": [
+                {
+                    "id": "original",
+                    "url": "https://v2.urbania.ca/storage/image/2023-08-03/23373-085346.jpg",
+                    "width": 1920,
+                    "height": 1080
+                },
+                {
+                    "id": "thumbnail",
+                    "url": "https://v2.urbania.ca/storage/image/2023-08-03/23373-085346-filters(thumbnail).jpg",
+                    "width": 200,
+                    "height": 200
+                },
+                {
+                    "id": "small",
+                    "url": "https://v2.urbania.ca/storage/image/2023-08-03/23373-085346-filters(small).jpg",
+                    "width": 500,
+                    "height": 281
+                },
+                {
+                    "id": "medium",
+                    "url": "https://v2.urbania.ca/storage/image/2023-08-03/23373-085346-filters(medium).jpg",
+                    "width": 800,
+                    "height": 450
+                },
+                {
+                    "id": "large",
+                    "url": "https://v2.urbania.ca/storage/image/2023-08-03/23373-085346-filters(large).jpg",
+                    "width": 1600,
+                    "height": 900
+                }
+            ]
+        },
+        "share": {
+            "id": "24390",
+            "type": "image",
+            "name": "media202308thumbs-sidehustles-site-6",
+            "url": "https://v2.urbania.ca/storage/image/2023-08-03/23374-085346.jpg",
+            "width": 1920,
+            "height": 1080,
+            "sizes": [
+                {
+                    "id": "original",
+                    "url": "https://v2.urbania.ca/storage/image/2023-08-03/23374-085346.jpg",
+                    "width": 1920,
+                    "height": 1080
+                },
+                {
+                    "id": "thumbnail",
+                    "url": "https://v2.urbania.ca/storage/image/2023-08-03/23374-085346-filters(thumbnail).jpg",
+                    "width": 200,
+                    "height": 200
+                },
+                {
+                    "id": "small",
+                    "url": "https://v2.urbania.ca/storage/image/2023-08-03/23374-085346-filters(small).jpg",
+                    "width": 500,
+                    "height": 281
+                },
+                {
+                    "id": "medium",
+                    "url": "https://v2.urbania.ca/storage/image/2023-08-03/23374-085346-filters(medium).jpg",
+                    "width": 800,
+                    "height": 450
+                },
+                {
+                    "id": "large",
+                    "url": "https://v2.urbania.ca/storage/image/2023-08-03/23374-085346-filters(large).jpg",
+                    "width": 1600,
+                    "height": 900
+                }
+            ]
+        },
+        "header": {
+            "id": "24391",
+            "type": "image",
+            "name": "media202308thumbs-sidehustles-site-6",
+            "url": "https://v2.urbania.ca/storage/image/2023-08-03/23375-085346.jpg",
+            "width": 1920,
+            "height": 1080,
+            "sizes": [
+                {
+                    "id": "original",
+                    "url": "https://v2.urbania.ca/storage/image/2023-08-03/23375-085346.jpg",
+                    "width": 1920,
+                    "height": 1080
+                },
+                {
+                    "id": "thumbnail",
+                    "url": "https://v2.urbania.ca/storage/image/2023-08-03/23375-085346-filters(thumbnail).jpg",
+                    "width": 200,
+                    "height": 200
+                },
+                {
+                    "id": "small",
+                    "url": "https://v2.urbania.ca/storage/image/2023-08-03/23375-085346-filters(small).jpg",
+                    "width": 500,
+                    "height": 281
+                },
+                {
+                    "id": "medium",
+                    "url": "https://v2.urbania.ca/storage/image/2023-08-03/23375-085346-filters(medium).jpg",
+                    "width": 800,
+                    "height": 450
+                },
+                {
+                    "id": "large",
+                    "url": "https://v2.urbania.ca/storage/image/2023-08-03/23375-085346-filters(large).jpg",
+                    "width": 1600,
+                    "height": 900
+                }
+            ]
+        }
+    },
+    "metadata": {
+        "title": "On a test\u00e9 un \u00ab side hustle \u00bb qui promet un revenu passif sans effort",
+        "description": "\u00ab Voici une technique si simple que m\u00eame une roche serait capable de la mettre en application. \u00bb",
+        "keywords": [
+            "Quatre95",
+            "Travailler",
+            "argent",
+            "argent facile",
+            "astuces pour gagner de l'argent",
+            "comment faire de l'argent facilement",
+            "Etsy",
+            "ind\u00e9pendance financi\u00e8re",
+            "printify",
+            "side hustle",
+            "side hustles"
+        ],
+        "categories": [
+            { "id": "31", "handle": "quatre95", "type": "category", "label": "Quatre95" },
+            { "id": "32", "handle": "travailler", "type": "category", "label": "Travailler" }
+        ],
+        "tags": [
+            { "id": "124", "handle": "argent", "type": "tag", "label": "argent" },
+            { "id": "31601", "handle": "argent-facile", "type": "tag", "label": "argent facile" },
+            {
+                "id": "31602",
+                "handle": "astuces-pour-gagner-de-largent",
+                "type": "tag",
+                "label": "astuces pour gagner de l'argent"
+            },
+            {
+                "id": "31603",
+                "handle": "comment-faire-de-largent-facilement",
+                "type": "tag",
+                "label": "comment faire de l'argent facilement"
+            },
+            { "id": "2434", "handle": "etsy", "type": "tag", "label": "Etsy" },
+            {
+                "id": "2198",
+                "handle": "independance-financiere",
+                "type": "tag",
+                "label": "ind\u00e9pendance financi\u00e8re"
+            },
+            { "id": "31604", "handle": "printify", "type": "tag", "label": "printify" },
+            { "id": "131", "handle": "side-hustle", "type": "tag", "label": "side hustle" },
+            { "id": "31605", "handle": "side-hustles", "type": "tag", "label": "side hustles" }
+        ],
+        "credits": [
+            {
+                "author": {
+                    "id": "11",
+                    "type": "author",
+                    "slug": "julien-lamoureux",
+                    "name": "Julien Lamoureux",
+                    "description": "",
+                    "image": {
+                        "id": "24387",
+                        "type": "image",
+                        "name": "media202304juju",
+                        "url": "https://v2.urbania.ca/storage/image/2023-08-03/23371-085345.jpg",
+                        "width": 1280,
+                        "height": 1280,
+                        "sizes": [
+                            {
+                                "id": "original",
+                                "url": "https://v2.urbania.ca/storage/image/2023-08-03/23371-085345.jpg",
+                                "width": 1280,
+                                "height": 1280
+                            },
+                            {
+                                "id": "thumbnail",
+                                "url": "https://v2.urbania.ca/storage/image/2023-08-03/23371-085345-filters(thumbnail).jpg",
+                                "width": 200,
+                                "height": 200
+                            },
+                            {
+                                "id": "small",
+                                "url": "https://v2.urbania.ca/storage/image/2023-08-03/23371-085345-filters(small).jpg",
+                                "width": 500,
+                                "height": 500
+                            },
+                            {
+                                "id": "medium",
+                                "url": "https://v2.urbania.ca/storage/image/2023-08-03/23371-085345-filters(medium).jpg",
+                                "width": 800,
+                                "height": 800
+                            },
+                            {
+                                "id": "large",
+                                "url": "https://v2.urbania.ca/storage/image/2023-08-03/23371-085345-filters(large).jpg",
+                                "width": 1280,
+                                "height": 1280
+                            }
+                        ]
+                    }
+                },
+                "role": "author"
+            }
+        ],
+        "publishedAt": null
+    },
+    "components": [
+        {
+            "id": "0",
+            "role": "block",
+            "type": "text",
+            "body": "<p>En cette \u00e9poque inflationniste, rares sont les personnes qui cracheraient sur un revenu d\u2019appoint qui ne n\u00e9cessite pas trop d\u2019efforts ni de <i>butcher</i> son emploi principal. C\u2019est peut-\u00eatre pourquoi YouTube, Instagram et TikTok sont remplis d\u2019id\u00e9es de <i>side hustles</i> (une activit\u00e9 ou entreprise secondaire, en fran\u00e7ais) qui promettent une entr\u00e9e d\u2019argent passive.</p>"
+        },
+        {
+            "id": "1",
+            "role": "block",
+            "type": "text",
+            "body": "<p>Est-ce que c\u2019est trop beau pour \u00eatre vrai? Quatre95 a d\u00e9cid\u00e9 de mettre un <i>side hustle</i> \u00e0 l\u2019essai.</p>"
+        },
+        {
+            "id": "2",
+            "role": "block",
+            "type": "image",
+            "media": {
+                "id": "24392",
+                "type": "image",
+                "name": "media202308youtube-side-hustle-2",
+                "url": "https://v2.urbania.ca/storage/image/2023-08-03/23376-085347.png",
+                "width": 1238,
+                "height": 930,
+                "sizes": [
+                    {
+                        "id": "original",
+                        "url": "https://v2.urbania.ca/storage/image/2023-08-03/23376-085347.png",
+                        "width": 1238,
+                        "height": 930
+                    },
+                    {
+                        "id": "thumbnail",
+                        "url": "https://v2.urbania.ca/storage/image/2023-08-03/23376-085347-filters(thumbnail).png",
+                        "width": 200,
+                        "height": 200
+                    },
+                    {
+                        "id": "small",
+                        "url": "https://v2.urbania.ca/storage/image/2023-08-03/23376-085347-filters(small).png",
+                        "width": 500,
+                        "height": 376
+                    },
+                    {
+                        "id": "medium",
+                        "url": "https://v2.urbania.ca/storage/image/2023-08-03/23376-085347-filters(medium).png",
+                        "width": 800,
+                        "height": 601
+                    },
+                    {
+                        "id": "large",
+                        "url": "https://v2.urbania.ca/storage/image/2023-08-03/23376-085347-filters(large).png",
+                        "width": 1238,
+                        "height": 930
+                    }
+                ]
+            },
+            "caption": null
+        },
+        {
+            "id": "3",
+            "role": "block",
+            "type": "text",
+            "body": "<p>Apr\u00e8s une recherche m\u00e9ticuleuse, on se rend compte que la plupart de ces revenus d\u2019appoint sont pr\u00e9sent\u00e9s par des infleunceur.euse.s am\u00e9ricain.e.s. On en recense tr\u00e8s peu au Qu\u00e9bec. J\u2019ai regard\u00e9 plusieurs vid\u00e9os et je me suis laiss\u00e9 tenter <a href=\"https://www.instagram.com/reel/Cq1CIuALxUe/?igshid=MTc4MmM1YmI2Ng%3D%3D\">par celle-ci</a> : cr\u00e9er des morceaux de v\u00eatements \u00e0 vendre sur la plateforme populaire Etsy.</p>"
+        },
+        {
+            "id": "4",
+            "role": "block",
+            "type": "embed",
+            "media": null,
+            "embed": {
+                "provider": "instagram",
+                "url": "https://www.instagram.com/reel/Cq1CIuALxUe/?utm_source=ig_embed&amp;utm_campaign=loading",
+                "iframeUrl": null,
+                "html": "<blockquote class=\"instagram-media\" style=\"background: #FFF; border: 0; border-radius: 3px; box-shadow: 0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width: 540px; min-width: 326px; padding: 0; width: calc(100% - 2px);\" data-instgrm-captioned=\"\" data-instgrm-permalink=\"https://www.instagram.com/reel/Cq1CIuALxUe/?utm_source=ig_embed&amp;utm_campaign=loading\" data-instgrm-version=\"14\"> <div style=\"padding: 16px;\"> <p>&nbsp;</p> <div style=\"display: flex; flex-direction: row; align-items: center;\"> <div style=\"background-color: #f4f4f4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;\"></div> <div style=\"display: flex; flex-direction: column; flex-grow: 1; justify-content: center;\"> <div style=\"background-color: #f4f4f4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 100px;\"></div> <div style=\"background-color: #f4f4f4; border-radius: 4px; flex-grow: 0; height: 14px; width: 60px;\"></div> </div> </div> <div style=\"padding: 19% 0;\"></div> <div style=\"display: block; height: 50px; margin: 0 auto 12px; width: 50px;\"></div> <div style=\"padding-top: 8px;\"> <div style=\"color: #3897f0; font-family: Arial,sans-serif; font-size: 14px; font-style: normal; font-weight: 550; line-height: 18px;\">Afficher cette publication sur Instagram</div> </div> <div style=\"padding: 12.5% 0;\"></div> <div style=\"display: flex; flex-direction: row; margin-bottom: 14px; align-items: center;\"> <div> <div style=\"background-color: #f4f4f4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(0px) translateY(7px);\"></div> <div style=\"background-color: #f4f4f4; height: 12.5px; transform: rotate(-45deg) translateX(3px) translateY(1px); width: 12.5px; flex-grow: 0; margin-right: 14px; margin-left: 2px;\"></div> <div style=\"background-color: #f4f4f4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(9px) translateY(-18px);\"></div> </div> <div style=\"margin-left: 8px;\"> <div style=\"background-color: #f4f4f4; border-radius: 50%; flex-grow: 0; height: 20px; width: 20px;\"></div> <div style=\"width: 0; height: 0; border-top: 2px solid transparent; border-left: 6px solid #f4f4f4; border-bottom: 2px solid transparent; transform: translateX(16px) translateY(-4px) rotate(30deg);\"></div> </div> <div style=\"margin-left: auto;\"> <div style=\"width: 0px; border-top: 8px solid #F4F4F4; border-right: 8px solid transparent; transform: translateY(16px);\"></div> <div style=\"background-color: #f4f4f4; flex-grow: 0; height: 12px; width: 16px; transform: translateY(-4px);\"></div> <div style=\"width: 0; height: 0; border-top: 8px solid #F4F4F4; border-left: 8px solid transparent; transform: translateY(-4px) translateX(8px);\"></div> </div> </div> <div style=\"display: flex; flex-direction: column; flex-grow: 1; justify-content: center; margin-bottom: 24px;\"> <div style=\"background-color: #f4f4f4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 224px;\"></div> <div style=\"background-color: #f4f4f4; border-radius: 4px; flex-grow: 0; height: 14px; width: 144px;\"></div> </div> <p>&nbsp;</p> <p style=\"color: #c9c8cd; font-family: Arial,sans-serif; font-size: 14px; line-height: 17px; margin-bottom: 0; margin-top: 8px; overflow: hidden; padding: 8px 0 7px; text-align: center; text-overflow: ellipsis; white-space: nowrap;\"><a style=\"color: #c9c8cd; font-family: Arial,sans-serif; font-size: 14px; font-style: normal; font-weight: normal; line-height: 17px; text-decoration: none;\" href=\"https://www.instagram.com/reel/Cq1CIuALxUe/?utm_source=ig_embed&amp;utm_campaign=loading\" target=\"_blank\" rel=\"noreferrer noopener\">Une publication partag\u00e9e par Nigel | Affiliate Marketing Mentor (@laversnigelvincent)</a></p> </div> </blockquote>"
+            }
+        },
+        {
+            "id": "5",
+            "role": "block",
+            "type": "text",
+            "body": "<p>Si vous aussi, le ton de voix du pr\u00e9sentateur vous angoisse un peu, voici un r\u00e9sum\u00e9 pour que vous n\u2019ayez pas \u00e0 l\u2019\u00e9couter en entier : l\u2019id\u00e9e est d\u2019automatiser la production des articles (dans mon cas, une casquette et un t-shirt) avec Printify, un service connect\u00e9 \u00e0 mon magasin Etsy qui va produire les v\u00eatements au fur et \u00e0 mesure que j\u2019en vends. Ainsi, pas besoin de tenir un inventaire ou de faire des d\u00e9penses en amont.</p>"
+        },
+        {
+            "id": "6",
+            "role": "block",
+            "type": "text",
+            "body": "<p>Dans mon cas, j\u2019ai cr\u00e9\u00e9 deux articles avec des philosophies diff\u00e9rentes :\u00a0</p>"
+        },
+        {
+            "id": "7",
+            "role": "block",
+            "type": "image",
+            "media": {
+                "id": "24393",
+                "type": "image",
+                "name": "media202308produits-3",
+                "url": "https://v2.urbania.ca/storage/image/2023-08-03/23377-085347.jpg",
+                "width": 1000,
+                "height": 453,
+                "sizes": [
+                    {
+                        "id": "original",
+                        "url": "https://v2.urbania.ca/storage/image/2023-08-03/23377-085347.jpg",
+                        "width": 1000,
+                        "height": 453
+                    },
+                    {
+                        "id": "thumbnail",
+                        "url": "https://v2.urbania.ca/storage/image/2023-08-03/23377-085347-filters(thumbnail).jpg",
+                        "width": 200,
+                        "height": 200
+                    },
+                    {
+                        "id": "small",
+                        "url": "https://v2.urbania.ca/storage/image/2023-08-03/23377-085347-filters(small).jpg",
+                        "width": 500,
+                        "height": 227
+                    },
+                    {
+                        "id": "medium",
+                        "url": "https://v2.urbania.ca/storage/image/2023-08-03/23377-085347-filters(medium).jpg",
+                        "width": 800,
+                        "height": 362
+                    },
+                    {
+                        "id": "large",
+                        "url": "https://v2.urbania.ca/storage/image/2023-08-03/23377-085347-filters(large).jpg",
+                        "width": 1000,
+                        "height": 453
+                    }
+                ]
+            },
+            "caption": "En premier lieu, une casquette tr\u00e8s nich\u00e9e pour les amateurs de b\u00e2timents de type \u00ab flatiron \u00bb (les bureaux d\u2019URBANIA, sur la rue Notre-Dame, se trouvent dans une b\u00e2tisse de ce type). Ma logique \u00e9tait que \u00e7a allait se d\u00e9marquer du lot et que quiconque voulant montrer son amour pour cette \u00e9trange architecture en triangle isoc\u00e8le tomberait sur ma casquette. Ensuite, j\u2019ai voulu un morceau de linge plus g\u00e9n\u00e9raliste. J\u2019ai donc cr\u00e9\u00e9 un design r\u00e9tro pour les personnes n\u00e9es dans les ann\u00e9es 90, avec des objets rappelant la jeunesse de cette g\u00e9n\u00e9ration."
+        },
+        {
+            "id": "8",
+            "role": "block",
+            "type": "text",
+            "body": "<p>Et puis\u2026 c\u2019est tout. Nigel, le cr\u00e9ateur du tutoriel que j\u2019ai utilis\u00e9, ne parle pas de promotion ou de marketing; il n\u2019invite pas \u00e0 choisir de bons mots-cl\u00e9s ou \u00e0 mettre un peu d\u2019argent pour que nos articles se retrouvent plus haut dans les moteurs de recherche. Selon lui, l\u2019argent va juste commencer \u00e0 rentrer.</p>"
+        },
+        {
+            "id": "9",
+            "role": "block",
+            "type": "heading",
+            "body": "Le doute s\u2019installe",
+            "size": 4
+        },
+        {
+            "id": "10",
+            "role": "block",
+            "type": "text",
+            "body": "<p>\u00c0 la fin de la vid\u00e9o, notre nouvel ami montre un chandail sur Etsy. On ne sait pas trop si c\u2019est sa propre annonce ou s\u2019il en a juste pris une au hasard. Son but est de montrer le profit potentiel qu\u2019on peut esp\u00e9rer.</p>"
+        },
+        {
+            "id": "11",
+            "role": "block",
+            "type": "text",
+            "body": "<p>Il multiplie donc le prix du chandail (35 $) par le nombre de ventes (3 199 articles vendus) et clame que ce t-shirt a rapport\u00e9 111 965 $. Premier <i>red flag </i>: ce calcul simpliste ne prend pas en compte les co\u00fbts de production sur Printify, qui tournent autour de 50 % du prix de vente.</p>"
+        },
+        {
+            "id": "12",
+            "role": "block",
+            "type": "image",
+            "media": {
+                "id": "24394",
+                "type": "image",
+                "name": "media202308calcul-profits",
+                "url": "https://v2.urbania.ca/storage/image/2023-08-03/23378-085347.png",
+                "width": 333,
+                "height": 599,
+                "sizes": [
+                    {
+                        "id": "original",
+                        "url": "https://v2.urbania.ca/storage/image/2023-08-03/23378-085347.png",
+                        "width": 333,
+                        "height": 599
+                    },
+                    {
+                        "id": "thumbnail",
+                        "url": "https://v2.urbania.ca/storage/image/2023-08-03/23378-085347-filters(thumbnail).png",
+                        "width": 200,
+                        "height": 200
+                    },
+                    {
+                        "id": "small",
+                        "url": "https://v2.urbania.ca/storage/image/2023-08-03/23378-085347-filters(small).png",
+                        "width": 278,
+                        "height": 500
+                    },
+                    {
+                        "id": "medium",
+                        "url": "https://v2.urbania.ca/storage/image/2023-08-03/23378-085347-filters(medium).png",
+                        "width": 333,
+                        "height": 599
+                    },
+                    {
+                        "id": "large",
+                        "url": "https://v2.urbania.ca/storage/image/2023-08-03/23378-085347-filters(large).png",
+                        "width": 333,
+                        "height": 599
+                    }
+                ]
+            },
+            "caption": "Le calcul de Nigel qui montre le suppos\u00e9 profit fait sur la vente d\u2019un t-shirt."
+        },
+        {
+            "id": "13",
+            "role": "block",
+            "type": "text",
+            "body": "<p>Deuxi\u00e8me <i>red flag </i>: notre instructeur ne nous montre jamais son propre magasin Etsy et ses produits. Tout porte \u00e0 croire qu\u2019il ne fait qu\u2019expliquer la d\u00e9marche, mais qu\u2019il n\u2019a jamais vraiment essay\u00e9 son truc par lui-m\u00eame.</p>"
+        },
+        {
+            "id": "14",
+            "role": "block",
+            "type": "text",
+            "body": "<p>Troisi\u00e8me <i>red flag</i> : quand \u00e7a a l\u2019air aussi facile de faire 111 965 $, c\u2019est qu\u2019il y a probablement anguille sous roche.</p>"
+        },
+        {
+            "id": "15",
+            "role": "block",
+            "type": "text",
+            "body": "<p>Comme de raison, dans les presque trois semaines depuis que j\u2019ai cr\u00e9\u00e9 mon magasin Etsy et mis mes deux articles en vente, j\u2019ai eu sept \u00ab&nbsp;vues&nbsp;\u00bb et r\u00e9alis\u00e9 z\u00e9ro vente, pour un profit de 0,00 $. (Ces sept visites sont les clics de la cheffe de marque de Quatre95 \u00e0 qui j\u2019ai envoy\u00e9, tout fier de moi, ma casquette et mon t-shirt.)</p>"
+        },
+        {
+            "id": "16",
+            "role": "block",
+            "type": "image",
+            "media": {
+                "id": "24395",
+                "type": "image",
+                "name": "media202308profits-reels",
+                "url": "https://v2.urbania.ca/storage/image/2023-08-03/23379-085347.png",
+                "width": 1084,
+                "height": 412,
+                "sizes": [
+                    {
+                        "id": "original",
+                        "url": "https://v2.urbania.ca/storage/image/2023-08-03/23379-085347.png",
+                        "width": 1084,
+                        "height": 412
+                    },
+                    {
+                        "id": "thumbnail",
+                        "url": "https://v2.urbania.ca/storage/image/2023-08-03/23379-085347-filters(thumbnail).png",
+                        "width": 200,
+                        "height": 200
+                    },
+                    {
+                        "id": "small",
+                        "url": "https://v2.urbania.ca/storage/image/2023-08-03/23379-085347-filters(small).png",
+                        "width": 500,
+                        "height": 190
+                    },
+                    {
+                        "id": "medium",
+                        "url": "https://v2.urbania.ca/storage/image/2023-08-03/23379-085347-filters(medium).png",
+                        "width": 800,
+                        "height": 304
+                    },
+                    {
+                        "id": "large",
+                        "url": "https://v2.urbania.ca/storage/image/2023-08-03/23379-085347-filters(large).png",
+                        "width": 1084,
+                        "height": 412
+                    }
+                ]
+            },
+            "caption": "Le magot."
+        },
+        {
+            "id": "17",
+            "role": "block",
+            "type": "heading",
+            "body": "\u00ab&nbsp;Suivez ce cours donn\u00e9 par mon mentor&nbsp;\u00bb",
+            "size": 4
+        },
+        {
+            "id": "18",
+            "role": "block",
+            "type": "text",
+            "body": "<p>\u00ab&nbsp;De nombreux cr\u00e9ateurs de contenu qui se vantent de proposer des \u201c\u00e9tapes simples\u201d vers la libert\u00e9 financi\u00e8re n\u2019expliquent pas les v\u00e9ritables enjeux des tactiques de cr\u00e9ation d\u2019argent qu\u2019ils promeuvent&nbsp;\u00bb, <a href=\"https://www.businessinsider.com/passive-income-tiktok-youtube-rise-of-side-hustle-hucksters-2022-10\" target=\"_blank\" rel=\"noopener\">\u00e9crit Eve Upton-Clark dans un article sur <i>Business Insider</i> qui traite des <i>side hustles</i></a>.\u00a0</p>"
+        },
+        {
+            "id": "19",
+            "role": "block",
+            "type": "text",
+            "body": "<p>En effet, des march\u00e9s qui semblent prometteurs et faciles d\u2019acc\u00e8s, comme le <i>dropshipping</i> ou la vente directe que j\u2019ai tent\u00e9 d\u2019appliquer, sont satur\u00e9s. Sur Etsy, une recherche pour \u00ab\u00a0t-shirt&nbsp;\u00bb retourne 7,4 millions de r\u00e9sultats et \u00ab&nbsp;casquette&nbsp;\u00bb, 1,1 million. \u00ab&nbsp;Flatiron Cap&nbsp;\u00bb me donne plus de 300 produits et le mien n\u2019appara\u00eet m\u00eame pas sur la premi\u00e8re page.\u00a0</p>"
+        },
+        {
+            "id": "20",
+            "role": "block",
+            "type": "text",
+            "body": "<p>En fait, toujours selon Eve Upton-Clark, une fois qu\u2019ils r\u00e9ussissent \u00e0 avoir une petite audience, des entrepreneurs comme Nigel \u00ab&nbsp;peuvent ensuite utiliser les m\u00e9dias sociaux pour vendre des cours qui promettent d\u2019apprendre aux gens comment devenir riches gr\u00e2ce \u00e0 des revenus passifs&nbsp;\u00bb.\u00a0</p>"
+        },
+        {
+            "id": "21",
+            "role": "block",
+            "type": "text",
+            "body": "<p>En regardant plus attentivement le compte Instagram de Nigel, je r\u00e9alise qu\u2019il renvoie souvent les gens au lien qui se trouve dans son profil et que ce lien m\u00e8ne \u00e0\u2026\u00a0 <a href=\"https://7figuresdoneforyou.com/freevideowithnigellavers?utm_source=nigellavers&utm_medium=social&utm_campaign=nigellavers&utm_term=nigellavers&utm_content=variable-date&affiliate_id=nigellavers&affiliate=nigellavers\" target=\"_blank\" rel=\"noopener\">un cours en ligne donn\u00e9 par son \u00ab&nbsp;mentor&nbsp;\u00bb qui promet d\u2019atteindre l\u2019ind\u00e9pendance financi\u00e8re</a>.\u00a0</p>"
+        },
+        {
+            "id": "22",
+            "role": "block",
+            "type": "text",
+            "body": "<p>Joshua Mayo, un YouTubeur avec 700 000 abonn\u00e9.e.s qui propose lui aussi des dizaines de <i>side hustle</i>, invite \u00e9galement les gens \u00e0 se rendre sur le site web de la myst\u00e9rieuse Mayo University, o\u00f9 l\u2019on promet \u00ab&nbsp;des cours sur l\u2019argent, des ressources et plus encore&nbsp;\u00bb. Cette \u00ab&nbsp;universit\u00e9&nbsp;\u00bb n\u2019est toutefois pas encore ouverte.\u00a0</p>"
+        },
+        {
+            "id": "23",
+            "role": "block",
+            "type": "image",
+            "media": {
+                "id": "24396",
+                "type": "image",
+                "name": "media202308capture-decran-le-2023-08-01-a-151916",
+                "url": "https://v2.urbania.ca/storage/image/2023-08-03/23380-085347.png",
+                "width": 1198,
+                "height": 794,
+                "sizes": [
+                    {
+                        "id": "original",
+                        "url": "https://v2.urbania.ca/storage/image/2023-08-03/23380-085347.png",
+                        "width": 1198,
+                        "height": 794
+                    },
+                    {
+                        "id": "thumbnail",
+                        "url": "https://v2.urbania.ca/storage/image/2023-08-03/23380-085347-filters(thumbnail).png",
+                        "width": 200,
+                        "height": 200
+                    },
+                    {
+                        "id": "small",
+                        "url": "https://v2.urbania.ca/storage/image/2023-08-03/23380-085347-filters(small).png",
+                        "width": 500,
+                        "height": 331
+                    },
+                    {
+                        "id": "medium",
+                        "url": "https://v2.urbania.ca/storage/image/2023-08-03/23380-085347-filters(medium).png",
+                        "width": 800,
+                        "height": 530
+                    },
+                    {
+                        "id": "large",
+                        "url": "https://v2.urbania.ca/storage/image/2023-08-03/23380-085347-filters(large).png",
+                        "width": 1198,
+                        "height": 794
+                    }
+                ]
+            },
+            "caption": null
+        },
+        {
+            "id": "24",
+            "role": "block",
+            "type": "text",
+            "body": "<p>La strat\u00e9gie de Nigel est donc : cr\u00e9er des vid\u00e9os virales avec des strat\u00e9gies bidon \u27a1\ufe0f amener des clics sur son profil \u27a1\ufe0f promouvoir le cours en ligne de Philip Johansen, son mentor \u27a1\ufe0f recevoir une cote lorsque les internautes s\u2019abonnent au cours. C\u2019est le principe du marketing d\u2019affiliation, ou <i>affiliate marketing</i>. Nigel se dit d\u2019ailleurs \u00ab&nbsp;Affiliate Marketing Mentor&nbsp;\u00bb sur son profil Instagram. Il fait clairement plus de bidoux avec \u00e7a qu\u2019avec des t-shirts.</p>"
+        },
+        {
+            "id": "25",
+            "role": "block",
+            "type": "text",
+            "body": "<p>La vid\u00e9o du tutoriel que j\u2019ai mis en pratique a accumul\u00e9 10 000 <i>likes</i>, 11 000 partages et 230 commentaires. Parmi ceux-ci, personne ne t\u00e9moigne avoir r\u00e9ussi \u00e0 faire de bonnes ventes sur Etsy. Mais ce n\u2019est pas le but : toutes ces paires d\u2019yeux qui passent sur le profil de Nigel sont de possibles inscriptions au cours en ligne.Le prix dudit cours?</p>"
+        },
+        {
+            "id": "26",
+            "role": "block",
+            "type": "text",
+            "body": "<p><a href=\"https://www.tacomadailyindex.com/blog/the-7-figure-accelerator-reviews-is-it-legit-know-this-before-try-philip-johansen-program/2468022/\" target=\"_blank\" rel=\"noopener\">Environ 2 500 $</a>. Pour une approche \u00ab&nbsp;sans d\u00e9pense en amont&nbsp;\u00bb, on repassera.</p>"
+        }
+    ],
+    "uris": [
+        {
+            "id": "https://quatre95.urbania.ca/article/on-a-teste-un-side-hustle-qui-promet-un-revenu-passif-sans-effort",
+            "type": "url"
+        },
+        {
+            "id": "https://urbania.ca/article/on-a-teste-un-side-hustle-qui-promet-un-revenu-passif-sans-effort",
+            "type": "url"
+        },
+        {
+            "id": "/article/on-a-teste-un-side-hustle-qui-promet-un-revenu-passif-sans-effort",
+            "type": "path"
+        },
+        {
+            "id": "on-a-teste-un-side-hustle-qui-promet-un-revenu-passif-sans-effort",
+            "type": "slug"
+        }
+    ]
+}

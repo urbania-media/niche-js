@@ -1,4 +1,5 @@
 .container {
     position: relative;
-    color: blue;
+    font-family: 'Sina Nova', serif;
+    font-size: 20px;
 }

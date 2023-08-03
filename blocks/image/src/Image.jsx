@@ -2,6 +2,8 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import { Editable, Widget } from '@niche-js/core/components';
+
 import styles from './styles.module.css';
 
 const propTypes = {
@@ -17,12 +19,9 @@ const defaultProps = {
 };
 
 function Image({ media, className }) {
-    const { url = null, alt = null } = media || {};
+    const { url = null, alt = null, caption = 'Image caption' } = media || {};
     return (
-        <div
-            className={classNames([styles.container, { [className]: className !== null }])}
-            data-niche-widget
-        >
+        <Widget className={classNames([styles.container, { [className]: className !== null }])}>
             {url !== null ? (
                 <img
                     // data-niche-editable-attributes="src,alt"
@@ -34,10 +33,12 @@ function Image({ media, className }) {
             ) : (
                 'Image block'
             )}
-            <div data-niche-editable-inline="caption" className={styles.caption}>
-                {alt} Credits
-            </div>
-        </div>
+            {caption !== null ? (
+                <Editable className={styles.caption} inline>
+                    {caption}
+                </Editable>
+            ) : null}
+        </Widget>
     );
 }
 

@@ -5,6 +5,7 @@
     "description": "JS repo for all things niche related",
     "workspaces": [
         "blocks/*",
+        "headers/*",
         "viewers/*",
         "packages/*",
         "editors/*"
