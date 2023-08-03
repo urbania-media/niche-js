@@ -14,29 +14,14 @@ const defaultProps = {
 };
 
 function Article({ className }) {
-    const id = 1;
-    const uuid = 'myuuid';
-    const title = 'My header title';
-    const subtitle = 'My header subtitle with some more text';
+    const title = 'Le REM et l’importance d’un début réussi';
+    const subtitle = 'Une virée à Brossard entre deux pannes majeures.';
 
     return (
-        <div
-            className={classNames([styles.container, { [className]: className !== null }])}
-            key={`header-${id}-${uuid}`}
-            data-niche-id={id}
-            data-niche-uuid="myuuid"
-            data-niche-type="article"
-            data-niche-role="header"
-            data-niche-widget
-        >
-            <div className="my-article-header">
-                <div data-niche-editable="title" dangerouslySetInnerHTML={{ __html: title }} />
-                <div
-                    data-niche-editable="subtitle"
-                    dangerouslySetInnerHTML={{ __html: subtitle }}
-                />
-            </div>
-        </div>
+        <header className={classNames([styles.container, { [className]: className !== null }])}>
+            <div className={styles.title} dangerouslySetInnerHTML={{ __html: title }} />
+            <div className={styles.subtitle} dangerouslySetInnerHTML={{ __html: subtitle }} />
+        </header>
     );
 }
 

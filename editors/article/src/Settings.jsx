@@ -14,7 +14,15 @@ const propTypes = {
 
 const defaultProps = {
     value: null,
-    fields: null,
+    fields: [
+        {
+            type: 'text',
+            name: 'body',
+            withoutFormGroup: true,
+            placeholder: 'Body',
+        },
+        { type: 'toggle', name: 'test' },
+    ],
     onChange: null,
     className: null,
 };

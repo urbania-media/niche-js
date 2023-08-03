@@ -196,19 +196,7 @@ function EditorArticle({ document, viewer, destinations, className, onChange }) 
                         {focusedBlock !== null && focusedBlock?.type ? (
                             <>
                                 <p>{focusedBlock?.type}</p>
-                                <Settings
-                                    value={focusedBlock}
-                                    fields={[
-                                        {
-                                            type: 'text',
-                                            name: 'body',
-                                            withoutFormGroup: true,
-                                            placeholder: 'Body',
-                                        },
-                                        { type: 'toggle', name: 'test' },
-                                    ]}
-                                    onChange={onFieldChange}
-                                />
+                                <Settings value={focusedBlock} onChange={onFieldChange} />
                             </>
                         ) : null}
                     </div>

@@ -18,10 +18,43 @@ module.exports = {
         {
             name: '@storybook/addon-styling',
             options: {
-                postCss: true,
-                cssModules: {
-                    mode: 'local',
-                    getLocalIdent: getCSSModuleLocalIdent,
+                cssBuildRule: {
+                    test: /\.css$/,
+                    oneOf: [
+                        {
+                            test: /\.module\.css$/,
+                            use: [
+                                'style-loader',
+                                {
+                                    loader: 'css-loader',
+                                    options: {
+                                        importLoaders: 1,
+                                        modules: {
+                                            mode: 'local',
+                                            getLocalIdent: getCSSModuleLocalIdent,
+                                        },
+                                    },
+                                },
+                                'postcss-loader',
+                            ],
+                        },
+                        {
+                            test: /\.css$/,
+                            use: [
+                                'style-loader',
+                                {
+                                    loader: 'css-loader',
+                                    options: {
+                                        importLoaders: 1,
+                                        modules: {
+                                            mode: 'icss',
+                                        },
+                                    },
+                                },
+                                'postcss-loader',
+                            ],
+                        },
+                    ],
                 },
             },
         },
