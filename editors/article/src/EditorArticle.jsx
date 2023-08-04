@@ -25,7 +25,7 @@ import styles from './styles.module.css';
 
 const propTypes = {
     document: PropTypes.shape({
-        components: PropTypes.array,
+        components: PropTypes.arrayOf(PropTypes.shape({})),
     }),
     viewer: PropTypes.string,
     destinations: PropTypes.arrayOf(PropTypes.shape({})),
@@ -73,7 +73,6 @@ function EditorArticle({ document, viewer, destinations, className, onChange }) 
 
     const onFieldChange = useCallback(
         (newValue) => {
-            console.log('newValue', newValue);
             const { uuid: blockUUID = null } = newValue || {};
             const newComponents = components.reduce((acc, comp) => {
                 const { uuid = null } = comp || {};
@@ -212,7 +211,7 @@ function EditorArticle({ document, viewer, destinations, className, onChange }) 
                     const viewDocument = editor.editing.view.document;
                     viewDocument.on('click', (event) => onEditorClick(event, editor));
 
-                    CKEditorInspector.attach(editor);
+                    // CKEditorInspector.attach(editor);
                     nicheEditorRef.current = editor;
                 })
                 .catch((error) => {
