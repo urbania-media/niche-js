@@ -1,6 +1,6 @@
 {
     "name": "@niche-js/ckeditor",
-    "version": "0.0.27",
+    "version": "0.0.28",
     "private": false,
     "description": "",
     "keywords": [
@@ -58,7 +58,6 @@
         "@ckeditor/ckeditor5-build-balloon": "^39.0.0",
         "@ckeditor/ckeditor5-build-classic": "^39.0.0",
         "@ckeditor/ckeditor5-core": "^39.0.0",
-        "@ckeditor/ckeditor5-undo": "^39.0.0",
         "@ckeditor/ckeditor5-dev-utils": "^38.2.1",
         "@ckeditor/ckeditor5-editor-balloon": "^39.0.0",
         "@ckeditor/ckeditor5-editor-classic": "^39.0.0",
@@ -74,10 +73,11 @@
         "@ckeditor/ckeditor5-style": "^39.0.0",
         "@ckeditor/ckeditor5-theme-lark": "^39.0.0",
         "@ckeditor/ckeditor5-ui": "^39.0.0",
+        "@ckeditor/ckeditor5-undo": "^39.0.0",
         "@ckeditor/ckeditor5-upload": "^39.0.0",
         "@ckeditor/ckeditor5-widget": "^39.0.0",
         "@folklore/fetch": "^0.1.17",
-        "@niche-js/block-image": "^0.0.27",
+        "@niche-js/block-image": "^0.0.28",
         "ckeditor5": "^39.0.0",
         "lodash": "^4.17.21",
         "uuid": "^9.0.0"
