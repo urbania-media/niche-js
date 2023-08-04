@@ -37,7 +37,10 @@
         "./utils": "./lib/utils.js",
         "./css/styles": "./css/styles.css",
         "./css/styles.css": "./css/styles.css",
-        "./assets/css/styles.css": "./assets/css/styles.css"
+        "./assets/css/styles.css": "./assets/css/styles.css",
+        "./css/vendor": "./css/vendor.css",
+        "./css/vendor.css": "./css/vendor.css",
+        "./assets/css/vendor.css": "./assets/css/vendor.css"
     },
     "browser": {
         ".": "./es/index.js",
@@ -47,7 +50,10 @@
         "./utils": "./es/utils.js",
         "./css/styles": "./css/styles.css",
         "./css/styles.css": "./css/styles.css",
-        "./assets/css/styles.css": "./assets/css/styles.css"
+        "./assets/css/styles.css": "./assets/css/styles.css",
+        "./css/vendor": "./css/vendor.css",
+        "./css/vendor.css": "./css/vendor.css",
+        "./assets/css/vendor.css": "./assets/css/vendor.css"
     },
     "files": [
         "lib",
@@ -60,7 +66,7 @@
         "utils.js"
     ],
     "scripts": {
-        "vendor": "../../scripts/build-css.js ./src/styles/styles.css ./assets/css/styles.css",
+        "vendor": "../../scripts/build-css.js ./src/styles/vendor.css ./assets/css/vendor.css",
         "prepare": "../../scripts/prepare-package.sh --styles && npm run vendor"
     },
     "devDependencies": {
