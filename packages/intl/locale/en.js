@@ -4,6 +4,10 @@ var messages = {
   "0aV7v8": [{
     type: 0,
     value: "Image label"
+  }],
+  "OPxJx/": [{
+    type: 0,
+    value: "Layout"
   }]
 };
 

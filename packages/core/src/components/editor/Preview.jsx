@@ -69,7 +69,7 @@ function Preview({ destinations, className, children }) {
                 </div> */}
                 <div className="dropdown">
                     <button
-                        className="btn btn-secondary btn-sm dropdown-toggle me-2"
+                        className="btn btn-outline-secondary btn-sm dropdown-toggle me-2"
                         type="button"
                         onClick={toggleOpen}
                     >
@@ -84,7 +84,7 @@ function Preview({ destinations, className, children }) {
                                     type="button"
                                     key={`layout-${dest.name}`}
                                     className={classNames([
-                                        'btn btn-sm btn-secondary dropdown-item',
+                                        'btn btn-sm btn-outline-secondary dropdown-item',
                                         {
                                             active:
                                                 destination !== null && dest.id === destination.id,
@@ -108,7 +108,7 @@ function Preview({ destinations, className, children }) {
                     <button
                         type="button"
                         className={classNames([
-                            'btn btn-sm btn-secondary',
+                            'btn btn-sm btn-outline-secondary',
                             { active: size === 'desktop' },
                         ])}
                         onClick={() => onClickSize('desktop')}
@@ -118,7 +118,7 @@ function Preview({ destinations, className, children }) {
                     <button
                         type="button"
                         className={classNames([
-                            'btn btn-sm btn-secondary',
+                            'btn btn-sm btn-outline-secondary',
                             { active: size === 'tablet' },
                         ])}
                         onClick={() => onClickSize('tablet')}
@@ -128,7 +128,7 @@ function Preview({ destinations, className, children }) {
                     <button
                         type="button"
                         className={classNames([
-                            'btn btn-sm btn-secondary',
+                            'btn btn-sm btn-outline-secondary',
                             { active: size === 'phone' },
                         ])}
                         onClick={() => onClickSize('phone')}
@@ -139,7 +139,7 @@ function Preview({ destinations, className, children }) {
                 <div className="ms-auto">
                     <button
                         type="button"
-                        className={classNames(['btn btn-sm btn-secondary btn-outline'])}
+                        className={classNames(['btn btn-sm btn-outline-secondary btn-outline'])}
                         onClick={() => toggleFullscreen()}
                     >
                         <i className="bi-arrows-fullscreen" />

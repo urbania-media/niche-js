@@ -115,21 +115,39 @@ function EditorArticle({ document, viewer, destinations, className, onChange }) 
         [components, setFocusedBlock],
     );
 
-    const onOutlineClick = useCallback((block) => {
-        const { uuid: blockUUID = null } = block || {};
-        if (blockUUID !== null) {
-            const element =
-                window.document.querySelector(`[data-niche-uuid="${blockUUID}"]`) || null;
-            if (element !== null) {
-                element.scrollIntoView({ behavior: 'smooth' });
+    const onOutlineClick = useCallback(
+        (block) => {
+            const { uuid: blockUUID = null } = block || {};
+            if (blockUUID !== null) {
+                const element =
+                    window.document.querySelector(`[data-niche-uuid="${blockUUID}"]`) || null;
+                if (element !== null) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }
             }
-        }
-        if (blockUUID !== null) {
-            const focused =
-                (components || []).find(({ uuid = null }) => uuid === blockUUID) || null;
-            setFocusedBlock(focused);
-        }
-    });
+            if (blockUUID !== null) {
+                const focused =
+                    (components || []).find(({ uuid = null }) => uuid === blockUUID) || null;
+                setFocusedBlock(focused);
+            }
+        },
+        [components, setFocusedBlock],
+    );
+
+    const onOutlineClickRemove = useCallback(
+        (block) => {
+            const { uuid: blockUUID = null } = block || {};
+            if (blockUUID !== null) {
+                if (focusedBlock !== null && focusedBlock.uuid === blockUUID) {
+                    setFocusedBlock(null);
+                }
+                const others =
+                    (components || []).filter(({ uuid = null }) => uuid !== blockUUID) || null;
+                onChange({ ...document, components: others });
+            }
+        },
+        [document, components, focusedBlock, setFocusedBlock],
+    );
 
     const previousBody = useRef(null);
     const body = useMemo(
@@ -168,9 +186,6 @@ function EditorArticle({ document, viewer, destinations, className, onChange }) 
 
     useEffect(() => {
         if (nicheEditorRef.current === null && editorRef.current !== null) {
-            // editorRef.current = window.document.querySelector('[data-niche-root="true"]');
-            // console.log('root', editorRef.current);
-
             NicheEditor.create(editorRef.current, { class: 'hello' })
                 .then((editor) => {
                     console.log('Editor was initialized', editor, body);
@@ -194,13 +209,17 @@ function EditorArticle({ document, viewer, destinations, className, onChange }) 
         }
     }, [body, onEditorChange, onEditorClick]);
 
-    // console.log('editor article body', body);
-
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>
             <Editor
                 destinations={destinations}
-                left={<Outline components={components} onClick={onOutlineClick} />}
+                left={
+                    <Outline
+                        components={components}
+                        onClick={onOutlineClick}
+                        onClickRemove={onOutlineClickRemove}
+                    />
+                }
                 right={
                     <div className={styles.right}>
                         {focusedBlock !== null && focusedBlock?.type ? (

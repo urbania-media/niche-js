@@ -16,3 +16,9 @@ msgstr ""
 msgctxt "0aV7v8"
 msgid "Image label"
 msgstr "Image label"
+
+# Field label
+#: OPxJx/
+msgctxt "OPxJx/"
+msgid "Layout"
+msgstr "Layout"

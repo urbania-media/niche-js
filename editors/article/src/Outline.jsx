@@ -8,15 +8,17 @@ const propTypes = {
     components: PropTypes.arrayOf(PropTypes.shape({})),
     className: PropTypes.string,
     onClick: PropTypes.func,
+    onClickRemove: PropTypes.func,
 };
 
 const defaultProps = {
     components: null,
     className: null,
     onClick: null,
+    onClickRemove: null,
 };
 
-function Outline({ components, className, onClick }) {
+function Outline({ components, className, onClick, onClickRemove }) {
     return (
         <div className={classNames([styles.outline, { [className]: className !== null }])}>
             {(components || [])
@@ -24,10 +26,17 @@ function Outline({ components, className, onClick }) {
                 .map((it, i) => {
                     const { type = null } = it || {};
                     return (
-                        <p key={`header-${i + 1}-${it.type}`} className={styles.outlineLabel}>
-                            <span className={styles.pre}>Head</span>
-                            {type}
-                        </p>
+                        <div key={`header-${i + 1}-${it.type}`} className="d-flex">
+                            <button
+                                key={`outline-${i + 1}-${it.type}`}
+                                type="button"
+                                className={classNames(['btn btn-sm text-start w-100'])}
+                                onClick={() => onClick(it)}
+                            >
+                                <strong className="me-1">A</strong>
+                                <span className="text-truncate">{type}</span>
+                            </button>
+                        </div>
                     );
                 })}
             <hr />
@@ -35,36 +44,53 @@ function Outline({ components, className, onClick }) {
                 .filter(({ role = null }) => role === 'block')
                 .map((it, i) => {
                     const { type = null, body = null, size } = it || {};
-                    let label = <p className={styles.outlineLabel}>{type}</p>;
+                    let label = (
+                        <p className={styles.outlineLabel}>
+                            <span className="me-1 text-capitalize">{type}</span>
+                        </p>
+                    );
                     const partialBody = body !== null ? body.replace(/<\/?[^>]+(>|$)/g, '') : null;
                     const finalBody = partialBody === '&nbsp;' ? '' : partialBody;
 
                     if (type === 'text') {
                         label = (
                             <p className={styles.outlineLabel}>
-                                <span className={styles.pre}>p</span>
+                                <strong className="me-1 text-capitalize">P</strong>
                                 {finalBody}
                             </p>
                         );
                     }
+
                     if (type === 'heading') {
                         label = (
                             <p className={styles.outlineLabel}>
-                                <span className={styles.pre}>{`h${size}`}</span>
+                                <strong className="me-1 text-capitalize">{`H${size}`}</strong>
                                 {finalBody}
                             </p>
                         );
                     }
 
                     return (
-                        <button
-                            key={`outline-${i + 1}-${it.type}`}
-                            type="button"
-                            className={styles.outlineItem}
-                            onClick={() => onClick(it)}
-                        >
-                            {label}
-                        </button>
+                        <div key={`outline-${i + 1}-${it.type}`} className="d-flex">
+                            <button
+                                type="button"
+                                className={classNames([
+                                    'btn btn-sm text-truncate flex-grow-1 text-start',
+                                    styles.outlineButton,
+                                ])}
+                                onClick={() => onClick(it)}
+                            >
+                                {label}
+                            </button>
+                            <button
+                                key={`outline-${i + 1}-${it.type}`}
+                                type="button"
+                                className={classNames(['btn btn-sm', styles.outlineButton])}
+                                onClick={() => onClickRemove(it)}
+                            >
+                                <i className="bi-x" />
+                            </button>
+                        </div>
                     );
                 })}
         </div>

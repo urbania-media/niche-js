@@ -23,9 +23,9 @@ const defaultProps = {
     className: null,
 };
 
+// TODO: figure out the edit mode
 function Article({ title, subtitle, category, image, className }) {
     const { url = null } = image || {};
-
     return (
         <header className={classNames([styles.container, { [className]: className !== null }])}>
             <div className={styles.category}>{category}</div>

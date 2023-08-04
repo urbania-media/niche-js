@@ -19,6 +19,7 @@ import { LinkImage } from '@ckeditor/ckeditor5-link';
 import { List } from '@ckeditor/ckeditor5-list';
 import { Paragraph } from '@ckeditor/ckeditor5-paragraph';
 import { BlockToolbar } from '@ckeditor/ckeditor5-ui';
+import { Undo } from '@ckeditor/ckeditor5-undo';
 import { SimpleUploadAdapter } from '@ckeditor/ckeditor5-upload';
 import { getCSRFHeaders } from '@folklore/fetch';
 
@@ -36,6 +37,7 @@ NicheEditor.builtinPlugins = [
     Italic,
     Heading,
     List,
+
     // Image,
     ImageBlock,
     ImageEditing,
@@ -53,6 +55,7 @@ NicheEditor.builtinPlugins = [
     // Blocks
     NichePlugin,
     SimpleUploadAdapter,
+    Undo,
 ];
 
 NicheEditor.defaultConfig = {
