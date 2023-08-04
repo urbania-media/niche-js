@@ -14,7 +14,7 @@ export default class NicheDataProcessor {
     }
 
     toData(viewFragment = null) {
-        console.log('to data', viewFragment.childCount, viewFragment);
+        // console.log('to data', viewFragment.childCount, viewFragment);
 
         const components = [...new Array(viewFragment.childCount).keys()]
             .map((index) => {
@@ -65,7 +65,7 @@ export default class NicheDataProcessor {
                     };
                 }
 
-                console.log('COMPONENT NOT FOUND', child);
+                console.log('BEWARE COMPONENT NOT FOUND', child);
 
                 return null;
             })

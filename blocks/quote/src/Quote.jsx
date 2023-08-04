@@ -26,7 +26,13 @@ function Quote({ body, caption, className }) {
             className={classNames([styles.container, { [className]: className !== null }])}
         >
             <Editable tag="blockquote" name="body" className={styles.body} html={body} />
-            <Editable tag="figcaption" name="caption" className={styles.caption} html={caption} />
+            <Editable
+                tag="figcaption"
+                name="caption"
+                className={styles.caption}
+                html={caption}
+                inline
+            />
         </Widget>
     );
 }

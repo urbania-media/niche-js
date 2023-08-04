@@ -29,7 +29,7 @@ function Image({ media, className }) {
                 'Image block'
             )}
             {caption !== null ? (
-                <Editable className={styles.caption} inline>
+                <Editable className={styles.caption} name="image" inline>
                     {caption || 'Empty'}
                 </Editable>
             ) : null}

@@ -21,4 +21,4 @@ msgstr "Étiquette d'image"
 #: OPxJx/
 msgctxt "OPxJx/"
 msgid "Layout"
-msgstr ""
+msgstr "Mise en page"

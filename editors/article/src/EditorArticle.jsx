@@ -61,29 +61,19 @@ function EditorArticle({ document, viewer, destinations, className, onChange }) 
     const editorRef = useRef(null);
     const nicheEditorRef = useRef(null);
 
+    // For the editor
+    const documentRef = useRef(document);
+    useEffect(() => {
+        documentRef.current = document;
+    }, [document]);
+
     const ViewerComponent = useViewerComponent(viewer || type || 'article');
     const blocksManager = useBlocksComponentsManager();
     const blocks = blocksManager.getComponents();
 
-    const onEditorChange = useCallback(
-        (event, editor) => {
-            const data = editor.getData();
-            if (data && onChange !== null) {
-                const { components: newBlocks = null } = data || {};
-                const otherComponents = document.components.filter(
-                    ({ role = null }) => role !== 'block',
-                );
-                const nextValue = { ...document, components: [...otherComponents, ...newBlocks] };
-                console.log('onChange', nextValue);
-
-                onChange(nextValue);
-            }
-        },
-        [document, onChange],
-    );
-
     const onFieldChange = useCallback(
         (newValue) => {
+            console.log('newValue', newValue);
             const { uuid: blockUUID = null } = newValue || {};
             const newComponents = components.reduce((acc, comp) => {
                 const { uuid = null } = comp || {};
@@ -95,7 +85,27 @@ function EditorArticle({ document, viewer, destinations, className, onChange }) 
             onChange({ ...document, components: newComponents });
             setFocusedBlock(newValue);
         },
-        [onChange, document, focusedBlock],
+        [document, onChange, setFocusedBlock],
+    );
+
+    const onEditorChange = useCallback(
+        (event, editor) => {
+            const data = editor.getData();
+            if (data && onChange !== null) {
+                const { components: newBlocks = null } = data || {};
+                const { components: documentComponents = [] } = documentRef.current || {};
+                const otherComponents = (documentComponents || []).filter(
+                    ({ role = null }) => role !== 'block',
+                );
+                const nextValue = {
+                    ...documentRef.current,
+                    components: [...otherComponents, ...newBlocks],
+                };
+                // console.log('onChange', otherComponents, newBlocks);
+                onChange(nextValue);
+            }
+        },
+        [onChange],
     );
 
     const onEditorClick = useCallback(
@@ -106,13 +116,15 @@ function EditorArticle({ document, viewer, destinations, className, onChange }) 
             if (target !== null) {
                 const blockUUID = findParentBlock(target);
                 if (blockUUID !== null) {
+                    const { components: documentComponents = [] } = documentRef.current || {};
                     const focused =
-                        (components || []).find(({ uuid = null }) => uuid === blockUUID) || null;
+                        (documentComponents || []).find(({ uuid = null }) => uuid === blockUUID) ||
+                        null;
                     setFocusedBlock(focused);
                 }
             }
         },
-        [components, setFocusedBlock],
+        [setFocusedBlock],
     );
 
     const onOutlineClick = useCallback(
@@ -168,7 +180,7 @@ function EditorArticle({ document, viewer, destinations, className, onChange }) 
             previousBody.current = body;
             const { selection: currentSelection = null } = editor.editing.model.document || {};
             const range = currentSelection.getFirstRange();
-            console.log('change', body);
+            console.log('change from the top');
             editor.setData(body);
             editor.model.change((writer) => {
                 try {
@@ -207,7 +219,15 @@ function EditorArticle({ document, viewer, destinations, className, onChange }) 
                     console.error(error.stack);
                 });
         }
-    }, [body, onEditorChange, onEditorClick]);
+        return () => {
+            if (nicheEditorRef.current) {
+                nicheEditorRef.current.destroy();
+                nicheEditorRef.current = null;
+            }
+        };
+    }, [onEditorChange, onEditorClick]);
+
+    // console.log('my document', document);
 
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>

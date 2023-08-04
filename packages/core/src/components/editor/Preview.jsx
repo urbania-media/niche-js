@@ -79,7 +79,7 @@ function Preview({ destinations, className, children }) {
                     </button>
                     <ul className={classNames(['dropdown-menu', { show: open }])}>
                         {(destinations || []).map((dest) => (
-                            <li>
+                            <li key={`destination-${dest.name}`}>
                                 <button
                                     type="button"
                                     key={`layout-${dest.name}`}

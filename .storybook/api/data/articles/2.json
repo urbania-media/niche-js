@@ -1,8 +1,14 @@
 {
     "id": "1",
     "title": "Les amis de la forêt",
-
     "components": [
+        {
+            "id": 10,
+            "role": "block",
+            "type": "quote",
+            "body": "The message is the medium.",
+            "caption": "Marshall McLuhan"
+        },
         {
             "id": 12,
             "role": "block",
@@ -32,13 +38,7 @@
             "type": "text",
             "body": "<p>We believe in Mr. Korine to deliver on his new screenplay.</p>"
         },
-        {
-            "id": 10,
-            "role": "block",
-            "type": "quote",
-            "body": "The message is the medium.",
-            "caption": "Marshall McLuhan"
-        },
+
         {
             "id": null,
             "role": "block",

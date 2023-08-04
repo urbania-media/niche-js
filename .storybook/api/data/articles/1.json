@@ -4,14 +4,12 @@
     "components": [
         {
             "id": 1,
-            "uuid": "header-1",
             "role": "header",
             "type": "title",
             "body": "Les vraies questions URBANIA – Édition FESTIF"
         },
         {
             "id": 2,
-            "uuid": "header-2",
             "role": "header",
             "type": "subtitle",
             "body": "Les VRAIES questions URBANIA, 5 questions, plusieurs réponses, une seule vérité."
