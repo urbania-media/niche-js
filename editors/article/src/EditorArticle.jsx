@@ -60,9 +60,9 @@ function EditorArticle({ document, viewer, destinations, className, onChange }) 
     const [focusedBlock, setFocusedBlock] = useState(null);
     const editorRef = useRef(null);
     const nicheEditorRef = useRef(null);
-
-    // For the editor
     const documentRef = useRef(document);
+
+    // For the editor update
     useEffect(() => {
         documentRef.current = document;
     }, [document]);
@@ -87,25 +87,23 @@ function EditorArticle({ document, viewer, destinations, className, onChange }) 
         [document, onChange, setFocusedBlock],
     );
 
-    const onEditorChange = useCallback(
-        (event, editor) => {
-            const data = editor.getData();
-            if (data && onChange !== null) {
-                const { components: newBlocks = null } = data || {};
-                const { components: documentComponents = [] } = documentRef.current || {};
-                const otherComponents = (documentComponents || []).filter(
-                    ({ role = null }) => role !== 'block',
-                );
-                const nextValue = {
-                    ...documentRef.current,
-                    components: [...otherComponents, ...newBlocks],
-                };
-                // console.log('onChange', otherComponents, newBlocks);
-                onChange(nextValue);
-            }
-        },
-        [onChange],
-    );
+    const onEditorChange = useCallback((event, editor) => {
+        const data = editor.getData();
+        if (data && onChange !== null) {
+            const { components: newBlocks = null } = data || {};
+            const { components: documentComponents = [] } = documentRef.current || {};
+            const otherComponents = (documentComponents || []).filter(
+                ({ role = null }) => role !== 'block',
+            );
+            const nextValue = {
+                ...documentRef.current,
+                components: [...otherComponents, ...newBlocks],
+            };
+            // console.log('onChange', otherComponents, newBlocks);
+            onChange(nextValue);
+        }
+        // Note = this one cannot have onChange as dependency because autosave
+    }, []);
 
     const onEditorClick = useCallback(
         (event, editor) => {
@@ -225,8 +223,6 @@ function EditorArticle({ document, viewer, destinations, className, onChange }) 
             }
         };
     }, [onEditorChange, onEditorClick]);
-
-    // console.log('my document', document);
 
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>
