@@ -24,7 +24,9 @@ import Settings from './Settings';
 import styles from './styles.module.css';
 
 const propTypes = {
-    document: PropTypes.shape({}),
+    document: PropTypes.shape({
+        components: PropTypes.array,
+    }),
     viewer: PropTypes.string,
     destinations: PropTypes.arrayOf(PropTypes.shape({})),
     className: PropTypes.string,
@@ -40,7 +42,7 @@ const defaultProps = {
 };
 
 function findParentBlock(block) {
-    // Works for both kind of views
+    // Works for both kind of views, model or view
     const nicheId = block.getAttribute
         ? block.getAttribute('uuid') || block.getAttribute('data-niche-uuid')
         : null;
@@ -67,13 +69,17 @@ function EditorArticle({ document, viewer, destinations, className, onChange }) 
         (event, editor) => {
             const data = editor.getData();
             if (data && onChange !== null) {
-                const { components: newComponents = null } = data || {};
-                const nextValue = { ...document, components: newComponents };
-                // console.log('onChange', nextValue);
+                const { components: newBlocks = null } = data || {};
+                const otherComponents = document.components.filter(
+                    ({ role = null }) => role !== 'block',
+                );
+                const nextValue = { ...document, components: [...otherComponents, ...newBlocks] };
+                console.log('onChange', nextValue);
+
                 onChange(nextValue);
             }
         },
-        [onChange],
+        [document, onChange],
     );
 
     const onFieldChange = useCallback(
@@ -131,7 +137,7 @@ function EditorArticle({ document, viewer, destinations, className, onChange }) 
             renderToString(
                 <EditorProvider>
                     <ComponentsProvider namespace={BLOCKS_NAMESPACE} components={blocks}>
-                        <ViewerComponent document={document} />
+                        <ViewerComponent document={document} contentOnly />
                     </ComponentsProvider>
                 </EditorProvider>,
             ),
@@ -144,6 +150,7 @@ function EditorArticle({ document, viewer, destinations, className, onChange }) 
             previousBody.current = body;
             const { selection: currentSelection = null } = editor.editing.model.document || {};
             const range = currentSelection.getFirstRange();
+            console.log('change', body);
             editor.setData(body);
             editor.model.change((writer) => {
                 try {
@@ -153,7 +160,7 @@ function EditorArticle({ document, viewer, destinations, className, onChange }) 
                     // }
                     writer.setSelection(range);
                 } catch (e) {
-                    // console.log('failed to focus on range', e, range);
+                    console.log('failed to focus on range', e, range);
                 }
             });
         }
@@ -161,9 +168,12 @@ function EditorArticle({ document, viewer, destinations, className, onChange }) 
 
     useEffect(() => {
         if (nicheEditorRef.current === null && editorRef.current !== null) {
-            NicheEditor.create(editorRef.current)
+            // editorRef.current = window.document.querySelector('[data-niche-root="true"]');
+            // console.log('root', editorRef.current);
+
+            NicheEditor.create(editorRef.current, { class: 'hello' })
                 .then((editor) => {
-                    console.log('Editor was initialized', editor);
+                    console.log('Editor was initialized', editor, body);
 
                     editor.setData(body);
 
@@ -184,7 +194,7 @@ function EditorArticle({ document, viewer, destinations, className, onChange }) 
         }
     }, [body, onEditorChange, onEditorClick]);
 
-    console.log('editor article body', body);
+    // console.log('editor article body', body);
 
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>
@@ -202,7 +212,13 @@ function EditorArticle({ document, viewer, destinations, className, onChange }) 
                     </div>
                 }
             >
-                <div ref={editorRef} />
+                <EditorProvider>
+                    <ComponentsProvider namespace={BLOCKS_NAMESPACE} components={blocks}>
+                        <ViewerComponent document={document} headerOnly>
+                            <div ref={editorRef} />
+                        </ViewerComponent>
+                    </ComponentsProvider>
+                </EditorProvider>
             </Editor>
         </div>
     );

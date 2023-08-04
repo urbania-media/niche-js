@@ -267,6 +267,69 @@
     },
     "components": [
         {
+            "id": 1,
+            "role": "header",
+            "type": "title",
+            "body": "Side hustle"
+        },
+        {
+            "id": 2,
+            "role": "header",
+            "type": "subtitle",
+            "body": "On a test\u00e9 un \u00ab side hustle \u00bb qui promet un revenu passif sans effort."
+        },
+        {
+            "id": 3,
+            "role": "header",
+            "type": "category",
+            "body": "Insolite"
+        },
+        {
+            "id": 4,
+            "role": "header",
+            "type": "image",
+            "media": {
+                "id": "24388",
+                "type": "image",
+                "name": "media202308thumbs-sidehustles-site-6",
+                "url": "https://v2.urbania.ca/storage/image/2023-08-03/23372-085346.jpg",
+                "width": 1920,
+                "height": 1080,
+                "sizes": [
+                    {
+                        "id": "original",
+                        "url": "https://v2.urbania.ca/storage/image/2023-08-03/23372-085346.jpg",
+                        "width": 1920,
+                        "height": 1080
+                    },
+                    {
+                        "id": "thumbnail",
+                        "url": "https://v2.urbania.ca/storage/image/2023-08-03/23372-085346-filters(thumbnail).jpg",
+                        "width": 200,
+                        "height": 200
+                    },
+                    {
+                        "id": "small",
+                        "url": "https://v2.urbania.ca/storage/image/2023-08-03/23372-085346-filters(small).jpg",
+                        "width": 500,
+                        "height": 281
+                    },
+                    {
+                        "id": "medium",
+                        "url": "https://v2.urbania.ca/storage/image/2023-08-03/23372-085346-filters(medium).jpg",
+                        "width": 800,
+                        "height": 450
+                    },
+                    {
+                        "id": "large",
+                        "url": "https://v2.urbania.ca/storage/image/2023-08-03/23372-085346-filters(large).jpg",
+                        "width": 1600,
+                        "height": 900
+                    }
+                ]
+            }
+        },
+        {
             "id": "0",
             "role": "block",
             "type": "text",

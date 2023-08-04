@@ -8,26 +8,13 @@ export default class NicheDataProcessor {
         this.htmlDataProcessor = new HtmlDataProcessor(document || null);
     }
 
-    /**
-     * Keeps the specified element in the output as HTML. This is useful if the editor contains
-     * features producing HTML that is not a part of the standard.
-     *
-     * By default, all HTML tags are removed.
-     *
-     * @param element The element name to be kept.
-     */
-    // keepHtml(element) {
-    // turndownService.keep( [ element ] );
-    // return element;
-    // }
-
     toView(data = null) {
         // console.log('to view', data);
         return this.htmlDataProcessor.toView(data);
     }
 
     toData(viewFragment = null) {
-        // console.log('to data', viewFragment.childCount, viewFragment);
+        console.log('to data', viewFragment.childCount, viewFragment);
 
         const components = [...new Array(viewFragment.childCount).keys()]
             .map((index) => {

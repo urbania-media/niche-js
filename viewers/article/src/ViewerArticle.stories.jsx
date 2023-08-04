@@ -2,6 +2,7 @@
 import React from 'react';
 
 import BlocksProvider from '../../../packages/blocks/src/BlocksProvider';
+import HeadersProvider from '../../../packages/headers/src/HeadersProvider';
 import Article from './ViewerArticle';
 
 import article from '../../../.storybook/api/data/articles/3.json';
@@ -13,9 +14,11 @@ export default {
     argTypes: {},
     decorators: [
         (Story) => (
-            <BlocksProvider>
-                <Story />
-            </BlocksProvider>
+            <HeadersProvider>
+                <BlocksProvider>
+                    <Story />
+                </BlocksProvider>
+            </HeadersProvider>
         ),
     ],
 };

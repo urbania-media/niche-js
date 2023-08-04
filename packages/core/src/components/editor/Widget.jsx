@@ -23,7 +23,7 @@ function Widget({ tag, className, children }) {
     return (
         <Tag
             className={classNames([{ [className]: className !== null }])}
-            {...(editor !== null ? { 'data-niche-widget': true } : null)}
+            {...(editor !== null ? { 'data-niche-widget': 'true' } : null)}
         >
             {children}
         </Tag>

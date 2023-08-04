@@ -1,13 +1,27 @@
 {
     "id": "2",
-    "title": "Les amis de la forêt 2.0",
+    "title": "Les vraies questions URBANIA – Édition FESTIF",
     "components": [
+        {
+            "id": 1,
+            "uuid": "header-1",
+            "role": "header",
+            "type": "title",
+            "body": "Les vraies questions URBANIA – Édition FESTIF"
+        },
+        {
+            "id": 2,
+            "uuid": "header-2",
+            "role": "header",
+            "type": "subtitle",
+            "body": "Les VRAIES questions URBANIA, 5 questions, plusieurs réponses, une seule vérité."
+        },
         {
             "role": "block",
             "type": "text",
-            "body": "<p>Hello my text</p>"
+            "body": "<p>Envie de découvrir une tonne d’histoires de gens passionnés (ou juste de vous divertir un bon coup)? <a href='https://goo.gl/WpXp1X'>Abonnez-vous à notre chaîne YouTube</a> et suivez-nous sur<a href='https://www.instagram.com/_urbania/'> Instagram</a> et<a href='https://www.tiktok.com/@_urbania'> TikTok</a> pour ne rien manquer!</p>"
         }
     ],
-    "created_at": "2023-02-01 00:00:00",
-    "updated_at": "2023-02-01 00:00:00"
+    "created_at": "2023-07-01 00:00:00",
+    "updated_at": "2023-07-01 00:00:00"
 }

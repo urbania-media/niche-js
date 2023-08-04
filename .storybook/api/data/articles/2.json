@@ -4,11 +4,13 @@
 
     "components": [
         {
-            "id": 1,
-            "role": "header",
-            "type": "article",
-            "title": "Trash humpers: the legacy",
-            "subtitle": "Life is hard when yr a trash humper."
+            "id": 12,
+            "role": "block",
+            "type": "image",
+            "media": {
+                "url": "https://picsum.photos/200/300",
+                "caption": "Picsum"
+            }
         },
         {
             "id": 1,
@@ -43,14 +45,7 @@
             "type": "text",
             "body": "<p>Trash humpers is the best movie ever, even better than Gummo.</p>"
         },
-        {
-            "id": 12,
-            "role": "block",
-            "type": "image",
-            "media": {
-                "url": "https://picsum.photos/200/300"
-            }
-        },
+
         {
             "id": null,
             "role": "block",

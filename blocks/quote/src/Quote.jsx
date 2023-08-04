@@ -15,7 +15,7 @@ const propTypes = {
 
 const defaultProps = {
     body: null,
-    caption: null,
+    caption: 'CAPTION',
     className: null,
 };
 
@@ -25,18 +25,8 @@ function Quote({ body, caption, className }) {
             tag="figure"
             className={classNames([styles.container, { [className]: className !== null }])}
         >
-            <Editable
-                tag="blockquote"
-                name="body"
-                className={styles.body}
-                dangerouslySetInnerHTML={{ __html: body }}
-            />
-            <Editable
-                tag="figcaption"
-                name="caption"
-                className={styles.caption}
-                dangerouslySetInnerHTML={{ __html: caption }}
-            />
+            <Editable tag="blockquote" name="body" className={styles.body} html={body} />
+            <Editable tag="figcaption" name="caption" className={styles.caption} html={caption} />
         </Widget>
     );
 }

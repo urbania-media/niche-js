@@ -1,4 +1,6 @@
 import { Plugin } from '@ckeditor/ckeditor5-core';
+import { upcastImageFigure } from '@ckeditor/ckeditor5-image/src/image/converters';
+import { getImgViewElementMatcher } from '@ckeditor/ckeditor5-image/src/image/utils';
 import { Widget, toWidget, toWidgetEditable } from '@ckeditor/ckeditor5-widget';
 import { v4 as uuidV4 } from 'uuid';
 
@@ -80,10 +82,43 @@ export default class NichePlugin extends Plugin {
         });
 
         // Extend these?
+        schema.extend('$root', {
+            allowAttributes: ['class', 'custom'],
+        });
+
         // schema.extend('paragraph', {});
         schema.extend('imageBlock', {
-            allowAttributes: ['alt', 'src', 'srcset', 'data-image'],
+            allowAttributes: [
+                'tag',
+                'class',
+                'id',
+                'type',
+                'role',
+                'alt',
+                'src',
+                'srcset',
+                'data-image',
+            ],
         });
+
+        const imageUtils = this.editor.plugins.get('ImageUtils');
+
+        console.log(upcastImageFigure, getImgViewElementMatcher);
+
+        conversion
+            .for('upcast')
+            .elementToElement({
+                view: getImgViewElementMatcher(this.editor, 'imageBlock'),
+                model: (viewImage, { writer: modelWriter }) =>
+                    modelWriter.createElement('imageBlock', {
+                        src: viewImage.getAttribute('src') || null,
+                        alt: viewImage.getAttribute('alt') || null,
+                        class: 'image',
+                        id: 'magie',
+                    }),
+                converterPriority: 'high',
+            })
+            .add(upcastImageFigure(imageUtils));
 
         // Inline blocks
 
@@ -174,7 +209,7 @@ export default class NichePlugin extends Plugin {
             converterPriority: 'high',
         });
 
-        conversion.for('editingDowncast').attributeToAttribute({
+        conversion.for('downcast').attributeToAttribute({
             view: {
                 name: /^h[1-6]/,
                 key: 'class',
@@ -184,7 +219,7 @@ export default class NichePlugin extends Plugin {
             },
         });
 
-        conversion.for('editingDowncast').attributeToAttribute({
+        conversion.for('downcast').attributeToAttribute({
             view: {
                 name: 'p',
                 key: 'class',
@@ -243,15 +278,50 @@ export default class NichePlugin extends Plugin {
             },
         });
 
+        // Master class
+        // conversion.for('upcast').elementToAttribute({
+        //     view: {
+        //         attributes: {
+        //             'data-niche-root': 'true',
+        //         },
+        //     },
+        //     model: (viewElement, { writer: modelWriter }) => {
+        //         console.log('viewElement', viewElement, viewElement.getAttribute('class'));
+        //         console.log(modelWriter);
+
+        //         return modelWriter.createElement('$root', {
+        //             class: viewElement.getAttribute('class'),
+        //             custom: 'blabla',
+        //         });
+        //     },
+        // });
+
+        // conversion.for('downcast').attributeToAttribute({
+        //     model: {
+        //         name: '$root',
+        //         key: 'class',
+        //     },
+        //     view: {
+        //         key: 'class',
+        //     },
+        // });
+
         /**
-         * Niche blocks
+         * Image blocks
          */
         conversion.for('upcast').elementToElement({
+            view: {
+                name: 'img',
+                attributes: {
+                    'data-niche-image': true,
+                },
+            },
             model: (viewElement, { writer: modelWriter }) => {
+                console.log('vee', viewElement);
                 const blockContainer = viewElement;
                 const block = blockContainer.getChild(0);
                 const widget = block.getAttribute('data-niche-widget') || null;
-                return modelWriter.createElement('nicheBlock', {
+                return modelWriter.createElement('imageBlock', {
                     tag: block.name,
                     class: block.getAttribute('class'),
                     widget: widget !== null,
@@ -261,12 +331,34 @@ export default class NichePlugin extends Plugin {
                     role: 'block',
                 });
             },
+        });
+
+        /**
+         * Niche blocks
+         */
+        conversion.for('upcast').elementToElement({
             view: {
                 attributes: {
                     'data-niche-role': 'block',
                     'data-niche-type': /.*/,
                     'data-niche-block-inline': 'false',
                 },
+            },
+            model: (viewElement, { writer: modelWriter }) => {
+                const blockContainer = viewElement;
+                const block = blockContainer.getChild(0);
+                const widget = block.getAttribute('data-niche-widget') || null;
+                console.log('nicheblock');
+
+                return modelWriter.createElement('nicheBlock', {
+                    tag: block.name,
+                    class: block.getAttribute('class'),
+                    widget: widget !== null,
+                    id: blockContainer.getAttribute('data-niche-id') || null,
+                    uuid: blockContainer.getAttribute('data-niche-uuid'),
+                    type: blockContainer.getAttribute('data-niche-type'),
+                    role: 'block',
+                });
             },
         });
 
@@ -307,6 +399,12 @@ export default class NichePlugin extends Plugin {
          * Niche Headers
          */
         conversion.for('upcast').elementToElement({
+            view: {
+                attributes: {
+                    'data-niche-type': true,
+                    'data-niche-role': 'header',
+                },
+            },
             model: (viewElement, { writer: modelWriter }) => {
                 const headerContainer = viewElement;
                 const header = headerContainer.getChild(0);
@@ -321,12 +419,6 @@ export default class NichePlugin extends Plugin {
                     type: headerContainer.getAttribute('data-niche-type'),
                     role: 'header',
                 });
-            },
-            view: {
-                attributes: {
-                    'data-niche-type': true,
-                    'data-niche-role': 'header',
-                },
             },
         });
 
@@ -367,17 +459,17 @@ export default class NichePlugin extends Plugin {
          * Niche inline editable tags
          */
         conversion.for('upcast').elementToElement({
+            view: {
+                attributes: {
+                    'data-niche-editable-inline': true,
+                },
+            },
             model: (viewElement, { writer: modelWriter }) =>
                 modelWriter.createElement('nicheEditableInline', {
                     tag: viewElement.name,
                     class: viewElement.getAttribute('class'),
                     key: viewElement.getAttribute('data-niche-editable-inline'),
                 }),
-            view: {
-                attributes: {
-                    'data-niche-editable-inline': true,
-                },
-            },
         });
 
         conversion.for('dataDowncast').elementToElement({
@@ -406,17 +498,17 @@ export default class NichePlugin extends Plugin {
          * Niche editable tags
          */
         conversion.for('upcast').elementToElement({
+            view: {
+                attributes: {
+                    'data-niche-editable': /.+/,
+                },
+            },
             model: (viewElement, { writer: modelWriter }) =>
                 modelWriter.createElement('nicheEditable', {
                     tag: viewElement.name,
                     class: viewElement.getAttribute('class'),
                     key: viewElement.getAttribute('data-niche-editable'),
                 }),
-            view: {
-                attributes: {
-                    'data-niche-editable': /.+/,
-                },
-            },
         });
 
         conversion.for('dataDowncast').elementToElement({

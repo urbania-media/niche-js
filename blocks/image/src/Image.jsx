@@ -20,22 +20,17 @@ const defaultProps = {
 
 function Image({ media, className }) {
     const { url = null, alt = null, caption = 'Image caption' } = media || {};
+
     return (
         <Widget className={classNames([styles.container, { [className]: className !== null }])}>
             {url !== null ? (
-                <img
-                    // data-niche-editable-attributes="src,alt"
-                    data-image="magieee"
-                    className={styles.img}
-                    src={url}
-                    alt={alt}
-                />
+                <img data-niche-image="true" className={styles.img} src={url} alt={alt} />
             ) : (
                 'Image block'
             )}
             {caption !== null ? (
                 <Editable className={styles.caption} inline>
-                    {caption}
+                    {caption || 'Empty'}
                 </Editable>
             ) : null}
         </Widget>

@@ -1,15 +1,29 @@
 .container {
-
+    padding: 10px;
+    border: 1px solid black;
+    text-align: center;
 }
 
 .title {
     font-family: 'Garage Gothic', sans-serif;
     font-size: 3em;
     font-weight: 700;
+    line-height: 1;
     text-transform: uppercase;
 }
 
 .subtitle {
     font-family: 'Sina nova', serif;
-    font-size: 2em;
+    font-size: 0.9em;
+}
+
+.category {
+    font-size: 0.9em;
+    text-transform: uppercase;
+}
+
+.image {
+    display: block;
+    max-width: 300px;
+    margin: 10px auto;
 }

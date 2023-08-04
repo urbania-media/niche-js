@@ -55,6 +55,7 @@ function Outline({ components, className, onClick }) {
                             </p>
                         );
                     }
+
                     return (
                         <button
                             key={`outline-${i + 1}-${it.type}`}

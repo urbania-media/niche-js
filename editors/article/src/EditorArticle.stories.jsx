@@ -6,6 +6,7 @@ import { v4 as uuidV4 } from 'uuid';
 import BlocksProvider from '../../../packages/blocks/src/BlocksProvider';
 import { EditorProvider } from '../../../packages/core/src/contexts/EditorContext';
 import FieldsProvider from '../../../packages/fields/src/FieldsProvider';
+import HeadersProvider from '../../../packages/headers/src/HeadersProvider';
 import ViewersProvider from '../../../packages/viewers/src/ViewersProvider';
 import Article from './EditorArticle';
 
@@ -22,11 +23,13 @@ export default {
         (Story) => (
             <EditorProvider>
                 <FieldsProvider>
-                    <BlocksProvider>
-                        <ViewersProvider>
-                            <Story />
-                        </ViewersProvider>
-                    </BlocksProvider>
+                    <HeadersProvider>
+                        <BlocksProvider>
+                            <ViewersProvider>
+                                <Story />
+                            </ViewersProvider>
+                        </BlocksProvider>
+                    </HeadersProvider>
                 </FieldsProvider>
             </EditorProvider>
         ),
@@ -60,7 +63,7 @@ export const Simple = {
     render: ({ document = null }) => {
         const [currentDocument, onChange] = useState(getInitialDocument(document));
         return (
-            <div style={{ width: 960, height: 600, margin: 'auto' }}>
+            <div style={{ width: '100%', height: 600, margin: 'auto' }}>
                 <Article document={currentDocument} onChange={onChange} />
             </div>
         );
@@ -74,7 +77,7 @@ export const Urbania = {
     render: ({ document = null }) => {
         const [currentDocument, onChange] = useState(getInitialDocument(document));
         return (
-            <div style={{ width: 960, height: 800, margin: 'auto' }}>
+            <div style={{ width: '100%', height: 800, margin: 'auto' }}>
                 <Article document={currentDocument} onChange={onChange} />
             </div>
         );
@@ -92,7 +95,7 @@ export const Trash = {
         };
         const [currentDocument, onChange] = useState(initialDocument);
         return (
-            <div style={{ width: 800, height: 600, margin: 'auto' }}>
+            <div style={{ width: '100%', height: 600, margin: 'auto' }}>
                 <Article document={currentDocument} onChange={onChange} />
             </div>
         );

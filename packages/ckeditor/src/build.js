@@ -8,10 +8,12 @@ import {
     // Image,
     // ImageCaption,
     // ImageStyle,
+    ImageUtils,
     ImageBlock,
     ImageResize,
     ImageToolbar,
     ImageInsert,
+    ImageEditing,
 } from '@ckeditor/ckeditor5-image';
 import { LinkImage } from '@ckeditor/ckeditor5-link';
 import { List } from '@ckeditor/ckeditor5-list';
@@ -34,10 +36,11 @@ NicheEditor.builtinPlugins = [
     Italic,
     Heading,
     List,
-
     // Image,
     ImageBlock,
+    ImageEditing,
     ImageToolbar,
+    ImageUtils,
     // ImageCaption,
     // ImageStyle,
     ImageResize,
