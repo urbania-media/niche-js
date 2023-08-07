@@ -72,46 +72,14 @@ export default class NichePlugin extends Plugin {
         // Extend base schema?
         // schema.extend('paragraph', {});
 
-        // The paragraph problem
-        conversion.for('upcast').elementToElement({
-            model: (viewElement, { writer: modelWriter }) => {
-                const parent = viewElement?.parent?.parent || null;
-                const id = parent !== null ? parent.getAttribute('data-niche-id') || null : null;
-                const uuid =
-                    parent !== null ? parent.getAttribute('data-niche-uuid') || null : null;
-                return modelWriter.createElement('paragraph', {
-                    tag: viewElement.name,
-                    id,
-                    class: viewElement.parent.getAttribute('class') || null,
-                    uuid,
-                    type: 'text',
-                    role: 'block',
-                    inline: 'true',
-                });
-            },
-            view: (element) => {
-                if (element.name === 'p') {
-                    const blockParent = element?.parent?.parent || null;
-                    if (
-                        blockParent !== null &&
-                        blockParent.getAttribute('data-niche-role') === 'block' &&
-                        blockParent.getAttribute('data-niche-type') === 'text'
-                    ) {
-                        return { name: true };
-                    }
-                }
-                return null;
-            },
-            converterPriority: 'high',
-        });
-
-        // The heading problem
+        // The paragraph/heading problem
         conversion.for('upcast').elementToElement({
             model: (viewElement, { writer: modelWriter }) => {
                 // NOTE: Headings are truly fucked in ckeditor
                 //  h2 -> h1, h3 -> h2, etc.
-                let heading = 'heading1';
+                let heading = 'paragraph';
                 switch (viewElement.name) {
+                    case 'h1':
                     case 'h2':
                         heading = 'heading1';
                         break;
@@ -121,38 +89,39 @@ export default class NichePlugin extends Plugin {
                     case 'h4':
                         heading = 'heading3';
                         break;
+                    case 'h5':
                     case 'h6':
-                        // Converts back to paragraph (dropdown)
+                    case 'paragraph':
+                        // Converts back to paragraph (w/ dropdown)
                         heading = 'paragraph';
                         break;
                     default:
                         break;
                 }
+                const isParagraph = heading === 'paragraph';
                 const parent = viewElement?.parent?.parent || null;
                 const id = parent !== null ? parent.getAttribute('data-niche-id') || null : null;
                 const uuid =
                     parent !== null ? parent.getAttribute('data-niche-uuid') || null : null;
                 return modelWriter.createElement(heading, {
-                    tag: viewElement.name,
+                    tag: heading,
                     id,
-                    class:
-                        heading !== 'paragraph'
-                            ? viewElement.parent.getAttribute('class') || null
-                            : null,
+                    class: !isParagraph ? viewElement.parent.getAttribute('class') || null : null,
                     uuid,
-                    type: 'heading',
+                    type: !isParagraph ? 'heading' : 'text',
                     role: 'block',
                     inline: 'true',
                 });
             },
             view: (element) => {
                 const match = element.name.match(/^h[(1|2|3|4|5|6)]/);
-                if (match !== null) {
+                if (element.name === 'p' || match !== null) {
                     const blockParent = element?.parent?.parent || null;
                     if (
                         blockParent !== null &&
                         blockParent.getAttribute('data-niche-role') === 'block' &&
-                        blockParent.getAttribute('data-niche-type') === 'heading'
+                        (blockParent.getAttribute('data-niche-type') === 'heading' ||
+                            blockParent.getAttribute('data-niche-type') === 'text')
                     ) {
                         return { name: true };
                     }

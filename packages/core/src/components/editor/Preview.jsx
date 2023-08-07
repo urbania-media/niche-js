@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import useFullscreen from '../../hooks/useFullscreen';
@@ -28,7 +28,10 @@ const defaultProps = {
 };
 
 function Preview({ destinations, className, children }) {
-    const { toggle: toggleFullscreen, active: fullscreen = false } = useFullscreen();
+    const body = useMemo(() => {
+        window.document.querySelector('body');
+    }, []);
+    const { toggle: toggleFullscreen, active: fullscreen = false } = useFullscreen(body);
 
     const [size, setSize] = useState('desktop');
     const onClickSize = useCallback(
