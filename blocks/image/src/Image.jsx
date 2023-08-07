@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { Editable, Widget } from '@niche-js/core/components';
+import { Editable, EditableImage, Widget } from '@niche-js/core/components';
 
 import styles from './styles.module.css';
 
@@ -19,17 +19,14 @@ const defaultProps = {
 };
 
 function Image({ media, className }) {
-    const { url = null, alt = null, caption = 'Image caption' } = media || {};
-
+    const { url = null, alt = 'Alternate text', caption = 'Image caption' } = media || {};
     return (
         <Widget className={classNames([styles.container, { [className]: className !== null }])}>
             {url !== null ? (
-                <img data-niche-image="true" className={styles.img} src={url} alt={alt} />
-            ) : (
-                'Image block'
-            )}
+                <EditableImage className={styles.img} name="media" src={url} alt={alt} />
+            ) : null}
             {caption !== null ? (
-                <Editable className={styles.caption} name="image" inline>
+                <Editable className={styles.caption} name="caption" inline>
                     {caption || 'Empty'}
                 </Editable>
             ) : null}

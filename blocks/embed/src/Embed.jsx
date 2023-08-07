@@ -27,7 +27,6 @@ function Embed({ embed, className }) {
     const { iframeUrl = null, html = null } = embed || {};
     return (
         <Widget className={classNames([styles.container, { [className]: className !== null }])}>
-            Embed block
             {iframeUrl !== null ? (
                 <div className={styles.iframeContainer}>
                     <iframe

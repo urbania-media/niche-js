@@ -71,7 +71,7 @@ export default class NicheDataProcessor {
             })
             .filter((block) => block !== null);
 
-        console.log('all components', components);
+        console.log('all parsed components', components);
 
         return {
             components,
@@ -89,12 +89,16 @@ export default class NicheDataProcessor {
                 return acc;
             }
 
-            if (subChild.name === 'img') {
+            const key = subChild.getAttribute('key');
+            if (subChild.name === 'img' && key !== null) {
                 return {
                     ...acc,
-                    src: subChild.getAttribute('src'),
-                    alt: subChild.getAttribute('alt'),
-                    srcSet: subChild.getAttribute('srcset'),
+                    [key]: {
+                        url: subChild.getAttribute('src'),
+                        alt: subChild.getAttribute('alt'),
+                        srcSet: subChild.getAttribute('srcset'),
+                        class: subChild.parent ? subChild.parent.getAttribute('class') : null,
+                    },
                 };
             }
 

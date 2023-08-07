@@ -1,6 +1,12 @@
 import { Plugin } from '@ckeditor/ckeditor5-core';
-import { upcastImageFigure } from '@ckeditor/ckeditor5-image/src/image/converters';
-import { getImgViewElementMatcher } from '@ckeditor/ckeditor5-image/src/image/utils';
+import {
+    upcastImageFigure,
+    downcastImageAttribute,
+    downcastSrcsetAttribute,
+} from '@ckeditor/ckeditor5-image/src/image/converters';
+import {
+    getImgViewElementMatcher, // createBlockImageViewElement,
+} from '@ckeditor/ckeditor5-image/src/image/utils';
 import { Widget, toWidget, toWidgetEditable } from '@ckeditor/ckeditor5-widget';
 import { v4 as uuidV4 } from 'uuid';
 
@@ -63,7 +69,7 @@ export default class NichePlugin extends Plugin {
             allowAttributes: ['tag', 'class', 'key'],
         });
 
-        // Extend base schemas?
+        // Extend base schema?
         // schema.extend('paragraph', {});
 
         // The paragraph problem
@@ -212,63 +218,12 @@ export default class NichePlugin extends Plugin {
             },
         });
 
-        /**
-         * Image blocks
-         */
-        // conversion.for('upcast').elementToElement({
-        //     view: {
-        //         name: 'img',
-        //         attributes: {
-        //             'data-niche-image': true,
-        //         },
-        //     },
-        //     model: (viewElement, { writer: modelWriter }) => {
-        //         console.log('vee', viewElement);
-        //         const blockContainer = viewElement;
-        //         const block = blockContainer.getChild(0);
-        //         const widget = block.getAttribute('data-niche-widget') || null;
-        //         return modelWriter.createElement('imageBlock', {
-        //             tag: block.name,
-        //             class: block.getAttribute('class'),
-        //             widget: widget !== null,
-        //             id: blockContainer.getAttribute('data-niche-id') || null,
-        //             uuid: blockContainer.getAttribute('data-niche-uuid'),
-        //             type: blockContainer.getAttribute('data-niche-type'),
-        //             role: 'block',
-        //         });
-        //     },
-        // });
-
         // Images
-        // schema.extend('imageBlock', {
-        //     allowAttributes: [
-        //         'tag',
-        //         'class',
-        //         'id',
-        //         'type',
-        //         'role',
-        //         'alt',
-        //         'src',
-        //         'srcset',
-        //         'data-image',
-        //     ],
-        // });
-        // const imageUtils = this.editor.plugins.get('ImageUtils');
-
-        // conversion
-        //     .for('upcast')
-        //     .elementToElement({
-        //         view: getImgViewElementMatcher(this.editor, 'imageBlock'),
-        //         model: (viewImage, { writer: modelWriter }) =>
-        //             modelWriter.createElement('imageBlock', {
-        //                 src: viewImage.getAttribute('src') || null,
-        //                 alt: viewImage.getAttribute('alt') || null,
-        //                 class: 'image',
-        //                 id: 'magie',
-        //             }),
-        //         converterPriority: 'high',
-        //     })
-        //     .add(upcastImageFigure(imageUtils));
+        schema.extend('imageBlock', {
+            inheritAllFrom: '$blockObject',
+            allowAttributes: ['key', 'class', 'alt', 'src', 'srcset', 'data-image'],
+            // TODO: figure out data-image?
+        });
 
         /**
          * Niche blocks
@@ -407,6 +362,35 @@ export default class NichePlugin extends Plugin {
                 return toWidgetEditable(div, viewWriter);
             },
         });
+
+        /**
+         * Image editables
+         */
+
+        const imageUtils = this.editor.plugins.get('ImageUtils');
+        conversion
+            .for('upcast')
+            .elementToElement({
+                view: getImgViewElementMatcher(this.editor, 'imageBlock'),
+                model: (viewImage, { writer: modelWriter }) =>
+                    modelWriter.createElement('imageBlock', {
+                        src: viewImage.getAttribute('src') || null,
+                        alt: viewImage.getAttribute('alt') || null,
+                        class: viewImage.getAttribute('class'),
+                        key: viewImage.getAttribute('data-niche-editable-image'),
+                        id: 'image-block-id',
+                    }),
+                converterPriority: 'high',
+            })
+            .add(upcastImageFigure(imageUtils));
+
+        conversion
+            .for('downcast')
+            .add(downcastImageAttribute(imageUtils, 'imageBlock', 'src'))
+            .add(downcastImageAttribute(imageUtils, 'imageBlock', 'alt'))
+            .add(downcastImageAttribute(imageUtils, 'imageBlock', 'class'))
+            .add(downcastImageAttribute(imageUtils, 'imageBlock', 'key')) // aka data-niche-editable-image
+            .add(downcastSrcsetAttribute(imageUtils, 'imageBlock'));
     }
 
     findBlockNode(node) {

@@ -1,11 +1,8 @@
-// import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
 import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
-// import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { ComponentsProvider } from '@panneau/core/contexts';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { useCallback, useState, useMemo, useEffect, useRef } from 'react';
-// import { createRoot } from 'react-dom/client';
 import { renderToString } from 'react-dom/server';
 
 import NicheEditor from '@niche-js/ckeditor/build';
@@ -16,9 +13,9 @@ import {
     BLOCKS_NAMESPACE,
     EditorProvider,
 } from '@niche-js/core/contexts';
+import { findParentBlock } from '@niche-js/core/utils';
 
 import Outline from './Outline';
-// import Preview from './Preview';
 import Settings from './Settings';
 
 import styles from './styles.module.css';
@@ -29,6 +26,7 @@ const propTypes = {
     }),
     viewer: PropTypes.string,
     destinations: PropTypes.arrayOf(PropTypes.shape({})),
+    settings: PropTypes.arrayOf(PropTypes.shape({})), // fields
     className: PropTypes.string,
     onChange: PropTypes.func,
 };
@@ -37,32 +35,17 @@ const defaultProps = {
     document: null,
     viewer: null,
     destinations: null,
+    settings: null,
     className: null,
     onChange: null,
 };
 
-function findParentBlock(block) {
-    // Works for both kind of views, model or view
-    const nicheId = block.getAttribute
-        ? block.getAttribute('uuid') || block.getAttribute('data-niche-uuid')
-        : null;
-    if (nicheId !== null) {
-        return nicheId;
-    }
-    if (block.parent) {
-        return findParentBlock(block.parent);
-    }
-    return null;
-}
-
-function EditorArticle({ document, viewer, destinations, className, onChange }) {
+function EditorArticle({ document, viewer, destinations, settings, className, onChange }) {
     const { type = 'article', components = [] } = document || {};
     const [focusedBlock, setFocusedBlock] = useState(null);
     const editorRef = useRef(null);
     const nicheEditorRef = useRef(null);
     const documentRef = useRef(document);
-
-    // For the editor update
     useEffect(() => {
         documentRef.current = document;
     }, [document]);
@@ -99,10 +82,10 @@ function EditorArticle({ document, viewer, destinations, className, onChange }) 
                 ...documentRef.current,
                 components: [...otherComponents, ...newBlocks],
             };
-            // console.log('onChange', otherComponents, newBlocks);
+            // console.log('onChange', nextValue);
             onChange(nextValue);
         }
-        // Note = this one cannot have onChange as dependency because autosave
+        // Note: this one cannot have onChange as a dependency because autosave
     }, []);
 
     const onEditorClick = useCallback(
@@ -177,7 +160,7 @@ function EditorArticle({ document, viewer, destinations, className, onChange }) 
             previousBody.current = body;
             const { selection: currentSelection = null } = editor.editing.model.document || {};
             const range = currentSelection.getFirstRange();
-            console.log('change from the top');
+            // console.log('change from the top');
             editor.setData(body);
             editor.model.change((writer) => {
                 try {
@@ -197,8 +180,7 @@ function EditorArticle({ document, viewer, destinations, className, onChange }) 
         if (nicheEditorRef.current === null && editorRef.current !== null) {
             NicheEditor.create(editorRef.current, { class: 'hello' })
                 .then((editor) => {
-                    console.log('Editor was initialized', editor, body);
-
+                    // console.log('Editor was initialized', editor, body);
                     editor.setData(body);
 
                     const modelDocument = editor.model.document;
@@ -209,7 +191,7 @@ function EditorArticle({ document, viewer, destinations, className, onChange }) 
                     const viewDocument = editor.editing.view.document;
                     viewDocument.on('click', (event) => onEditorClick(event, editor));
 
-                    // CKEditorInspector.attach(editor);
+                    CKEditorInspector.attach(editor);
                     nicheEditorRef.current = editor;
                 })
                 .catch((error) => {
@@ -236,11 +218,24 @@ function EditorArticle({ document, viewer, destinations, className, onChange }) 
                     />
                 }
                 right={
-                    <div className={styles.right}>
+                    <div className="p-2">
                         {focusedBlock !== null && focusedBlock?.type ? (
                             <>
-                                <p>{focusedBlock?.type}</p>
-                                <Settings value={focusedBlock} onChange={onFieldChange} />
+                                <p className="text-capitalize mx-2">{focusedBlock?.type}</p>
+                                <Settings
+                                    value={focusedBlock}
+                                    onChange={onFieldChange}
+                                    fields={[
+                                        ...(focusedBlock.fields || []),
+                                        ...(settings || []),
+                                        {
+                                            type: 'text',
+                                            name: 'body',
+                                            withoutFormGroup: true,
+                                            placeholder: 'Body',
+                                        },
+                                    ]}
+                                />
                             </>
                         ) : null}
                     </div>
