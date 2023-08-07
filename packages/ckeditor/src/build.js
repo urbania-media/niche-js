@@ -3,10 +3,6 @@ import { BalloonEditor as BaseEditor } from '@ckeditor/ckeditor5-editor-balloon'
 import { Essentials } from '@ckeditor/ckeditor5-essentials';
 import { Heading } from '@ckeditor/ckeditor5-heading';
 import {
-    // AutoImage,
-    // Image,
-    // ImageCaption,
-    // ImageStyle,
     ImageUtils,
     ImageBlock,
     ImageResize,
@@ -14,7 +10,6 @@ import {
     ImageInsert,
     ImageEditing,
 } from '@ckeditor/ckeditor5-image';
-import { LinkImage } from '@ckeditor/ckeditor5-link';
 import { List } from '@ckeditor/ckeditor5-list';
 import { Paragraph } from '@ckeditor/ckeditor5-paragraph';
 import { BlockToolbar } from '@ckeditor/ckeditor5-ui';
@@ -36,18 +31,16 @@ NicheEditor.builtinPlugins = [
     Italic,
     Heading,
     List,
-    // Image,
+
     ImageBlock,
     ImageEditing,
     ImageToolbar,
     ImageUtils,
-    // ImageCaption,
-    // ImageStyle,
     ImageResize,
     ImageInsert,
-    LinkImage,
-    // AutoImage,
+
     BlockToolbar,
+
     // Custom plugins
     // ImagePlugin,
     // Blocks

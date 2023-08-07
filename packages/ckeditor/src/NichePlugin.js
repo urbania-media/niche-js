@@ -75,12 +75,10 @@ export default class NichePlugin extends Plugin {
         // The paragraph problem
         conversion.for('upcast').elementToElement({
             model: (viewElement, { writer: modelWriter }) => {
-                const id = viewElement?.parent?.parent
-                    ? viewElement.parent.parent.getAttribute('data-niche-id') || null
-                    : null;
-                const uuid = viewElement?.parent?.parent
-                    ? viewElement.parent.parent.getAttribute('data-niche-uuid') || null
-                    : null;
+                const parent = viewElement?.parent?.parent || null;
+                const id = parent !== null ? parent.getAttribute('data-niche-id') || null : null;
+                const uuid =
+                    parent !== null ? parent.getAttribute('data-niche-uuid') || null : null;
                 return modelWriter.createElement('paragraph', {
                     tag: viewElement.name,
                     id,
@@ -123,19 +121,24 @@ export default class NichePlugin extends Plugin {
                     case 'h4':
                         heading = 'heading3';
                         break;
+                    case 'h6':
+                        // Converts back to paragraph (dropdown)
+                        heading = 'paragraph';
+                        break;
                     default:
                         break;
                 }
-                const id = viewElement?.parent?.parent
-                    ? viewElement.parent.parent.getAttribute('data-niche-id') || null
-                    : null;
-                const uuid = viewElement?.parent?.parent
-                    ? viewElement.parent.parent.getAttribute('data-niche-uuid') || null
-                    : null;
+                const parent = viewElement?.parent?.parent || null;
+                const id = parent !== null ? parent.getAttribute('data-niche-id') || null : null;
+                const uuid =
+                    parent !== null ? parent.getAttribute('data-niche-uuid') || null : null;
                 return modelWriter.createElement(heading, {
                     tag: viewElement.name,
                     id,
-                    class: viewElement.parent.getAttribute('class') || null,
+                    class:
+                        heading !== 'paragraph'
+                            ? viewElement.parent.getAttribute('class') || null
+                            : null,
                     uuid,
                     type: 'heading',
                     role: 'block',
@@ -222,7 +225,6 @@ export default class NichePlugin extends Plugin {
         schema.extend('imageBlock', {
             inheritAllFrom: '$blockObject',
             allowAttributes: ['key', 'class', 'alt', 'src', 'srcset', 'data-image'],
-            // TODO: figure out data-image?
         });
 
         /**
@@ -364,7 +366,7 @@ export default class NichePlugin extends Plugin {
         });
 
         /**
-         * Image editables
+         * Niche image editables
          */
 
         const imageUtils = this.editor.plugins.get('ImageUtils');
@@ -406,12 +408,12 @@ export default class NichePlugin extends Plugin {
         //     .add( downcastSrcsetAttribute( imageUtils, 'imageBlock' ) );
     }
 
-    findBlockNode(node) {
-        const type = node.getAttribute('data-niche-type') || null;
-        if (type !== null) {
-            return node;
-        }
-        const parent = node.parent || null;
-        return parent !== null ? this.findBlockNode(node.parent) : null;
-    }
+    // findBlockNode(node) {
+    //     const type = node.getAttribute('data-niche-type') || null;
+    //     if (type !== null) {
+    //         return node;
+    //     }
+    //     const parent = node.parent || null;
+    //     return parent !== null ? this.findBlockNode(node.parent) : null;
+    // }
 }

@@ -15,7 +15,6 @@ export default class NicheDataProcessor {
 
     toData(viewFragment = null) {
         // console.log('to data', viewFragment.childCount, viewFragment);
-
         const components = [...new Array(viewFragment.childCount).keys()]
             .map((index) => {
                 const child = viewFragment.getChild(index);
@@ -28,7 +27,7 @@ export default class NicheDataProcessor {
                 const headingNameMatch = child.name.match(/^h([1-6])/);
                 const hasHeadingMatch = headingNameMatch !== null && headingNameMatch.length > 1;
 
-                // General cases for new paragraphs/headings
+                // General case for new paragraphs/headings
                 if (type === 'heading' || hasHeadingMatch) {
                     const size =
                         headingNameMatch !== null && headingNameMatch.length > 1
@@ -44,6 +43,7 @@ export default class NicheDataProcessor {
                     };
                 }
 
+                // Paragraphs
                 if (type === 'text' || child.name === 'p') {
                     return {
                         id,
@@ -54,7 +54,7 @@ export default class NicheDataProcessor {
                     };
                 }
 
-                // Default case
+                // Default block case
                 if (type !== null && role !== null) {
                     return {
                         id,
@@ -65,7 +65,7 @@ export default class NicheDataProcessor {
                     };
                 }
 
-                // New image
+                // A new top-level image
                 const imageClass = child.getAttribute('class') || null === 'image';
                 if (imageClass && child.name === 'figure') {
                     return {
@@ -114,7 +114,7 @@ export default class NicheDataProcessor {
                 };
             }
 
-            // TODO: Figure out a better rule for sub children
+            // TODO: Figure out a better rule for sub children?
             if (subChild.name === 'figure') {
                 const attributes = this.getFieldsFromChild(subChild);
                 return {
