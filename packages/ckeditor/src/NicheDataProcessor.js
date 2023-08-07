@@ -65,6 +65,18 @@ export default class NicheDataProcessor {
                     };
                 }
 
+                // New image
+                const imageClass = child.getAttribute('class') || null === 'image';
+                if (imageClass && child.name === 'figure') {
+                    return {
+                        id,
+                        uuid,
+                        type: 'image',
+                        role: 'block',
+                        ...this.getFieldsFromChild(child),
+                    };
+                }
+
                 console.log('BEWARE COMPONENT NOT FOUND', child);
 
                 return null;
@@ -89,11 +101,11 @@ export default class NicheDataProcessor {
                 return acc;
             }
 
-            const key = subChild.getAttribute('key');
-            if (subChild.name === 'img' && key !== null) {
+            if (subChild.name === 'img') {
+                const key = subChild.getAttribute('key');
                 return {
                     ...acc,
-                    [key]: {
+                    [key || 'media']: {
                         url: subChild.getAttribute('src'),
                         alt: subChild.getAttribute('alt'),
                         srcSet: subChild.getAttribute('srcset'),

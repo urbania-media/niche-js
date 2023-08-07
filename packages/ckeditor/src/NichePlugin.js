@@ -391,6 +391,19 @@ export default class NichePlugin extends Plugin {
             .add(downcastImageAttribute(imageUtils, 'imageBlock', 'class'))
             .add(downcastImageAttribute(imageUtils, 'imageBlock', 'key')) // aka data-niche-editable-image
             .add(downcastSrcsetAttribute(imageUtils, 'imageBlock'));
+
+        // conversion.for( 'editingDowncast' )
+        //     .elementToStructure( {
+        //             model: 'imageBlock',
+        //             view: ( modelElement, { writer } ) => imageUtils.toImageWidget(
+        //                     createBlockImageViewElement( writer ), writer, t( 'image widget' )
+        //             )
+        //     } );
+
+        // conversion.for( 'downcast' )
+        //     .add( downcastImageAttribute( imageUtils, 'imageBlock', 'src' ) )
+        //     .add( downcastImageAttribute( imageUtils, 'imageBlock', 'alt' ) )
+        //     .add( downcastSrcsetAttribute( imageUtils, 'imageBlock' ) );
     }
 
     findBlockNode(node) {

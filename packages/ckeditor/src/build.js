@@ -78,8 +78,6 @@ NicheEditor.defaultConfig = {
             '|',
             'toggleImageCaption',
             'imageTextAlternative',
-            '|',
-            'linkImage',
             {
                 // Grouping the buttons for the icon-like image styling
                 // into one drop-down.

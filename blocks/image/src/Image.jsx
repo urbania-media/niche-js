@@ -26,7 +26,7 @@ function Image({ media, className }) {
                 <EditableImage className={styles.img} name="media" src={url} alt={alt} />
             ) : null}
             {caption !== null ? (
-                <Editable className={styles.caption} name="caption" inline>
+                <Editable className={styles.caption} name="caption" placeholder="Caption" inline>
                     {caption || 'Empty'}
                 </Editable>
             ) : null}
