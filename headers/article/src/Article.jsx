@@ -3,12 +3,14 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import { Widget, Editable, EditableImage } from '@niche-js/core/components';
+
 import styles from './styles.module.css';
 
 const propTypes = {
     title: PropTypes.string,
     subtitle: PropTypes.string,
-    category: PropTypes.string,
+    surtitle: PropTypes.string,
     image: PropTypes.shape({
         url: PropTypes.string,
     }),
@@ -18,21 +20,38 @@ const propTypes = {
 const defaultProps = {
     title: null,
     subtitle: null,
-    category: null,
+    surtitle: null,
     image: null,
     className: null,
 };
 
-// TODO: figure out the edit mode
-function Article({ title, subtitle, category, image, className }) {
-    const { url = null } = image || {};
+function Article({ title, subtitle, surtitle, image, className }) {
+    const { url = null, alt = null } = image || {};
+
     return (
-        <header className={classNames([styles.container, { [className]: className !== null }])}>
-            <div className={styles.category}>{category}</div>
-            <div className={styles.title}>{title}</div>
-            <div className={styles.subtitle}>{subtitle}</div>
-            {url !== null ? <img className={styles.image} src={url} /> : null}
-        </header>
+        <Widget
+            tag="header"
+            className={classNames([styles.container, { [className]: className !== null }])}
+        >
+            <Editable
+                className={styles.surtitle}
+                tag="div"
+                name="surtitle"
+                html={surtitle}
+                inline
+            />
+            <Editable className={styles.title} tag="h1" name="title" html={title} inline />
+            <Editable
+                className={styles.subtitle}
+                tag="div"
+                name="subtitle"
+                html={subtitle}
+                inline
+            />
+            {url !== null ? (
+                <EditableImage className={styles.image} name="image" src={url} alt={alt} />
+            ) : null}
+        </Widget>
     );
 }
 

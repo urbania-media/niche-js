@@ -12,12 +12,12 @@ import {
 } from '@ckeditor/ckeditor5-image';
 import { List } from '@ckeditor/ckeditor5-list';
 import { Paragraph } from '@ckeditor/ckeditor5-paragraph';
+// import { plugin as ImagePlugin } from '@niche-js/block-image/editor';
 import { BlockToolbar } from '@ckeditor/ckeditor5-ui';
 import { Undo } from '@ckeditor/ckeditor5-undo';
 import { SimpleUploadAdapter } from '@ckeditor/ckeditor5-upload';
 import { getCSRFHeaders } from '@folklore/fetch';
 
-// import { plugin as ImagePlugin } from '@niche-js/block-image/editor';
 import NicheDPPlugin from './NicheDataProcessorPlugin';
 import NichePlugin from './NichePlugin';
 
@@ -71,6 +71,7 @@ NicheEditor.defaultConfig = {
             '|',
             'toggleImageCaption',
             'imageTextAlternative',
+            'restrictedEditing',
             {
                 // Grouping the buttons for the icon-like image styling
                 // into one drop-down.

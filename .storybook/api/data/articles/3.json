@@ -269,26 +269,11 @@
         {
             "id": 1,
             "role": "header",
-            "type": "title",
-            "body": "Side hustle"
-        },
-        {
-            "id": 2,
-            "role": "header",
-            "type": "subtitle",
-            "body": "On a test\u00e9 un \u00ab side hustle \u00bb qui promet un revenu passif sans effort."
-        },
-        {
-            "id": 3,
-            "role": "header",
-            "type": "category",
-            "body": "Insolite"
-        },
-        {
-            "id": 4,
-            "role": "header",
-            "type": "image",
-            "media": {
+            "type": "article",
+            "title": "Side hustle",
+            "surtitle": "Insolite",
+            "subtitle": "On a test\u00e9 un \u00ab side hustle \u00bb qui promet un revenu passif sans effort.",
+            "image": {
                 "id": "24388",
                 "type": "image",
                 "name": "media202308thumbs-sidehustles-site-6",

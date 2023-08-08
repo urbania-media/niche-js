@@ -5,6 +5,8 @@ import React from 'react';
 
 import { useEditor } from '../../contexts';
 
+import styles from '../../styles/editor/editable.module.css';
+
 const propTypes = {
     name: PropTypes.string.isRequired,
     tag: PropTypes.string,
@@ -27,7 +29,7 @@ function Editable({ name, tag, inline, attributes, html, className }) {
     const Tag = tag || 'div';
     return editor !== null ? (
         <Tag
-            className={classNames([{ [className]: className !== null }])}
+            className={classNames([styles.container, { [className]: className !== null }])}
             dangerouslySetInnerHTML={{ __html: html }}
             {...(inline ? { 'data-niche-editable-inline': name } : { 'data-niche-editable': name })}
             {...(attributes !== null ? { 'data-niche-editable-attributes': attributes } : null)}

@@ -1,18 +1,18 @@
 import { Command } from '@ckeditor/ckeditor5-core';
 
 function createImage(writer) {
-    const nicheBlock = writer.createElement('nicheBlock');
-    // const nicheBlockTitle = writer.createElement('nicheBlockTitle');
-    const nicheBlockContent = writer.createElement('nicheBlockContent');
+    const nicheComponent = writer.createElement('nicheComponent');
+    // const nicheComponentTitle = writer.createElement('nicheComponentTitle');
+    const nicheComponentContent = writer.createElement('nicheComponentContent');
 
-    // writer.append(nicheBlockTitle, nicheBlock);
-    writer.append(nicheBlockContent, nicheBlock);
+    // writer.append(nicheComponentTitle, nicheComponent);
+    writer.append(nicheComponentContent, nicheComponent);
 
     // // There must be at least one paragraph for the description to be editable.
     // // See https://github.com/ckeditor/ckeditor5/issues/1464.
-    writer.appendElement('paragraph', nicheBlockContent);
+    writer.appendElement('paragraph', nicheComponentContent);
 
-    return nicheBlock;
+    return nicheComponent;
 }
 
 export default class InsertBlockCommand extends Command {
@@ -29,7 +29,7 @@ export default class InsertBlockCommand extends Command {
         const { selection } = model.document;
         const allowedIn = model.schema.findAllowedParent(
             selection.getFirstPosition(),
-            'nicheBlock',
+            'nicheComponent',
         );
 
         this.isEnabled = allowedIn !== null;

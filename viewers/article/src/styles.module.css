@@ -1,9 +1,16 @@
 .container {
     position: relative;
-    font-family: 'Sina Nova', serif;
-    font-size: 20px;
 }
 
 .content {
+    font-family: 'Sina Nova', serif;
+    font-size: 20px;
 
+    h1,h2,h3,h4,h5 {
+        font-family: 'Garage Gothic', serif;
+    }
+
+    h6, p {
+        font-size: inherit;
+    }
 }

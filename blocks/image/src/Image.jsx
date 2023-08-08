@@ -20,6 +20,7 @@ const defaultProps = {
 
 function Image({ media, className }) {
     const { url = null, alt = 'Alternate text', caption = 'Image caption' } = media || {};
+
     return (
         <Widget className={classNames([styles.container, { [className]: className !== null }])}>
             {url !== null ? (

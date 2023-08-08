@@ -26,11 +26,11 @@ function Editor({ left, right, preview, className, children }) {
     // console.log('editor render', left, right, children);
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>
-            {left !== null ? <aside className={styles.left}>{left}</aside> : null}
+            <aside className={styles.left}>{left}</aside>
             <main className={styles.main}>
                 {preview ? <Preview>{children}</Preview> : children}
             </main>
-            {right !== null ? <aside className={styles.right}>{right}</aside> : null}
+            <aside className={styles.right}>{right}</aside>
         </div>
     );
 }

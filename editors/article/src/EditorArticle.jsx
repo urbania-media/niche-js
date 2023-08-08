@@ -1,20 +1,20 @@
-import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
 import { ComponentsProvider } from '@panneau/core/contexts';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { useCallback, useState, useMemo, useEffect, useRef } from 'react';
-import { renderToString } from 'react-dom/server';
+import React, { useCallback, useState, useEffect, useRef } from 'react';
 
-import NicheEditor from '@niche-js/ckeditor/build';
 import { Editor } from '@niche-js/core/components';
 import {
     useViewerComponent,
     useBlocksComponentsManager,
     BLOCKS_NAMESPACE,
     EditorProvider,
+    HEADERS_NAMESPACE,
+    useHeadersComponentsManager,
 } from '@niche-js/core/contexts';
 import { findParentBlock } from '@niche-js/core/utils';
 
+import CKEditor from './Editor';
 import Outline from './Outline';
 import Settings from './Settings';
 
@@ -43,16 +43,20 @@ const defaultProps = {
 function EditorArticle({ document, viewer, destinations, settings, className, onChange }) {
     const { type = 'article', components = [] } = document || {};
     const [focusedBlock, setFocusedBlock] = useState(null);
-    const editorRef = useRef(null);
-    const nicheEditorRef = useRef(null);
+    // const editorRef = useRef(null);
+    // const nicheEditorRef = useRef(null);
     const documentRef = useRef(document);
     useEffect(() => {
         documentRef.current = document;
     }, [document]);
 
     const ViewerComponent = useViewerComponent(viewer || type || 'article');
+
     const blocksManager = useBlocksComponentsManager();
     const blocks = blocksManager.getComponents();
+
+    const headersManager = useHeadersComponentsManager();
+    const headers = headersManager.getComponents();
 
     const onFieldChange = useCallback(
         (newValue) => {
@@ -70,8 +74,7 @@ function EditorArticle({ document, viewer, destinations, settings, className, on
         [document, onChange, setFocusedBlock],
     );
 
-    const onEditorChange = useCallback((event, editor) => {
-        const data = editor.getData();
+    const onContentChange = useCallback((event, data) => {
         if (data && onChange !== null) {
             const { components: newBlocks = null } = data || {};
             const { components: documentComponents = [] } = documentRef.current || {};
@@ -82,10 +85,26 @@ function EditorArticle({ document, viewer, destinations, settings, className, on
                 ...documentRef.current,
                 components: [...otherComponents, ...newBlocks],
             };
-            // console.log('onChange', nextValue);
+            // console.log('onChange', nextValue, otherComponents, newBlocks);
             onChange(nextValue);
         }
-        // Note: this one cannot have onChange as a dependency because autosave
+    }, []);
+
+    const onHeaderChange = useCallback((event, data) => {
+        if (onChange !== null) {
+            const { components: newHeaders = null } = data || {};
+            const { components: documentComponents = [] } = documentRef.current || {};
+            const otherComponents = (documentComponents || []).filter(
+                ({ role = null }) => role !== 'header',
+            );
+            const [firstHeader = null] = newHeaders || [];
+            const nextValue = {
+                ...documentRef.current,
+                components: [firstHeader, ...otherComponents],
+            };
+            console.log('onHeaderChange', nextValue);
+            onChange(nextValue);
+        }
     }, []);
 
     const onEditorClick = useCallback(
@@ -141,71 +160,6 @@ function EditorArticle({ document, viewer, destinations, settings, className, on
         [document, components, focusedBlock, setFocusedBlock],
     );
 
-    const previousBody = useRef(null);
-    const body = useMemo(
-        () =>
-            renderToString(
-                <EditorProvider>
-                    <ComponentsProvider namespace={BLOCKS_NAMESPACE} components={blocks}>
-                        <ViewerComponent document={document} contentOnly />
-                    </ComponentsProvider>
-                </EditorProvider>,
-            ),
-        [document],
-    );
-
-    useEffect(() => {
-        const editor = nicheEditorRef.current;
-        if (editor !== null && previousBody.current !== body) {
-            previousBody.current = body;
-            const { selection: currentSelection = null } = editor.editing.model.document || {};
-            const range = currentSelection.getFirstRange();
-            // console.log('change from the top');
-            editor.setData(body);
-            editor.model.change((writer) => {
-                try {
-                    // console.log('focus state', editor.editing.view.document.isFocused);
-                    // if (!editor.editing.view.document.isFocused) {
-                    // editor.editing.view.focus();
-                    // }
-                    writer.setSelection(range);
-                } catch (e) {
-                    console.log('failed to focus on range', e, range);
-                }
-            });
-        }
-    }, [body, onChange]);
-
-    useEffect(() => {
-        if (nicheEditorRef.current === null && editorRef.current !== null) {
-            NicheEditor.create(editorRef.current, { class: 'hello' })
-                .then((editor) => {
-                    // console.log('Editor was initialized', editor, body);
-                    editor.setData(body);
-
-                    const modelDocument = editor.model.document;
-                    modelDocument.on('change:data', (event) => {
-                        onEditorChange(event, editor);
-                    });
-
-                    const viewDocument = editor.editing.view.document;
-                    viewDocument.on('click', (event) => onEditorClick(event, editor));
-
-                    CKEditorInspector.attach(editor);
-                    nicheEditorRef.current = editor;
-                })
-                .catch((error) => {
-                    console.error(error.stack);
-                });
-        }
-        return () => {
-            if (nicheEditorRef.current) {
-                nicheEditorRef.current.destroy();
-                nicheEditorRef.current = null;
-            }
-        };
-    }, [onEditorChange, onEditorClick]);
-
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>
             <Editor
@@ -218,34 +172,50 @@ function EditorArticle({ document, viewer, destinations, settings, className, on
                     />
                 }
                 right={
-                    <div className="p-2">
-                        {focusedBlock !== null && focusedBlock?.type ? (
-                            <>
-                                <p className="text-capitalize mx-2">{focusedBlock?.type}</p>
-                                <Settings
-                                    value={focusedBlock}
-                                    onChange={onFieldChange}
-                                    fields={[
-                                        ...(focusedBlock.fields || []),
-                                        ...(settings || []),
-                                        {
-                                            type: 'text',
-                                            name: 'body',
-                                            withoutFormGroup: true,
-                                            placeholder: 'Body',
-                                        },
-                                    ]}
-                                />
-                            </>
-                        ) : null}
-                    </div>
+                    focusedBlock !== null && focusedBlock?.type ? (
+                        <Settings
+                            value={focusedBlock}
+                            onChange={onFieldChange}
+                            fields={[
+                                ...(focusedBlock.fields || []),
+                                ...(settings || []),
+                                {
+                                    type: 'text',
+                                    name: 'body',
+                                    withoutFormGroup: true,
+                                    placeholder: 'Body',
+                                },
+                            ]}
+                        />
+                    ) : null
                 }
             >
                 <EditorProvider>
-                    <ComponentsProvider namespace={BLOCKS_NAMESPACE} components={blocks}>
-                        <ViewerComponent document={document} headerOnly>
-                            <div ref={editorRef} />
-                        </ViewerComponent>
+                    <ComponentsProvider namespace={HEADERS_NAMESPACE} components={headers}>
+                        <ComponentsProvider namespace={BLOCKS_NAMESPACE} components={blocks}>
+                            <ViewerComponent
+                                withoutContent
+                                headerChildren={
+                                    <CKEditor
+                                        document={document}
+                                        onEditorChange={onHeaderChange}
+                                        onEditorClick={onEditorClick}
+                                        viewerProps={{ withoutContent: true }}
+                                        // config={{ toolbar: [] }}
+                                        locked
+                                        debug
+                                    />
+                                }
+                            />
+                            <ViewerComponent contentOnly>
+                                <CKEditor
+                                    document={document}
+                                    onEditorChange={onContentChange}
+                                    onEditorClick={onEditorClick}
+                                    viewerProps={{ contentOnly: true }}
+                                />
+                            </ViewerComponent>
+                        </ComponentsProvider>
                     </ComponentsProvider>
                 </EditorProvider>
             </Editor>

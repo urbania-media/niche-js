@@ -48,7 +48,7 @@ export default class NichePlugin extends Plugin {
         const { conversion } = this.editor;
 
         // The main elements
-        schema.register('nicheBlock', {
+        schema.register('nicheComponent', {
             inheritAllFrom: '$container',
             allowChildren: ['$inlineObject', '$blockObject'],
             allowAttributes: ['tag', 'class', 'id', 'type', 'role', 'widget'],
@@ -56,14 +56,14 @@ export default class NichePlugin extends Plugin {
 
         // Editable fields
         schema.register('nicheEditableInline', {
-            allowIn: ['nicheBlock', 'nicheHeader'],
+            allowIn: ['nicheComponent', 'nicheHeader'],
             allowContentOf: '$block',
             isLimit: true,
             allowAttributes: ['tag', 'class', 'key'],
         });
 
         schema.register('nicheEditable', {
-            allowIn: ['nicheBlock', 'nicheHeader'],
+            allowIn: ['nicheComponent', 'nicheHeader'],
             allowContentOf: '$root',
             isLimit: true,
             allowAttributes: ['tag', 'class', 'key'],
@@ -202,7 +202,7 @@ export default class NichePlugin extends Plugin {
         conversion.for('upcast').elementToElement({
             view: {
                 attributes: {
-                    'data-niche-role': 'block',
+                    'data-niche-role': true,
                     'data-niche-type': true,
                     'data-niche-inline': 'false', // To avoid clashing with p and headings
                 },
@@ -211,20 +211,20 @@ export default class NichePlugin extends Plugin {
                 const blockContainer = viewElement;
                 const block = blockContainer.getChild(0);
                 const widget = block.getAttribute('data-niche-widget') || null;
-                return modelWriter.createElement('nicheBlock', {
+                return modelWriter.createElement('nicheComponent', {
                     tag: block.name,
                     class: block.getAttribute('class'),
                     widget: widget !== null,
                     id: blockContainer.getAttribute('data-niche-id') || null,
                     uuid: blockContainer.getAttribute('data-niche-uuid'),
                     type: blockContainer.getAttribute('data-niche-type'),
-                    role: 'block',
+                    role: blockContainer.getAttribute('data-niche-role'),
                 });
             },
         });
 
         conversion.for('dataDowncast').elementToElement({
-            model: 'nicheBlock',
+            model: 'nicheComponent',
             view: (modelElement, { writer: viewWriter }) => {
                 const block = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
                     id: modelElement.getAttribute('id'),
@@ -240,7 +240,7 @@ export default class NichePlugin extends Plugin {
         });
 
         conversion.for('editingDowncast').elementToElement({
-            model: 'nicheBlock',
+            model: 'nicheComponent',
             view: (modelElement, { writer: viewWriter }) => {
                 const widget = modelElement.getAttribute('widget');
                 const block = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
@@ -349,7 +349,7 @@ export default class NichePlugin extends Plugin {
                         alt: viewImage.getAttribute('alt') || null,
                         class: viewImage.getAttribute('class'),
                         key: viewImage.getAttribute('data-niche-editable-image'),
-                        id: 'image-block-id',
+                        id: 'image-block-custom',
                     }),
                 converterPriority: 'high',
             })

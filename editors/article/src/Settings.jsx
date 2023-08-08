@@ -6,7 +6,9 @@ import React from 'react';
 import styles from './styles.module.css';
 
 const propTypes = {
-    value: PropTypes.shape({}),
+    value: PropTypes.shape({
+        type: PropTypes.string,
+    }),
     fields: PropTypes.arrayOf(PropTypes.shape({})),
     onChange: PropTypes.func,
     className: PropTypes.string,
@@ -21,9 +23,9 @@ const defaultProps = {
 
 function Settings({ value, fields, onChange, className }) {
     const Fields = useFieldComponent('fields');
-    // console.log('fields', fields);
     return (
-        <div className={classNames(['mw-100', { [className]: className !== null }])}>
+        <div className={classNames(['mw-100 p-2', { [className]: className !== null }])}>
+            <p className="text-capitalize mx-2">{value?.type}</p>
             <Fields className={styles.fields} fields={fields} value={value} onChange={onChange} />
         </div>
     );

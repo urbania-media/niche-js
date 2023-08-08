@@ -5,14 +5,14 @@
         {
             "id": 1,
             "role": "header",
-            "type": "title",
-            "body": "Les vraies questions URBANIA – Édition FESTIF"
-        },
-        {
-            "id": 2,
-            "role": "header",
-            "type": "subtitle",
-            "body": "Les VRAIES questions URBANIA, 5 questions, plusieurs réponses, une seule vérité."
+            "type": "article",
+            "title": "Les vraies questions URBANIA – Édition FESTIF",
+            "surtitle": "FESTIF",
+            "subtitle": "Le FESTIF en bref",
+            "image": {
+                "url": "https://picsum.photos/200/300",
+                "caption": "Picsum"
+            }
         },
         {
             "role": "block",

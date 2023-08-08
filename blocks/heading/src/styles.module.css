@@ -1,4 +1,5 @@
 .container {
-    padding: 10px;
-    color: #c00;
+    padding: 10px 0;
+    color: #F00;
+    text-transform: uppercase;
 }
