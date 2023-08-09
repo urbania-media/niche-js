@@ -1,6 +1,4 @@
-/* eslint-disable no-nested-ternary */
-
-/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable react/forbid-prop-types, no-nested-ternary, react/jsx-props-no-spreading */
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -15,35 +13,29 @@ const propTypes = {
     document: PropTypes.shape({
         components: NichePropTypes.components,
     }),
-    contentOnly: PropTypes.bool,
-    withoutContent: PropTypes.bool,
+    sectionOnly: PropTypes.oneOf([null, 'header', 'content']),
     className: PropTypes.string,
     contentClassName: PropTypes.string,
     headerClassName: PropTypes.string,
-    children: PropTypes.node,
-    headerChildren: PropTypes.node,
+    editorRef: PropTypes.oneOfType([PropTypes.shape({ current: PropTypes.any }), PropTypes.func]),
 };
 
 const defaultProps = {
     document: null,
-    contentOnly: false,
-    withoutContent: false,
+    sectionOnly: false,
     className: null,
-    contentClassName: null,
     headerClassName: null,
-    children: null,
-    headerChildren: null,
+    contentClassName: null,
+    editorRef: null,
 };
 
 function ViewerArticle({
     document,
-    contentOnly,
-    withoutContent,
+    sectionOnly,
     className,
-    contentClassName,
     headerClassName,
-    children,
-    headerChildren,
+    contentClassName,
+    editorRef,
 }) {
     const { components = null, metadata = null } = document || {};
     const { brand = null } = metadata || {};
@@ -58,44 +50,50 @@ function ViewerArticle({
 
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>
-            <div
-                className={classNames([
-                    styles.header,
-                    { [headerClassName]: headerClassName !== null },
-                ])}
-            >
-                {!contentOnly || withoutContent ? (
-                    HeaderComponent !== null && header !== null ? (
-                        <Component component={header}>
-                            <HeaderComponent {...header} brand={brand} />
-                        </Component>
-                    ) : null
-                ) : null}
-                {headerChildren}
-            </div>
-            <div
-                className={classNames([
-                    styles.content,
-                    { [contentClassName]: contentClassName !== null },
-                ])}
-            >
-                {!withoutContent || contentOnly
-                    ? (blocks || []).map((block) => {
-                          const { id = null, uuid = null, type = null } = block || {};
-                          const BlockComponent = blocksManager.getComponent(type);
-                          return BlockComponent !== null ? (
-                              <Component
-                                  component={block}
-                                  key={`block-${id}-${type}-${uuid}`}
-                                  inline={type === 'text' || type === 'heading'}
-                              >
-                                  <BlockComponent {...block} />
-                              </Component>
-                          ) : null;
-                      })
-                    : null}
-                {children}
-            </div>
+            {sectionOnly === null || sectionOnly === 'header' ? (
+                <div
+                    className={classNames([
+                        styles.header,
+                        { [headerClassName]: headerClassName !== null },
+                    ])}
+                >
+                    {editorRef === null ? (
+                        HeaderComponent !== null && header !== null ? (
+                            <Component component={header}>
+                                <HeaderComponent {...header} brand={brand} />
+                            </Component>
+                        ) : null
+                    ) : (
+                        <div ref={editorRef} />
+                    )}
+                </div>
+            ) : null}
+            {sectionOnly === null || sectionOnly === 'content' ? (
+                <div
+                    className={classNames([
+                        styles.content,
+                        { [contentClassName]: contentClassName !== null },
+                    ])}
+                >
+                    {editorRef === null ? (
+                        (blocks || []).map((block) => {
+                            const { id = null, uuid = null, type = null } = block || {};
+                            const BlockComponent = blocksManager.getComponent(type);
+                            return BlockComponent !== null ? (
+                                <Component
+                                    component={block}
+                                    key={`block-${id}-${type}-${uuid}`}
+                                    inline={type === 'text' || type === 'heading'}
+                                >
+                                    <BlockComponent {...block} />
+                                </Component>
+                            ) : null;
+                        })
+                    ) : (
+                        <div ref={editorRef} />
+                    )}
+                </div>
+            ) : null}
         </div>
     );
 }

@@ -1,8 +1,10 @@
 import { ComponentsProvider } from '@panneau/core/contexts';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { useCallback, useState, useEffect, useRef } from 'react';
+import React, { useCallback, useState, useEffect, useRef, useMemo } from 'react';
+import { renderToString } from 'react-dom/server';
 
+import { useNicheEditor } from '@niche-js/ckeditor';
 import { Editor } from '@niche-js/core/components';
 import {
     useViewerComponent,
@@ -14,7 +16,6 @@ import {
 } from '@niche-js/core/contexts';
 import { findParentBlock } from '@niche-js/core/utils';
 
-import MainEditor from './Editor';
 import Outline from './Outline';
 import Settings from './Settings';
 
@@ -51,11 +52,39 @@ function EditorArticle({ document, viewer, destinations, settings, className, on
 
     const ViewerComponent = useViewerComponent(viewer || type || 'article');
 
+    const headersManager = useHeadersComponentsManager();
+    const headers = headersManager.getComponents();
+
     const blocksManager = useBlocksComponentsManager();
     const blocks = blocksManager.getComponents();
 
-    const headersManager = useHeadersComponentsManager();
-    const headers = headersManager.getComponents();
+    const renderHeader = useCallback(
+        (doc) =>
+            renderToString(
+                <EditorProvider>
+                    <ComponentsProvider namespace={HEADERS_NAMESPACE} components={headers}>
+                        <ComponentsProvider namespace={BLOCKS_NAMESPACE} components={blocks}>
+                            <ViewerComponent document={doc} sectionOnly="header" />
+                        </ComponentsProvider>
+                    </ComponentsProvider>
+                </EditorProvider>,
+            ),
+        [],
+    );
+
+    const renderContent = useCallback(
+        (doc) =>
+            renderToString(
+                <EditorProvider>
+                    <ComponentsProvider namespace={HEADERS_NAMESPACE} components={headers}>
+                        <ComponentsProvider namespace={BLOCKS_NAMESPACE} components={blocks}>
+                            <ViewerComponent document={doc} sectionOnly="content" />
+                        </ComponentsProvider>
+                    </ComponentsProvider>
+                </EditorProvider>,
+            ),
+        [],
+    );
 
     const onFieldChange = useCallback(
         (newValue) => {
@@ -73,7 +102,10 @@ function EditorArticle({ document, viewer, destinations, settings, className, on
         [document, onChange, setFocusedBlock],
     );
 
-    const onContentChange = useCallback((event, data) => {
+    const onContentChange = useCallback((event, editor) => {
+        const editorData = editor.getData();
+        const data = editorData !== '' ? editorData : null;
+
         if (data && onChange !== null) {
             const { components: newBlocks = null } = data || {};
             const { components: documentComponents = [] } = documentRef.current || {};
@@ -89,25 +121,47 @@ function EditorArticle({ document, viewer, destinations, settings, className, on
         }
     }, []);
 
-    const onHeaderChange = useCallback((event, data) => {
+    const onHeaderChange = useCallback((event, editor) => {
+        const editorData = editor.getData();
+        const data = editorData !== '' ? editorData : null;
+
         if (onChange !== null) {
             const { components: newHeaders = null } = data || {};
             const { components: documentComponents = [] } = documentRef.current || {};
             const otherComponents = (documentComponents || []).filter(
                 ({ role = null }) => role !== 'header',
             );
-            const [firstHeader = null] = newHeaders || [];
+            const firstHeader =
+                (newHeaders || []).find(({ role = null }) => role === 'header') || null;
+            const { extra = false } = firstHeader || {};
             const nextValue = {
                 ...documentRef.current,
-                components: [firstHeader, ...otherComponents],
+                components: [
+                    {
+                        title: null,
+                        subtitle: null,
+                        surtitle: null,
+                        image: null,
+                        ...firstHeader,
+                    },
+                    ...otherComponents,
+                ],
             };
-            // console.log('onHeaderChange', nextValue);
+
             onChange(nextValue);
+
+            // Reset editor in case
+            if (extra || newHeaders.length > 1) {
+                console.log('force header format');
+                const body = renderHeader(nextValue);
+                editor.setData(body);
+            }
         }
     }, []);
 
     const onEditorClick = useCallback(
         (event, editor) => {
+            console.log('click', event);
             const { selection: currentSelection = null } = editor.editing.model.document || {};
             const range = currentSelection.getFirstRange() || null;
             const target = range !== null ? range.getCommonAncestor() : null;
@@ -159,6 +213,20 @@ function EditorArticle({ document, viewer, destinations, settings, className, on
         [document, components, focusedBlock, setFocusedBlock],
     );
 
+    const headerBody = useMemo(() => renderHeader(document), [document]);
+    const headerRef = useNicheEditor({
+        body: headerBody,
+        onChange: onHeaderChange,
+        onClick: onEditorClick,
+    });
+
+    const contentBody = useMemo(() => renderContent(document), [document]);
+    const contentRef = useNicheEditor({
+        body: contentBody,
+        onChange: onContentChange,
+        onClick: onEditorClick,
+    });
+
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>
             <Editor
@@ -190,32 +258,8 @@ function EditorArticle({ document, viewer, destinations, settings, className, on
                 }
             >
                 <EditorProvider>
-                    <ComponentsProvider namespace={HEADERS_NAMESPACE} components={headers}>
-                        <ComponentsProvider namespace={BLOCKS_NAMESPACE} components={blocks}>
-                            <ViewerComponent
-                                withoutContent
-                                headerChildren={
-                                    <MainEditor
-                                        document={document}
-                                        onEditorChange={onHeaderChange}
-                                        onEditorClick={onEditorClick}
-                                        viewerProps={{ withoutContent: true }}
-                                        // config={{ toolbar: [] }}
-                                        locked
-                                        debug
-                                    />
-                                }
-                            />
-                            <ViewerComponent contentOnly>
-                                <MainEditor
-                                    document={document}
-                                    onEditorChange={onContentChange}
-                                    onEditorClick={onEditorClick}
-                                    viewerProps={{ contentOnly: true }}
-                                />
-                            </ViewerComponent>
-                        </ComponentsProvider>
-                    </ComponentsProvider>
+                    <ViewerComponent sectionOnly="header" editorRef={headerRef} />
+                    <ViewerComponent sectionOnly="content" editorRef={contentRef} />
                 </EditorProvider>
             </Editor>
         </div>

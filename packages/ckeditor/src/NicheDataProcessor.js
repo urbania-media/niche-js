@@ -14,7 +14,7 @@ export default class NicheDataProcessor {
     }
 
     toData(viewFragment = null) {
-        console.log('to data BLOOD', viewFragment.childCount, viewFragment);
+        console.log('to data', viewFragment.childCount, viewFragment);
 
         const components = [...new Array(viewFragment.childCount).keys()]
             .map((index) => {
@@ -57,7 +57,6 @@ export default class NicheDataProcessor {
 
                 // Default component case
                 if (type !== null && role !== null) {
-                    console.log('child', child);
                     return {
                         id,
                         uuid,
@@ -138,7 +137,7 @@ export default class NicheDataProcessor {
                 };
             }
 
-            return acc;
+            return { ...acc, extra: true };
         }, {});
     }
 

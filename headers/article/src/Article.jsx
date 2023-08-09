@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { Widget, Editable, EditableImage } from '@niche-js/core/components';
+import { Editable, EditableImage } from '@niche-js/core/components';
 
 import styles from './styles.module.css';
 
@@ -27,12 +27,8 @@ const defaultProps = {
 
 function Article({ title, subtitle, surtitle, image, className }) {
     const { url = null, alt = null } = image || {};
-
     return (
-        <Widget
-            tag="header"
-            className={classNames([styles.container, { [className]: className !== null }])}
-        >
+        <header className={classNames([styles.container, { [className]: className !== null }])}>
             <Editable
                 className={styles.surtitle}
                 tag="div"
@@ -45,7 +41,7 @@ function Article({ title, subtitle, surtitle, image, className }) {
             {url !== null ? (
                 <EditableImage className={styles.image} name="image" src={url} alt={alt} />
             ) : null}
-        </Widget>
+        </header>
     );
 }
 
