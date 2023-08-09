@@ -102,66 +102,78 @@ function EditorArticle({ document, viewer, destinations, settings, className, on
         [document, onChange, setFocusedBlock],
     );
 
-    const onContentChange = useCallback((event, editor) => {
-        const editorData = editor.getData();
-        const data = editorData !== '' ? editorData : null;
+    const onHeaderChange = useCallback(
+        (event, editor) => {
+            const editorData = editor.getData();
+            const data = editorData !== '' ? editorData : null;
 
-        if (data && onChange !== null) {
-            const { components: newBlocks = null } = data || {};
-            const { components: documentComponents = [] } = documentRef.current || {};
-            const otherComponents = (documentComponents || []).filter(
-                ({ role = null }) => role !== 'block',
-            );
-            const nextValue = {
-                ...documentRef.current,
-                components: [...otherComponents, ...newBlocks],
-            };
-            // console.log('onContentChange', nextValue, otherComponents, newBlocks);
-            onChange(nextValue);
-        }
-    }, []);
+            if (onChange !== null) {
+                const { components: newHeaders = null } = data || {};
+                const { components: documentComponents = [] } = documentRef.current || {};
+                const otherComponents = (documentComponents || []).filter(
+                    ({ role = null }) => role !== 'header',
+                );
+                const firstHeader =
+                    (newHeaders || []).find(({ role = null }) => role === 'header') || null;
+                const { extra = false } = firstHeader || {};
 
-    const onHeaderChange = useCallback((event, editor) => {
-        const editorData = editor.getData();
-        const data = editorData !== '' ? editorData : null;
+                const nextValue = {
+                    ...documentRef.current,
+                    components: [
+                        {
+                            role: 'header',
+                            type: 'article',
+                            title: null,
+                            subtitle: null,
+                            surtitle: null,
+                            image: null,
+                            ...firstHeader,
+                        },
+                        ...otherComponents,
+                    ],
+                };
 
-        if (onChange !== null) {
-            const { components: newHeaders = null } = data || {};
-            const { components: documentComponents = [] } = documentRef.current || {};
-            const otherComponents = (documentComponents || []).filter(
-                ({ role = null }) => role !== 'header',
-            );
-            const firstHeader =
-                (newHeaders || []).find(({ role = null }) => role === 'header') || null;
-            const { extra = false } = firstHeader || {};
-            const nextValue = {
-                ...documentRef.current,
-                components: [
-                    {
-                        title: null,
-                        subtitle: null,
-                        surtitle: null,
-                        image: null,
-                        ...firstHeader,
-                    },
-                    ...otherComponents,
-                ],
-            };
+                console.log('onHeaderChange', nextValue);
 
-            onChange(nextValue);
-
-            // Reset editor in case
-            if (extra || newHeaders.length > 1) {
-                console.log('force header format');
-                const body = renderHeader(nextValue);
-                editor.setData(body);
+                onChange(nextValue);
+                // Reset editor in case
+                if (extra || (newHeaders !== null && newHeaders.length > 1)) {
+                    console.log('force header format');
+                    const body = renderHeader(nextValue);
+                    editor.setData(body);
+                }
             }
-        }
-    }, []);
+        },
+        [onChange],
+    );
+
+    const onContentChange = useCallback(
+        (event, editor) => {
+            const editorData = editor.getData();
+            const data = editorData !== '' ? editorData : null;
+
+            if (data && onChange !== null) {
+                const { components: newBlocks = null } = data || {};
+                const { components: documentComponents = [] } = documentRef.current || {};
+                const otherComponents = (documentComponents || []).filter(
+                    ({ role = null }) => role !== 'block',
+                );
+                const nextValue = {
+                    ...documentRef.current,
+                    components: [...otherComponents, ...newBlocks],
+                };
+
+                console.log('onContentChange', nextValue);
+
+                onChange(nextValue);
+            }
+        },
+        [onChange],
+    );
 
     const onEditorClick = useCallback(
         (event, editor) => {
-            console.log('click', event);
+            console.log('onEditorClick', event);
             const { selection: currentSelection = null } = editor.editing.model.document || {};
             const range = currentSelection.getFirstRange() || null;
             const target = range !== null ? range.getCommonAncestor() : null;
@@ -214,17 +226,19 @@ function EditorArticle({ document, viewer, destinations, settings, className, on
     );
 
     const headerBody = useMemo(() => renderHeader(document), [document]);
-    const headerRef = useNicheEditor({
+    const { containerRef: headerRef } = useNicheEditor({
         body: headerBody,
         onChange: onHeaderChange,
         onClick: onEditorClick,
+        // debug: true,
     });
 
     const contentBody = useMemo(() => renderContent(document), [document]);
-    const contentRef = useNicheEditor({
+    const { containerRef: contentRef } = useNicheEditor({
         body: contentBody,
         onChange: onContentChange,
         onClick: onEditorClick,
+        debug: true,
     });
 
     return (

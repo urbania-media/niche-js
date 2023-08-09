@@ -11,6 +11,7 @@ import {
     ImageEditing,
 } from '@ckeditor/ckeditor5-image';
 import { List } from '@ckeditor/ckeditor5-list';
+import { MediaEmbed } from '@ckeditor/ckeditor5-media-embed';
 import { Paragraph } from '@ckeditor/ckeditor5-paragraph';
 // import { plugin as ImagePlugin } from '@niche-js/block-image/editor';
 import { BlockToolbar } from '@ckeditor/ckeditor5-ui';
@@ -40,6 +41,7 @@ NicheEditor.builtinPlugins = [
     ImageInsert,
 
     BlockToolbar,
+    MediaEmbed,
 
     // Custom plugins
     // ImagePlugin,
@@ -50,7 +52,7 @@ NicheEditor.builtinPlugins = [
 ];
 
 NicheEditor.defaultConfig = {
-    blockToolbar: ['heading', 'blocks', 'insertImage'],
+    blockToolbar: ['heading', 'blocks', 'insertImage', 'mediaEmbed'],
     toolbar: ['bold', 'italic'],
     simpleUpload: {
         // The URL that the images are uploaded to.
@@ -66,20 +68,19 @@ NicheEditor.defaultConfig = {
     },
     image: {
         toolbar: [
-            'imageStyle:block',
-            'imageStyle:side',
+            // 'imageStyle:block',
+            // 'imageStyle:side',
             '|',
             'toggleImageCaption',
             'imageTextAlternative',
-            'restrictedEditing',
-            {
-                // Grouping the buttons for the icon-like image styling
-                // into one drop-down.
-                name: 'imageStyle:icons',
-                title: 'Alignment',
-                items: ['imageStyle:regular', 'imageStyle:blue', 'imageStyle:red'],
-                defaultItem: 'imageStyle:regular',
-            },
+            // {
+            //     // Grouping the buttons for the icon-like image styling
+            //     // into one drop-down.
+            //     name: 'imageStyle:icons',
+            //     title: 'Alignment',
+            //     items: ['imageStyle:regular', 'imageStyle:blue', 'imageStyle:red'],
+            //     defaultItem: 'imageStyle:regular',
+            // },
         ],
         // styles: {
         //     // A list of completely custom styling options.
@@ -97,13 +98,6 @@ NicheEditor.defaultConfig = {
         //             title: 'Blue image',
         //             icon: 'full',
         //             className: 'image-blue',
-        //         },
-        //         {
-        //             name: 'red',
-        //             modelElements: ['imageBlock'],
-        //             title: 'Red image',
-        //             icon: 'full',
-        //             className: 'image-red',
         //         },
         //     ],
         // },
