@@ -25,6 +25,8 @@ const defaultProps = {
 function Embed({ embed, className }) {
     const refEmbed = useRef();
     const { iframeUrl = null, html = null } = embed || {};
+    console.log('iframeUrl', iframeUrl);
+
     return (
         <Widget className={classNames([styles.container, { [className]: className !== null }])}>
             {iframeUrl !== null ? (
@@ -40,14 +42,15 @@ function Embed({ embed, className }) {
                         width="320"
                         height="240"
                     />
+                    {/* <oembed url={iframeUrl} /> */}
                 </div>
             ) : null}
-            {iframeUrl === null && html !== null ? (
+            {/* {iframeUrl === null && html !== null ? (
                 <div
                     className={classNames([styles.iframeContainer])}
                     dangerouslySetInnerHTML={{ __html: html }}
                 />
-            ) : null}
+            ) : null} */}
         </Widget>
     );
 }

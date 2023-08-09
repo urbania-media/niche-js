@@ -26,7 +26,20 @@ const propTypes = {
         components: PropTypes.arrayOf(PropTypes.shape({})),
     }),
     viewer: PropTypes.string,
-    destinations: PropTypes.arrayOf(PropTypes.shape({})),
+    platforms: PropTypes.arrayOf(PropTypes.shape({})),
+    components: PropTypes.arrayOf(
+        PropTypes.shape({
+            role: PropTypes.string,
+            type: PropTypes.string,
+            label: PropTypes.string,
+            fields: PropTypes.arrayOf(
+                PropTypes.shape({
+                    platform: PropTypes.string,
+                }),
+            ),
+            platform: PropTypes.string,
+        }),
+    ),
     settings: PropTypes.arrayOf(PropTypes.shape({})), // fields
     className: PropTypes.string,
     onChange: PropTypes.func,
@@ -35,13 +48,22 @@ const propTypes = {
 const defaultProps = {
     document: null,
     viewer: null,
-    destinations: null,
+    platforms: null,
+    components: null,
     settings: null,
     className: null,
     onChange: null,
 };
 
-function EditorArticle({ document, viewer, destinations, settings, className, onChange }) {
+function EditorArticle({
+    document,
+    viewer,
+    platforms,
+    components: platformComponents,
+    settings,
+    className,
+    onChange,
+}) {
     const { type = 'article', components = [] } = document || {};
     const [focusedBlock, setFocusedBlock] = useState(null);
 
@@ -244,7 +266,7 @@ function EditorArticle({ document, viewer, destinations, settings, className, on
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>
             <Editor
-                destinations={destinations}
+                platforms={platforms}
                 left={
                     <Outline
                         components={components}

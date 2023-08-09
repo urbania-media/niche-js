@@ -385,6 +385,31 @@ export default class NichePlugin extends Plugin {
         //     .add( downcastImageAttribute( imageUtils, 'imageBlock', 'src' ) )
         //     .add( downcastImageAttribute( imageUtils, 'imageBlock', 'alt' ) )
         //     .add( downcastSrcsetAttribute( imageUtils, 'imageBlock' ) );
+
+        /**
+         * Niche embeds
+         */
+
+        // conversion.for('upcast').elementToElement({
+        //     view: {
+        //         name: 'iframe',
+        //     },
+        //     model: (viewElement, { writer: modelWriter }) => {
+        //         const element = viewElement;
+        //         console.log('iframe', element);
+        //         const blockContainer = element.parent;
+        //         const widget = element.getAttribute('src') || null;
+        //         return modelWriter.createElement('oembed', {
+        //             tag: 'iframe',
+        //             class: element.getAttribute('class'),
+        //             widget: widget !== null,
+        //             id: blockContainer.getAttribute('data-niche-id') || null,
+        //             uuid: blockContainer.getAttribute('data-niche-uuid'),
+        //             type: blockContainer.getAttribute('data-niche-type'),
+        //             role: blockContainer.getAttribute('data-niche-role'),
+        //         });
+        //     },
+        // });
     }
 
     // findBlockNode(node) {

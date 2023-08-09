@@ -54,6 +54,9 @@ NicheEditor.builtinPlugins = [
 NicheEditor.defaultConfig = {
     blockToolbar: ['heading', 'blocks', 'insertImage', 'mediaEmbed'],
     toolbar: ['bold', 'italic'],
+    mediaEmbed: {
+        previewsInData: true,
+    },
     simpleUpload: {
         // The URL that the images are uploaded to.
         uploadUrl: 'https://niche.ca.test:8080/medias/upload',
