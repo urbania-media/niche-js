@@ -41,13 +41,7 @@ function Article({ title, subtitle, surtitle, image, className }) {
                 inline
             />
             <Editable className={styles.title} tag="h1" name="title" html={title} inline />
-            <Editable
-                className={styles.subtitle}
-                tag="div"
-                name="subtitle"
-                html={subtitle}
-                inline
-            />
+            <Editable className={styles.subtitle} tag="h3" name="subtitle" html={subtitle} inline />
             {url !== null ? (
                 <EditableImage className={styles.image} name="image" src={url} alt={alt} />
             ) : null}

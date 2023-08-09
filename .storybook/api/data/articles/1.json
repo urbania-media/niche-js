@@ -15,6 +15,17 @@
             }
         },
         {
+            "id": null,
+            "role": "block",
+            "type": "embed",
+            "embed": {
+                "provider": "youtube",
+                "url": "https://www.youtube.com/watch?v=Xw5AiRVqfqk",
+                "iframeUrl": "https://www.youtube.com/embed/Xw5AiRVqfqk",
+                "html": "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/Xw5AiRVqfqk\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>"
+            }
+        },
+        {
             "role": "block",
             "type": "text",
             "body": "<p>Envie de découvrir une tonne d’histoires de gens passionnés (ou juste de vous divertir un bon coup)? <a href='https://goo.gl/WpXp1X'>Abonnez-vous à notre chaîne YouTube</a> et suivez-nous sur<a href='https://www.instagram.com/_urbania/'> Instagram</a> et<a href='https://www.tiktok.com/@_urbania'> TikTok</a> pour ne rien manquer!</p>"

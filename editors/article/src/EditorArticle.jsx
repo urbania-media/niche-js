@@ -14,7 +14,7 @@ import {
 } from '@niche-js/core/contexts';
 import { findParentBlock } from '@niche-js/core/utils';
 
-import CKEditor from './Editor';
+import MainEditor from './Editor';
 import Outline from './Outline';
 import Settings from './Settings';
 
@@ -43,8 +43,7 @@ const defaultProps = {
 function EditorArticle({ document, viewer, destinations, settings, className, onChange }) {
     const { type = 'article', components = [] } = document || {};
     const [focusedBlock, setFocusedBlock] = useState(null);
-    // const editorRef = useRef(null);
-    // const nicheEditorRef = useRef(null);
+
     const documentRef = useRef(document);
     useEffect(() => {
         documentRef.current = document;
@@ -85,7 +84,7 @@ function EditorArticle({ document, viewer, destinations, settings, className, on
                 ...documentRef.current,
                 components: [...otherComponents, ...newBlocks],
             };
-            // console.log('onChange', nextValue, otherComponents, newBlocks);
+            // console.log('onContentChange', nextValue, otherComponents, newBlocks);
             onChange(nextValue);
         }
     }, []);
@@ -102,7 +101,7 @@ function EditorArticle({ document, viewer, destinations, settings, className, on
                 ...documentRef.current,
                 components: [firstHeader, ...otherComponents],
             };
-            console.log('onHeaderChange', nextValue);
+            // console.log('onHeaderChange', nextValue);
             onChange(nextValue);
         }
     }, []);
@@ -196,7 +195,7 @@ function EditorArticle({ document, viewer, destinations, settings, className, on
                             <ViewerComponent
                                 withoutContent
                                 headerChildren={
-                                    <CKEditor
+                                    <MainEditor
                                         document={document}
                                         onEditorChange={onHeaderChange}
                                         onEditorClick={onEditorClick}
@@ -208,7 +207,7 @@ function EditorArticle({ document, viewer, destinations, settings, className, on
                                 }
                             />
                             <ViewerComponent contentOnly>
-                                <CKEditor
+                                <MainEditor
                                     document={document}
                                     onEditorChange={onContentChange}
                                     onEditorClick={onEditorClick}

@@ -56,14 +56,13 @@ export default class NichePlugin extends Plugin {
 
         // Editable fields
         schema.register('nicheEditableInline', {
-            allowIn: ['nicheComponent', 'nicheHeader'],
+            allowIn: ['nicheComponent'],
             allowContentOf: '$block',
             isLimit: true,
             allowAttributes: ['tag', 'class', 'key'],
         });
-
         schema.register('nicheEditable', {
-            allowIn: ['nicheComponent', 'nicheHeader'],
+            allowIn: ['nicheComponent'],
             allowContentOf: '$root',
             isLimit: true,
             allowAttributes: ['tag', 'class', 'key'],
@@ -103,6 +102,7 @@ export default class NichePlugin extends Plugin {
                 const id = parent !== null ? parent.getAttribute('data-niche-id') || null : null;
                 const uuid =
                     parent !== null ? parent.getAttribute('data-niche-uuid') || null : null;
+
                 return modelWriter.createElement(heading, {
                     tag: heading,
                     id,
@@ -116,14 +116,23 @@ export default class NichePlugin extends Plugin {
             view: (element) => {
                 const match = element.name.match(/^h[(1|2|3|4|5|6)]/);
                 if (element.name === 'p' || match !== null) {
+                    const editable =
+                        element.getAttribute('data-niche-editable-inline') ||
+                        element.getAttribute('data-niche-editable') ||
+                        null;
+                    if (editable !== null) {
+                        return null;
+                    }
                     const blockParent = element?.parent?.parent || null;
-                    if (
-                        blockParent !== null &&
-                        blockParent.getAttribute('data-niche-role') === 'block' &&
-                        (blockParent.getAttribute('data-niche-type') === 'heading' ||
-                            blockParent.getAttribute('data-niche-type') === 'text')
-                    ) {
-                        return { name: true };
+                    if (blockParent !== null) {
+                        const role = blockParent.getAttribute('data-niche-role') || null;
+                        if (
+                            (role !== null &&
+                                blockParent.getAttribute('data-niche-type') === 'heading') ||
+                            blockParent.getAttribute('data-niche-type') === 'text'
+                        ) {
+                            return { name: true };
+                        }
                     }
                 }
                 return null;
@@ -206,6 +215,7 @@ export default class NichePlugin extends Plugin {
                     'data-niche-type': true,
                     'data-niche-inline': 'false', // To avoid clashing with p and headings
                 },
+                // converterPriority: 'high',
             },
             model: (viewElement, { writer: modelWriter }) => {
                 const blockContainer = viewElement;
@@ -267,7 +277,7 @@ export default class NichePlugin extends Plugin {
             },
             model: (viewElement, { writer: modelWriter }) =>
                 modelWriter.createElement('nicheEditableInline', {
-                    tag: viewElement.name,
+                    tag: viewElement.getAttribute('data-niche-editable-tag') || viewElement.name,
                     class: viewElement.getAttribute('class'),
                     key: viewElement.getAttribute('data-niche-editable-inline'),
                 }),
@@ -301,7 +311,7 @@ export default class NichePlugin extends Plugin {
         conversion.for('upcast').elementToElement({
             view: {
                 attributes: {
-                    'data-niche-editable': /.+/,
+                    'data-niche-editable': true,
                 },
             },
             model: (viewElement, { writer: modelWriter }) =>

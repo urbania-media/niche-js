@@ -90,6 +90,8 @@ function Editor({
         [document, viewerProps],
     );
 
+    // console.log('body', body);
+
     useEffect(() => {
         const editor = nicheEditorRef.current;
         if (editor !== null && previousBody.current !== body) {

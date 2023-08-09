@@ -10,28 +10,30 @@ import styles from '../../styles/editor/editable.module.css';
 const propTypes = {
     name: PropTypes.string.isRequired,
     tag: PropTypes.string,
-    inline: PropTypes.bool,
     attributes: PropTypes.string,
     html: PropTypes.string,
+    inline: PropTypes.bool,
     className: PropTypes.string,
 };
 
 const defaultProps = {
     tag: 'div',
-    inline: false,
     attributes: null,
     html: null,
+    inline: false,
     className: null,
 };
 
-function Editable({ name, tag, inline, attributes, html, className }) {
+function Editable({ name, tag, attributes, html, inline, className }) {
     const editor = useEditor();
-    const Tag = tag || 'div';
+    const Tag = inline ? 'div' : tag || 'div'; // Tag can be different in model
     return editor !== null ? (
         <Tag
             className={classNames([styles.container, { [className]: className !== null }])}
             dangerouslySetInnerHTML={{ __html: html }}
-            {...(inline ? { 'data-niche-editable-inline': name } : { 'data-niche-editable': name })}
+            {...(inline
+                ? { 'data-niche-editable-inline': name, 'data-niche-editable-tag': tag || 'div' }
+                : { 'data-niche-editable': name })}
             {...(attributes !== null ? { 'data-niche-editable-attributes': attributes } : null)}
         />
     ) : (
