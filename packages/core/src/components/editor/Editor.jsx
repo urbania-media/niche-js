@@ -7,30 +7,54 @@ import Preview from './Preview';
 import styles from '../../styles/editor/editor.module.css';
 
 const propTypes = {
-    left: PropTypes.node,
-    right: PropTypes.node,
-    preview: PropTypes.bool,
+    platformId: PropTypes.string,
+    platforms: PropTypes.arrayOf(PropTypes.shape({})),
+    onPlatformChange: PropTypes.func,
+    outline: PropTypes.node,
+    settings: PropTypes.node,
     children: PropTypes.node,
     className: PropTypes.string,
 };
 
 const defaultProps = {
-    left: null,
-    right: null,
-    preview: true,
+    platformId: null,
+    platforms: null,
+    onPlatformChange: null,
+    outline: null,
+    settings: null,
     className: null,
     children: null,
 };
 
-function Editor({ left, right, preview, className, children }) {
-    // console.log('editor render', left, right, children);
+function Editor({
+    platformId,
+    platforms,
+    onPlatformChange,
+    outline,
+    settings,
+    className,
+    children,
+}) {
     return (
-        <div className={classNames([styles.container, { [className]: className !== null }])}>
-            <aside className={styles.left}>{left}</aside>
-            <main className={styles.main}>
-                {preview ? <Preview>{children}</Preview> : children}
+        <div
+            className={classNames([
+                'd-flex',
+                'w-100',
+                styles.container,
+                { [className]: className !== null },
+            ])}
+        >
+            <aside className={classNames(['bg-light', styles.outline])}>{outline}</aside>
+            <main className={classNames(['flex-grow-1', styles.main])}>
+                <Preview
+                    platforms={platforms}
+                    platformId={platformId}
+                    onPlatformChange={onPlatformChange}
+                >
+                    {children}
+                </Preview>
             </main>
-            <aside className={styles.right}>{right}</aside>
+            <aside className={classNames(['bg-light', styles.settings])}>{settings}</aside>
         </div>
     );
 }

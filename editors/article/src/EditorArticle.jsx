@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { useCallback, useState, useEffect, useRef, useMemo } from 'react';
 import { renderToString } from 'react-dom/server';
+import { v4 as uuidV4 } from 'uuid';
 
 import { useNicheEditor } from '@niche-js/ckeditor';
 import { Editor } from '@niche-js/core/components';
@@ -13,6 +14,7 @@ import {
     EditorProvider,
     HEADERS_NAMESPACE,
     useHeadersComponentsManager,
+    PlatformProvider,
 } from '@niche-js/core/contexts';
 import { findParentBlock } from '@niche-js/core/utils';
 
@@ -26,21 +28,19 @@ const propTypes = {
         components: PropTypes.arrayOf(PropTypes.shape({})),
     }),
     viewer: PropTypes.string,
+    platformId: PropTypes.string,
     platforms: PropTypes.arrayOf(PropTypes.shape({})),
     components: PropTypes.arrayOf(
         PropTypes.shape({
             role: PropTypes.string,
             type: PropTypes.string,
             label: PropTypes.string,
-            fields: PropTypes.arrayOf(
-                PropTypes.shape({
-                    platform: PropTypes.string,
-                }),
-            ),
+            fields: PropTypes.arrayOf(PropTypes.shape({})),
             platform: PropTypes.string,
         }),
     ),
-    settings: PropTypes.arrayOf(PropTypes.shape({})), // fields
+    componentsSettings: PropTypes.arrayOf(PropTypes.shape({})),
+    settings: PropTypes.arrayOf(PropTypes.shape({})), // global editor settings
     className: PropTypes.string,
     onChange: PropTypes.func,
 };
@@ -48,8 +48,10 @@ const propTypes = {
 const defaultProps = {
     document: null,
     viewer: null,
+    platformId: null,
     platforms: null,
     components: null,
+    componentsSettings: null,
     settings: null,
     className: null,
     onChange: null,
@@ -58,21 +60,122 @@ const defaultProps = {
 function EditorArticle({
     document,
     viewer,
+    platformId: initialPlatformId,
     platforms,
-    components: platformComponents,
+    components: componentDefinitions,
+    componentsSettings,
     settings,
     className,
     onChange,
 }) {
-    const { type = 'article', components = [] } = document || {};
-    const [focusedBlock, setFocusedBlock] = useState(null);
+    const { type: documentType = 'article', components = [] } = document || {};
 
     const documentRef = useRef(document);
     useEffect(() => {
         documentRef.current = document;
     }, [document]);
 
-    const ViewerComponent = useViewerComponent(viewer || type || 'article');
+    const [selectedComponent, setSelectedComponent] = useState(null);
+    const [selectedHeaderComponent, setSelectedHeaderComponent] = useState(null);
+
+    const [platformId, setPlatformId] = useState(initialPlatformId);
+    const platform = (platforms || []).find(({ id = null }) => id === platformId) || null;
+    const onPlatformChange = useCallback(
+        (newPlatform) => {
+            const { id = null } = newPlatform || {};
+            setPlatformId(id);
+        },
+        [setPlatformId],
+    );
+
+    const headerDefinitions = useMemo(
+        () =>
+            (componentDefinitions || []).filter(
+                ({ role: componentRole = null, platform: componentPlatform = null }) =>
+                    componentRole === 'header' &&
+                    (componentPlatform === null ||
+                        platform === null ||
+                        platform.id === componentPlatform),
+            ) || null,
+        [componentDefinitions, platform],
+    );
+
+    const headerSettings = useMemo(
+        () =>
+            selectedHeaderComponent !== null
+                ? [
+                      {
+                          type: 'select',
+                          name: 'type',
+                          options: (headerDefinitions || []).map(
+                              ({ type = null, name = null }) => ({
+                                  value: type,
+                                  label: name,
+                              }),
+                          ),
+                      },
+                  ]
+                : null,
+        [selectedHeaderComponent, headerDefinitions],
+    );
+
+    const onHeaderSettingsChange = useCallback(
+        (newValue) => {
+            const {
+                type: headerType = null,
+                platform: headerPlatform = null,
+                uuid: headerUUID = null,
+            } = newValue || {};
+
+            const { components: currentComponents = [] } = documentRef.current || {};
+            const currentHeader = (currentComponents || []).find(
+                ({ uuid = null }) => uuid === headerUUID,
+            );
+            const { type: currentHeaderType = null } = currentHeader || {};
+
+            let newComponents = currentComponents || [];
+            const typeChanged = currentHeaderType !== headerType;
+
+            const newHeaderDefinition = (headerDefinitions || []).find(
+                ({ type = null }) => type === headerType,
+            );
+
+            const { platform: newPlatform = null } = newHeaderDefinition || {};
+
+            // console.log('typeChanged', typeChanged, headerPlatform, newPlatform);
+
+            let finalNewValue = newValue;
+            if (typeChanged && headerPlatform === null && newPlatform !== null) {
+                finalNewValue = { ...newValue, id: null, platform: newPlatform, uuid: uuidV4() };
+                newComponents = [finalNewValue, ...currentComponents];
+            } else if (typeChanged && headerPlatform !== null && newPlatform === null) {
+                finalNewValue = currentComponents.find(
+                    ({ role = null, platform: componentPlatform = null }) =>
+                        role === 'header' && componentPlatform == null,
+                );
+                newComponents = [
+                    ...currentComponents.filter(({ uuid = null }) => uuid !== headerUUID),
+                ];
+            } else {
+                newComponents = currentComponents.reduce((acc, comp) => {
+                    const { uuid = null } = comp || {};
+                    if (headerUUID !== null && uuid === headerUUID) {
+                        return [...acc, newValue];
+                    }
+                    return [...acc, comp];
+                }, []);
+            }
+
+            const nextValue = { ...documentRef.current, components: newComponents };
+            onChange(nextValue);
+            documentRef.current = nextValue;
+
+            setSelectedHeaderComponent(finalNewValue);
+        },
+        [onChange, headerDefinitions, setSelectedHeaderComponent],
+    );
+
+    const ViewerComponent = useViewerComponent(viewer || documentType || 'article');
 
     const headersManager = useHeadersComponentsManager();
     const headers = headersManager.getComponents();
@@ -80,13 +183,34 @@ function EditorArticle({
     const blocksManager = useBlocksComponentsManager();
     const blocks = blocksManager.getComponents();
 
-    const renderHeader = useCallback(
-        (doc) =>
+    const headerDocument = useMemo(() => {
+        const { components: documentComponents = [] } = document;
+        const platformComponent =
+            platform !== null
+                ? (documentComponents || []).find(
+                      ({ role = null, platform: componentPlatform = null }) =>
+                          role === 'header' && componentPlatform === platform.id,
+                  )
+                : null;
+        const defaultComponent = (documentComponents || []).find(
+            ({ role = null, platform: componentPlatform = null }) =>
+                role === 'header' && componentPlatform === null,
+        );
+        const finalComponent = platformComponent || defaultComponent || null;
+
+        return {
+            ...document,
+            components: [finalComponent],
+        };
+    }, [document, platform]);
+
+    const renderDocument = useCallback(
+        (doc, section = null) =>
             renderToString(
                 <EditorProvider>
                     <ComponentsProvider namespace={HEADERS_NAMESPACE} components={headers}>
                         <ComponentsProvider namespace={BLOCKS_NAMESPACE} components={blocks}>
-                            <ViewerComponent document={doc} sectionOnly="header" />
+                            <ViewerComponent document={doc} sectionOnly={section} />
                         </ComponentsProvider>
                     </ComponentsProvider>
                 </EditorProvider>,
@@ -94,34 +218,20 @@ function EditorArticle({
         [],
     );
 
-    const renderContent = useCallback(
-        (doc) =>
-            renderToString(
-                <EditorProvider>
-                    <ComponentsProvider namespace={HEADERS_NAMESPACE} components={headers}>
-                        <ComponentsProvider namespace={BLOCKS_NAMESPACE} components={blocks}>
-                            <ViewerComponent document={doc} sectionOnly="content" />
-                        </ComponentsProvider>
-                    </ComponentsProvider>
-                </EditorProvider>,
-            ),
-        [],
-    );
-
-    const onFieldChange = useCallback(
+    const onSettingsChange = useCallback(
         (newValue) => {
-            const { uuid: blockUUID = null } = newValue || {};
+            const { uuid: componentUUID = null } = newValue || {};
             const newComponents = components.reduce((acc, comp) => {
                 const { uuid = null } = comp || {};
-                if (blockUUID !== null && uuid === blockUUID) {
+                if (componentUUID !== null && uuid === componentUUID) {
                     return [...acc, newValue];
                 }
                 return [...acc, comp];
             }, []);
             onChange({ ...document, components: newComponents });
-            setFocusedBlock(newValue);
+            setSelectedComponent(newValue);
         },
-        [document, onChange, setFocusedBlock],
+        [document, onChange, setSelectedComponent],
     );
 
     const onHeaderChange = useCallback(
@@ -135,45 +245,66 @@ function EditorArticle({
                 const otherComponents = (documentComponents || []).filter(
                     ({ role = null }) => role !== 'header',
                 );
-                const firstHeader =
-                    (newHeaders || []).find(({ role = null }) => role === 'header') || null;
+                const platformHeader =
+                    platform !== null
+                        ? (newHeaders || []).find(
+                              ({ role = null, platform: componentPlatform = null }) =>
+                                  role === 'header' && componentPlatform === platform.id,
+                          )
+                        : null;
+                const defaultHeader = (newHeaders || []).find(
+                    ({ role = null, platform: componentPlatform = null }) =>
+                        role === 'header' && componentPlatform === null,
+                );
+                const firstHeader = platformHeader || defaultHeader || null;
+
+                console.log('fh', newHeaders, firstHeader, platformHeader, defaultHeader);
+
+                const otherHeaders = documentComponents.filter(
+                    ({ role = null, id = null }) =>
+                        role === 'header' && (firstHeader === null || id !== firstHeader.id),
+                );
+
                 const { extra = false } = firstHeader || {};
+                const newHeader = {
+                    role: 'header',
+                    type: 'article',
+                    title: null,
+                    subtitle: null,
+                    surtitle: null,
+                    image: null,
+                    ...firstHeader,
+                };
 
                 const nextValue = {
                     ...documentRef.current,
-                    components: [
-                        {
-                            role: 'header',
-                            type: 'article',
-                            title: null,
-                            subtitle: null,
-                            surtitle: null,
-                            image: null,
-                            ...firstHeader,
-                        },
-                        ...otherComponents,
-                    ],
+                    components: [newHeader, ...otherHeaders, ...otherComponents],
                 };
 
-                console.log('onHeaderChange', nextValue);
-
                 onChange(nextValue);
+                documentRef.current = nextValue;
+
                 // Reset editor in case
                 if (extra || (newHeaders !== null && newHeaders.length > 1)) {
-                    console.log('force header format');
-                    const body = renderHeader(nextValue);
+                    // console.log('force header format');
+                    const body = renderDocument(
+                        {
+                            ...documentRef.current,
+                            components: [newHeader],
+                        },
+                        'header',
+                    );
                     editor.setData(body);
                 }
             }
         },
-        [onChange],
+        [platform, onChange],
     );
 
     const onContentChange = useCallback(
         (event, editor) => {
             const editorData = editor.getData();
             const data = editorData !== '' ? editorData : null;
-
             if (data && onChange !== null) {
                 const { components: newBlocks = null } = data || {};
                 const { components: documentComponents = [] } = documentRef.current || {};
@@ -184,18 +315,15 @@ function EditorArticle({
                     ...documentRef.current,
                     components: [...otherComponents, ...newBlocks],
                 };
-
-                console.log('onContentChange', nextValue);
-
                 onChange(nextValue);
+                documentRef.current = nextValue;
             }
         },
         [onChange],
     );
 
-    const onEditorClick = useCallback(
+    const onContentClick = useCallback(
         (event, editor) => {
-            console.log('onEditorClick', event);
             const { selection: currentSelection = null } = editor.editing.model.document || {};
             const range = currentSelection.getFirstRange() || null;
             const target = range !== null ? range.getCommonAncestor() : null;
@@ -203,102 +331,165 @@ function EditorArticle({
                 const blockUUID = findParentBlock(target);
                 if (blockUUID !== null) {
                     const { components: documentComponents = [] } = documentRef.current || {};
-                    const focused =
+                    const selected =
                         (documentComponents || []).find(({ uuid = null }) => uuid === blockUUID) ||
                         null;
-                    setFocusedBlock(focused);
+                    setSelectedComponent(selected);
+                    setSelectedHeaderComponent(null);
                 }
             }
         },
-        [setFocusedBlock],
+        [setSelectedComponent],
+    );
+
+    const onHeaderClick = useCallback(
+        (event, editor) => {
+            const { selection: currentSelection = null } = editor.editing.model.document || {};
+            const range = currentSelection.getFirstRange() || null;
+            const target = range !== null ? range.getCommonAncestor() : null;
+            if (target !== null) {
+                const blockUUID = findParentBlock(target);
+                if (blockUUID !== null) {
+                    const { components: documentComponents = [] } = documentRef.current || {};
+                    const selected =
+                        (documentComponents || []).find(({ uuid = null }) => uuid === blockUUID) ||
+                        null;
+                    setSelectedHeaderComponent(selected);
+                    setSelectedComponent(null);
+                }
+            }
+        },
+        [setSelectedComponent],
     );
 
     const onOutlineClick = useCallback(
-        (block) => {
-            const { uuid: blockUUID = null } = block || {};
-            if (blockUUID !== null) {
+        (component) => {
+            const { uuid: componentUUID = null } = component || {};
+            if (componentUUID !== null) {
                 const element =
-                    window.document.querySelector(`[data-niche-uuid="${blockUUID}"]`) || null;
+                    window.document.querySelector(`[data-niche-uuid="${componentUUID}"]`) || null;
                 if (element !== null) {
                     element.scrollIntoView({ behavior: 'smooth' });
                 }
             }
-            if (blockUUID !== null) {
-                const focused =
-                    (components || []).find(({ uuid = null }) => uuid === blockUUID) || null;
-                setFocusedBlock(focused);
+            if (componentUUID !== null) {
+                const selected =
+                    (components || []).find(({ uuid = null }) => uuid === componentUUID) || null;
+                const { role: selectedRole = null } = component || {};
+                if (selectedRole === 'header') {
+                    setSelectedHeaderComponent(selected);
+                } else {
+                    setSelectedComponent(selected);
+                }
             }
         },
-        [components, setFocusedBlock],
+        [components, setSelectedComponent, setSelectedHeaderComponent],
     );
 
     const onOutlineClickRemove = useCallback(
         (block) => {
             const { uuid: blockUUID = null } = block || {};
             if (blockUUID !== null) {
-                if (focusedBlock !== null && focusedBlock.uuid === blockUUID) {
-                    setFocusedBlock(null);
+                if (selectedComponent !== null && selectedComponent.uuid === blockUUID) {
+                    setSelectedComponent(null);
                 }
                 const others =
                     (components || []).filter(({ uuid = null }) => uuid !== blockUUID) || null;
-                onChange({ ...document, components: others });
+                const nextValue = { ...document, components: others };
+                onChange(nextValue);
+                documentRef.current = nextValue;
             }
         },
-        [document, components, focusedBlock, setFocusedBlock],
+        [document, components, selectedComponent, setSelectedComponent],
     );
 
-    const headerBody = useMemo(() => renderHeader(document), [document]);
+    const headerBody = useMemo(
+        () => renderDocument(headerDocument, 'header'),
+        [headerDocument, renderDocument],
+    );
     const { containerRef: headerRef } = useNicheEditor({
         body: headerBody,
         onChange: onHeaderChange,
-        onClick: onEditorClick,
-        // debug: true,
-    });
-
-    const contentBody = useMemo(() => renderContent(document), [document]);
-    const { containerRef: contentRef } = useNicheEditor({
-        body: contentBody,
-        onChange: onContentChange,
-        onClick: onEditorClick,
+        onClick: onHeaderClick,
         debug: true,
     });
 
+    const contentBody = useMemo(
+        () => renderDocument(document, 'content'),
+        [document, renderDocument],
+    );
+
+    const { containerRef: contentRef } = useNicheEditor({
+        body: contentBody,
+        onChange: onContentChange,
+        onClick: onContentClick,
+        // debug: true,
+    });
+
+    const hasSettings = selectedComponent !== null && selectedComponent?.type;
+    const settingsDefinition = hasSettings
+        ? (componentDefinitions || []).find(
+              ({
+                  type: componentType = null,
+                  role: componentRole = null,
+                  platform: componentPlatform = null,
+              }) =>
+                  selectedComponent?.role === componentRole &&
+                  selectedComponent?.type === componentType &&
+                  (platform === null || platform.id === componentPlatform),
+          ) || null
+        : null;
+
+    // const outlineComponents = components.filter(
+    //     ({ role = null, type = null }) => role !== 'header',
+    // );
+    // console.log('components', components);
+
     return (
-        <div className={classNames([styles.container, { [className]: className !== null }])}>
-            <Editor
-                platforms={platforms}
-                left={
-                    <Outline
-                        components={components}
-                        onClick={onOutlineClick}
-                        onClickRemove={onOutlineClickRemove}
-                    />
-                }
-                right={
-                    focusedBlock !== null && focusedBlock?.type ? (
-                        <Settings
-                            value={focusedBlock}
-                            onChange={onFieldChange}
-                            fields={[
-                                ...(focusedBlock.fields || []),
-                                ...(settings || []),
-                                {
-                                    type: 'text',
-                                    name: 'body',
-                                    withoutFormGroup: true,
-                                    placeholder: 'Body',
-                                },
-                            ]}
+        <PlatformProvider platform={platform}>
+            <div className={classNames([styles.container, { [className]: className !== null }])}>
+                <Editor
+                    platformId={platformId}
+                    platforms={platforms}
+                    onPlatformChange={onPlatformChange}
+                    outline={
+                        <Outline
+                            components={components}
+                            onClick={onOutlineClick}
+                            onClickRemove={onOutlineClickRemove}
                         />
-                    ) : null
-                }
-            >
-                <EditorProvider>
-                    <ViewerComponent sectionOnly="header" editorRef={headerRef} />
-                    <ViewerComponent sectionOnly="content" editorRef={contentRef} />
-                </EditorProvider>
-            </Editor>
-        </div>
+                    }
+                    settings={
+                        <>
+                            {selectedHeaderComponent !== null ? (
+                                <Settings
+                                    value={selectedHeaderComponent}
+                                    onChange={onHeaderSettingsChange}
+                                    fields={[...(headerSettings || [])]}
+                                />
+                            ) : null}
+                            {hasSettings ? (
+                                <Settings
+                                    value={selectedComponent}
+                                    onChange={onSettingsChange}
+                                    fields={[
+                                        ...(settingsDefinition !== null
+                                            ? settingsDefinition?.fields || []
+                                            : []),
+                                        ...(componentsSettings || []),
+                                    ]}
+                                />
+                            ) : null}
+                        </>
+                    }
+                >
+                    <EditorProvider>
+                        <ViewerComponent sectionOnly="header" editorRef={headerRef} />
+                        <ViewerComponent sectionOnly="content" editorRef={contentRef} />
+                    </EditorProvider>
+                </Editor>
+            </div>
+        </PlatformProvider>
     );
 }
 

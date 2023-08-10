@@ -8,30 +8,35 @@ import useFullscreen from '../../hooks/useFullscreen';
 import styles from '../../styles/editor/preview.module.css';
 
 const propTypes = {
-    destinations: PropTypes.arrayOf(
+    platforms: PropTypes.arrayOf(
         PropTypes.shape({
             id: PropTypes.string,
             name: PropTypes.string,
         }),
     ),
+    platformId: PropTypes.string,
+    onPlatformChange: PropTypes.func,
     className: PropTypes.string,
     children: PropTypes.node,
 };
 
 const defaultProps = {
-    destinations: [
+    platforms: [
         { id: 'urbania_ca', name: 'urbania.ca' },
         { id: 'urbania_fr', name: 'urbania.fr' },
     ],
+    platformId: null,
+    onPlatformChange: null,
     className: null,
     children: null,
 };
 
-function Preview({ destinations, className, children }) {
+function Preview({ platforms, platformId, onPlatformChange, className, children }) {
     const body = useMemo(() => {
         window.document.querySelector('body');
     }, []);
     const { toggle: toggleFullscreen, active: fullscreen = false } = useFullscreen(body);
+    const platform = (platforms || []).find(({ id = null }) => id === platformId) || null;
 
     const [size, setSize] = useState('desktop');
     const onClickSize = useCallback(
@@ -45,15 +50,18 @@ function Preview({ destinations, className, children }) {
     const toggleOpen = useCallback(() => {
         setOpen(!open);
     }, [open, setOpen]);
-    const [destination, setDestination] = useState('urbania');
-    const onClickDestination = useCallback(
-        (newDestination) => {
-            setDestination(newDestination);
+
+    const onClickPlatform = useCallback(
+        (newPlatform) => {
+            if (onPlatformChange !== null) {
+                onPlatformChange(newPlatform);
+            }
             setOpen(false);
         },
-        [destination, setDestination],
+        [onPlatformChange],
     );
-    const { name: destinationName = null } = destination || {};
+
+    const { label: platformName } = platform || {};
 
     return (
         <div
@@ -67,41 +75,34 @@ function Preview({ destinations, className, children }) {
             ])}
         >
             <div className="d-flex mb-2">
-                {/* <div className="label me-2">
-                    <FormattedMessage defaultMessage="Layout" description="Field label" />
-                </div> */}
                 <div className="dropdown">
                     <button
                         className="btn btn-outline-secondary btn-sm dropdown-toggle me-2"
                         type="button"
                         onClick={toggleOpen}
                     >
-                        {destinationName || (
+                        {platformName || (
                             <FormattedMessage defaultMessage="Layout" description="Field label" />
                         )}
                     </button>
                     <ul className={classNames(['dropdown-menu', { show: open }])}>
-                        {(destinations || []).map((dest) => (
-                            <li key={`destination-${dest.name}`}>
+                        {(platforms || []).map((it) => (
+                            <li key={`platform-${it.id}`}>
                                 <button
                                     type="button"
-                                    key={`layout-${dest.name}`}
                                     className={classNames([
                                         'btn btn-sm btn-outline-secondary dropdown-item',
                                         {
-                                            active:
-                                                destination !== null && dest.id === destination.id,
+                                            active: platform !== null && it.id === platform.id,
                                         },
                                     ])}
                                     onClick={() =>
-                                        onClickDestination(
-                                            destination !== null && dest.id === destination.id
-                                                ? null
-                                                : dest,
+                                        onClickPlatform(
+                                            platform !== null && it.id === platform.id ? null : it,
                                         )
                                     }
                                 >
-                                    {dest.name}
+                                    {it.label}
                                 </button>
                             </li>
                         ))}

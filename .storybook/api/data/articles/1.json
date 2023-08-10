@@ -3,12 +3,25 @@
     "title": "Les vraies questions URBANIA – Édition FESTIF",
     "components": [
         {
-            "id": 1,
+            "id": "1",
             "role": "header",
             "type": "article",
             "title": "Les vraies questions URBANIA – Édition FESTIF",
             "surtitle": "FESTIF",
             "subtitle": "Le FESTIF en bref",
+            "image": {
+                "url": "https://picsum.photos/200/300",
+                "caption": "Picsum"
+            }
+        },
+        {
+            "id": "2",
+            "role": "header",
+            "type": "article_over",
+            "title": "Over FESTIF",
+            "surtitle": "FESTIF",
+            "subtitle": "Le FESTIF en bref",
+            "platform": "urbania_fr",
             "image": {
                 "url": "https://picsum.photos/200/300",
                 "caption": "Picsum"

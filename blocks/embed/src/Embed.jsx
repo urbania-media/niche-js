@@ -25,7 +25,7 @@ const defaultProps = {
 function Embed({ embed, className }) {
     const refEmbed = useRef();
     const { iframeUrl = null, html = null } = embed || {};
-    console.log('iframeUrl', iframeUrl);
+    // console.log('iframeUrl', iframeUrl);
 
     return (
         <Widget className={classNames([styles.container, { [className]: className !== null }])}>

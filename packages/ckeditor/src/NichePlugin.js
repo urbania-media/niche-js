@@ -229,6 +229,7 @@ export default class NichePlugin extends Plugin {
                     uuid: blockContainer.getAttribute('data-niche-uuid'),
                     type: blockContainer.getAttribute('data-niche-type'),
                     role: blockContainer.getAttribute('data-niche-role'),
+                    platform: blockContainer.getAttribute('data-niche-platform') || null,
                 });
             },
         });
@@ -244,6 +245,7 @@ export default class NichePlugin extends Plugin {
                     'data-niche-uuid': modelElement.getAttribute('uuid'),
                     'data-niche-type': modelElement.getAttribute('type'),
                     'data-niche-role': modelElement.getAttribute('role'),
+                    'data-niche-platform': modelElement.getAttribute('platform') || null,
                 });
                 return block;
             },
@@ -261,6 +263,7 @@ export default class NichePlugin extends Plugin {
                     'data-niche-uuid': modelElement.getAttribute('uuid'),
                     'data-niche-type': modelElement.getAttribute('type'),
                     'data-niche-role': modelElement.getAttribute('role'),
+                    'data-niche-platform': modelElement.getAttribute('platform') || null,
                 });
                 return widget ? toWidget(block, viewWriter) : block;
             },

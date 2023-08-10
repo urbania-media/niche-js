@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import { v4 as uuidV4 } from 'uuid';
 
+import componentDefinitions from '../../../.storybook/api/data/componentDefinitions';
+import platforms from '../../../.storybook/api/data/platforms';
 import BlocksProvider from '../../../packages/blocks/src/BlocksProvider';
 import { EditorProvider } from '../../../packages/core/src/contexts/EditorContext';
 import FieldsProvider from '../../../packages/fields/src/FieldsProvider';
@@ -36,6 +38,11 @@ export default {
     ],
 };
 
+const editorArgs = {
+    platforms,
+    components: componentDefinitions,
+};
+
 const getInitialDocument = (document) => ({
     ...document,
     components:
@@ -45,12 +52,13 @@ const getInitialDocument = (document) => ({
 export const Empty = {
     args: {
         document: null,
+        ...editorArgs,
     },
-    render: () => {
+    render: (args) => {
         const [currentDocument, onChange] = useState();
         return (
             <div style={{ width: 960, height: 600, margin: 'auto' }}>
-                <Article document={currentDocument} onChange={onChange} />
+                <Article {...args} document={currentDocument} onChange={onChange} />
             </div>
         );
     },
@@ -59,12 +67,13 @@ export const Empty = {
 export const Simple = {
     args: {
         document: article1,
+        ...editorArgs,
     },
-    render: ({ document = null }) => {
+    render: ({ document = null, ...args }) => {
         const [currentDocument, onChange] = useState(getInitialDocument(document));
         return (
             <div style={{ width: '100%', height: 600, margin: 'auto' }}>
-                <Article document={currentDocument} onChange={onChange} />
+                <Article {...args} document={currentDocument} onChange={onChange} />
             </div>
         );
     },
@@ -73,12 +82,13 @@ export const Simple = {
 export const Urbania = {
     args: {
         document: article3,
+        ...editorArgs,
     },
-    render: ({ document = null }) => {
+    render: ({ document = null, ...args }) => {
         const [currentDocument, onChange] = useState(getInitialDocument(document));
         return (
             <div style={{ width: '100%', height: 800, margin: 'auto' }}>
-                <Article document={currentDocument} onChange={onChange} />
+                <Article {...args} document={currentDocument} onChange={onChange} />
             </div>
         );
     },
@@ -87,8 +97,9 @@ export const Urbania = {
 export const Trash = {
     args: {
         document: article2,
+        ...editorArgs,
     },
-    render: ({ document = null }) => {
+    render: ({ document = null, ...args }) => {
         const initialDocument = {
             ...document,
             components: document.components.map((it) => ({ ...it, uuid: uuidV4() })),
@@ -96,7 +107,7 @@ export const Trash = {
         const [currentDocument, onChange] = useState(initialDocument);
         return (
             <div style={{ width: '100%', height: 600, margin: 'auto' }}>
-                <Article document={currentDocument} onChange={onChange} />
+                <Article {...args} document={currentDocument} onChange={onChange} />
             </div>
         );
     },

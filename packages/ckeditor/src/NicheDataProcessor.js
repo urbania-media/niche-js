@@ -23,6 +23,7 @@ export default class NicheDataProcessor {
                 const uuid = child.getAttribute('data-niche-uuid') || uuidV4();
                 const type = child.getAttribute('data-niche-type') || null;
                 const role = child.getAttribute('data-niche-role') || null;
+                const platform = child.getAttribute('data-niche-platform') || null;
 
                 const body = this.getInnerHTML(child) || '';
                 const headingNameMatch = child.name.match(/^h([1-6])/);
@@ -39,6 +40,7 @@ export default class NicheDataProcessor {
                         uuid,
                         type: 'heading',
                         role: 'block',
+                        platform,
                         size,
                         body,
                     };
@@ -51,6 +53,7 @@ export default class NicheDataProcessor {
                         uuid,
                         type: 'text',
                         role: 'block',
+                        platform,
                         body: `<p>${body}</p>`,
                     };
                 }
@@ -62,6 +65,7 @@ export default class NicheDataProcessor {
                         uuid,
                         type,
                         role,
+                        platform,
                         ...this.getFieldsFromChild(child),
                     };
                 }
@@ -74,6 +78,7 @@ export default class NicheDataProcessor {
                         uuid,
                         type: 'image',
                         role: 'block',
+                        platform,
                         ...this.getFieldsFromChild(child),
                     };
                 }

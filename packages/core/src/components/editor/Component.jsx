@@ -24,7 +24,7 @@ const defaultProps = {
 
 function Component({ component, tag, inline, className, children }) {
     const editor = useEditor();
-    const { id = null, uuid = null, role = null, type = null } = component || {};
+    const { id = null, uuid = null, role = null, type = null, platform = null } = component || {};
     const Tag = tag || 'div';
     return (
         <Tag
@@ -36,6 +36,7 @@ function Component({ component, tag, inline, className, children }) {
                       'data-niche-role': role,
                       'data-niche-type': type,
                       'data-niche-inline': inline,
+                      'data-niche-platform': platform,
                   }
                 : null)}
         >

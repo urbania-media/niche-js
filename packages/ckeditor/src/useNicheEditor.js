@@ -1,9 +1,10 @@
+import { ClickObserver } from '@ckeditor/ckeditor5-engine';
 import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
 import { useEffect, useRef, useState } from 'react';
 
 import NicheEditor from './build';
 
-function useNicheEditor({ body, onChange = null, onClick = null, debug = false }) {
+function useNicheEditor({ body, onChange = null, onClick = null, onFocus = null, debug = false }) {
     const [ready, setReady] = useState(false);
     const containerRef = useRef(null);
     const editorRef = useRef(null);
@@ -34,10 +35,12 @@ function useNicheEditor({ body, onChange = null, onClick = null, debug = false }
         if (currentEditor !== null || currentContainer === null) {
             return () => {};
         }
-
         NicheEditor.create(currentContainer)
             .then((editor) => {
-                console.log('Editor was initialized', editor, body);
+                //  console.log('Editor was initialized', editor, body);
+                const { view } = editor.editing;
+
+                view.addObserver(ClickObserver);
 
                 editor.setData(body);
 
@@ -52,13 +55,12 @@ function useNicheEditor({ body, onChange = null, onClick = null, debug = false }
                 console.error(error.stack);
                 setReady(false);
             });
-
         return () => {
             editorRef.current.destroy();
             editorRef.current = null;
             setReady(false);
         };
-    }, [debug, onChange, onClick]);
+    }, [debug, setReady]);
 
     useEffect(() => {
         const { current: currentEditor = null } = editorRef || {};
@@ -67,22 +69,10 @@ function useNicheEditor({ body, onChange = null, onClick = null, debug = false }
         }
 
         const finalOnClick = (event) => {
-            console.log('onClick', event);
             onClick(event, currentEditor);
         };
         const viewDocument = currentEditor.editing.view.document;
-
-        console.log('viewDocument', viewDocument);
-        // viewDocument.on('click', finalOnClick);
-
-        currentEditor.listenTo(viewDocument, 'click', (evt, data) => {
-            const modelElement = currentEditor.editing.mapper.toModelElement(data.target);
-            console.log('meeee', modelElement);
-            // if (modelElement.name == 'placeholder') {
-            //     console.log('Placeholder has been clicked.');
-            // }
-        });
-
+        viewDocument.on('click', finalOnClick);
         return () => {
             viewDocument.off('click', finalOnClick);
         };
@@ -90,17 +80,29 @@ function useNicheEditor({ body, onChange = null, onClick = null, debug = false }
 
     useEffect(() => {
         const { current: currentEditor = null } = editorRef || {};
+        if (!ready || currentEditor === null || onFocus === null) {
+            return () => {};
+        }
+        const finalOnFocus = (event) => {
+            onFocus(event, currentEditor);
+        };
+        const modelDocument = currentEditor.model.document;
+        modelDocument.on('focus', finalOnFocus);
+        return () => {
+            modelDocument.off('focus', finalOnFocus);
+        };
+    }, [onFocus, ready]);
 
+    useEffect(() => {
+        const { current: currentEditor = null } = editorRef || {};
         if (!ready || currentEditor === null || onChange === null) {
             return () => {};
         }
-
         const finalOnChange = (event) => {
             onChange(event, currentEditor);
         };
         const modelDocument = currentEditor.model.document;
         modelDocument.on('change:data', finalOnChange);
-
         return () => {
             modelDocument.off('change:data', finalOnChange);
         };

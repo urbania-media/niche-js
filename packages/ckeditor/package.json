@@ -54,6 +54,7 @@
         "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
     },
     "dependencies": {
+        "@ckeditor/ckeditor5-engine": "^39.0.0",
         "@ckeditor/ckeditor5-basic-styles": "^39.0.0",
         "@ckeditor/ckeditor5-build-balloon": "^39.0.0",
         "@ckeditor/ckeditor5-build-classic": "^39.0.0",
