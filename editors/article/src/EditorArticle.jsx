@@ -443,7 +443,7 @@ function EditorArticle({
     // const outlineComponents = components.filter(
     //     ({ role = null, type = null }) => role !== 'header',
     // );
-    // console.log('components', components);
+    console.log('selectedHeaderComponent', selectedHeaderComponent);
 
     return (
         <PlatformProvider platform={platform}>
