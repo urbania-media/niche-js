@@ -1,11 +1,12 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import classNames from 'classnames';
+// import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { useEditor } from '../../contexts';
+// eslint-disable-next-line import/no-unresolved
+import { useIsEditor } from '@niche-js/core/contexts';
 
-import styles from '../../styles/editor/editable.module.css';
+// import styles from '../../styles/editor/editable.module.css';
 
 const propTypes = {
     name: PropTypes.string.isRequired,
@@ -25,11 +26,11 @@ const defaultProps = {
 };
 
 function Editable({ name, tag, attributes, html, inline, className }) {
-    const editor = useEditor();
+    const isEditor = /*#__PURE__*/useIsEditor();
     const Tag = inline ? 'div' : tag || 'div'; // Tag can be different in model
-    return editor !== null ? (
+    return isEditor ? (
         <Tag
-            className={classNames([styles.container, { [className]: className !== null }])}
+            className={className}
             dangerouslySetInnerHTML={{ __html: html }}
             {...(inline
                 ? { 'data-niche-editable-inline': name, 'data-niche-editable-tag': tag || 'div' }
@@ -37,10 +38,7 @@ function Editable({ name, tag, attributes, html, inline, className }) {
             {...(attributes !== null ? { 'data-niche-editable-attributes': attributes } : null)}
         />
     ) : (
-        <Tag
-            className={classNames([{ [className]: className !== null }])}
-            dangerouslySetInnerHTML={{ __html: html }}
-        />
+        <Tag className={className} dangerouslySetInnerHTML={{ __html: html }} />
     );
 }
 

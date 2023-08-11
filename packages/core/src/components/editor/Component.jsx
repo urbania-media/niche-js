@@ -3,9 +3,10 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { PropTypes as NichePropTypes } from '../../lib';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { PropTypes as NichePropTypes } from '@niche-js/core';
 
-import { useEditor } from '../../contexts';
+import { useIsEditor } from '../../contexts';
 
 const propTypes = {
     component: NichePropTypes.component.isRequired,
@@ -23,13 +24,13 @@ const defaultProps = {
 };
 
 function Component({ component, tag, inline, className, children }) {
-    const editor = useEditor();
+    const isEditor = /*#__PURE__*/useIsEditor();
     const { id = null, uuid = null, role = null, type = null, platform = null } = component || {};
     const Tag = tag || 'div';
     return (
         <Tag
             className={classNames([{ [className]: className !== null }])}
-            {...(editor !== null
+            {...(isEditor
                 ? {
                       'data-niche-id': id,
                       'data-niche-uuid': uuid,

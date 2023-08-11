@@ -2,6 +2,7 @@
 import babelPluginRuntime from '@babel/plugin-transform-runtime';
 import babelPresetEnv from '@babel/preset-env';
 import babelPresetReact from '@babel/preset-react';
+import alias from '@rollup/plugin-alias';
 import babel from '@rollup/plugin-babel';
 import commonjs from '@rollup/plugin-commonjs';
 // import url from '@rollup/plugin-url';
@@ -10,38 +11,44 @@ import resolve from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
 import terser from '@rollup/plugin-terser';
 import babelPluginFormatJs from 'babel-plugin-formatjs';
-import cssnano from 'cssnano';
+import fs from 'fs';
 import path from 'path';
 import postcss from 'rollup-plugin-postcss';
 
 import generateScopedName from './scripts/build/generateScopedName.mjs';
+import getPackage from './scripts/build/getPackage.js';
+import getPackages from './scripts/build/getPackages.js';
 import imageAssets from './scripts/build/imageAssets.mjs';
 
 export const createConfig = ({
     file = 'index.js',
     input = null,
-    output = null,
+    output: outputFile = null,
+    outputCjs: outputCjsFile = null,
+    outputEs: outputEsFile = null,
     banner = null,
     footer = null,
     format = null,
+    isEditor = false,
     withoutPostCss = false,
     withoutPostCssExtract = false,
     withoutMinification = true,
     resolveOptions = null,
     prependPlugins = [],
     appendPlugins = [],
+    replaceValues = null,
 } = {}) => {
     const isNode = format === 'node';
     const isCjs = format === 'cjs' || format === 'node';
     const outputCjs = {
-        file: output || `lib/${file}`,
+        file: outputCjsFile || outputFile || `lib/${file}`,
         format: 'cjs',
         banner,
         footer,
         plugins: [withoutMinification ? null : terser()].filter((i) => i !== null),
     };
     const outputEs = {
-        file: output || `es/${file}`,
+        file: outputEsFile || outputFile || `es/${file}`,
         banner,
         footer,
         plugins: [withoutMinification ? null : terser()].filter((i) => i !== null),
@@ -75,9 +82,10 @@ export const createConfig = ({
             resolve({
                 extensions: ['.mjs', '.js', '.jsx', '.json', '.node'],
                 jail: path.join(process.cwd(), 'src'),
+                browser: true,
                 ...resolveOptions,
             }),
-            commonjs(),
+            commonjs({}),
             babel({
                 extensions: ['.mjs', '.js', '.jsx', '.json', '.node'],
                 exclude: 'node_modules/**',
@@ -136,13 +144,103 @@ export const createConfig = ({
             // }),
             replace({
                 values: {
+                    __EDITOR__: JSON.stringify(isEditor),
                     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+                    ...replaceValues,
                 },
                 preventAssignment: true,
             }),
+            !isEditor &&
+                replace({
+                    values: {
+                        isEditor: JSON.stringify(false),
+                    },
+                    preventAssignment: true,
+                }),
             ...appendPlugins,
         ].filter(Boolean),
     };
 };
 
-export default [createConfig({ format: 'both' })];
+const {
+    name: currentPackageName,
+    isEditor,
+    hasEditor,
+    exports: currentPackageExports,
+} = getPackage(process.cwd());
+
+const editorReplaceValues = getPackages()
+    .filter(
+        ({ name, hasEditor: packageHasEditor }) => name !== currentPackageName && packageHasEditor,
+    )
+    .reduce(
+        (map, { name: packageName, exports: packageExports = [] }) => ({
+            ...map,
+            [packageName]: JSON.stringify(`${packageName}/editor`),
+            ...packageExports.reduce(
+                (subMap, exportName) => ({
+                    ...subMap,
+                    [`${packageName}/${exportName}`]: JSON.stringify(
+                        `${packageName}/editor/${exportName}`,
+                    ),
+                }),
+                {},
+            ),
+        }),
+        {},
+    );
+
+const editorReplacePlugin = replace({
+    values: {
+        ...editorReplaceValues,
+    },
+    delimiters: ["'", "'"],
+    preventAssignment: true,
+});
+
+export default [
+    createConfig({
+        format: 'both',
+        isEditor,
+        appendPlugins: [
+            isEditor && editorReplacePlugin,
+            // resolve({
+            //     resolveOnly: [/@niche-js\/core/],
+            // }),
+        ].filter(Boolean),
+    }),
+    ...currentPackageExports.map((packageExport) =>
+        createConfig({
+            file: `${packageExport}.js`,
+            format: 'both',
+            isEditor,
+            appendPlugins: [
+                isEditor && editorReplacePlugin,
+                // resolve({
+                //     resolveOnly: [/@niche-js\/core/]
+                // }),
+            ].filter(Boolean),
+        }),
+    ),
+    ...(hasEditor
+        ? [
+              createConfig({
+                  format: 'both',
+                  outputCjs: 'lib/editor.js',
+                  outputEs: 'es/editor.js',
+                  isEditor: true,
+                  prependPlugins: [editorReplacePlugin],
+              }),
+              ...currentPackageExports.map((packageExport) =>
+                  createConfig({
+                      file: `${packageExport}.js`,
+                      format: 'both',
+                      outputCjs: `lib/editor/${packageExport}.js`,
+                      outputEs: `es/editor/${packageExport}.js`,
+                      isEditor: true,
+                      prependPlugins: [editorReplacePlugin],
+                  }),
+              ),
+          ]
+        : []),
+].filter(Boolean);

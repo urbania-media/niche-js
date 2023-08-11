@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import screenfull from 'screenfull';
 
-const useFullscreen = (element) => {
+function useFullscreen (element) {
     const enabled = screenfull.isEnabled;
     const [active, setActive] = useState(false);
 

@@ -29,31 +29,39 @@
     "main": "lib/index.js",
     "module": "es/index.js",
     "style": "assets/css/styles.css",
+    "sideEffects": false,
     "exports": {
-        ".": "./lib/index.js",
-        "./components": "./lib/components.js",
-        "./contexts": "./lib/contexts.js",
-        "./hooks": "./lib/hooks.js",
-        "./utils": "./lib/utils.js",
-        "./css/styles": "./css/styles.css",
-        "./css/styles.css": "./css/styles.css",
-        "./assets/css/styles.css": "./assets/css/styles.css",
-        "./css/vendor": "./css/vendor.css",
-        "./css/vendor.css": "./css/vendor.css",
-        "./assets/css/vendor.css": "./assets/css/vendor.css"
-    },
-    "browser": {
-        ".": "./es/index.js",
-        "./components": "./es/components.js",
-        "./contexts": "./es/contexts.js",
-        "./hooks": "./es/hooks.js",
-        "./utils": "./es/utils.js",
-        "./css/styles": "./css/styles.css",
-        "./css/styles.css": "./css/styles.css",
-        "./assets/css/styles.css": "./assets/css/styles.css",
-        "./css/vendor": "./css/vendor.css",
-        "./css/vendor.css": "./css/vendor.css",
-        "./assets/css/vendor.css": "./assets/css/vendor.css"
+        ".": {
+            "require": "./lib/index.js",
+            "import": "./es/index.js"
+        },
+        "./components": {
+            "require": "./lib/components.js",
+            "import": "./es/components.js"
+        },
+        "./contexts": {
+            "require": "./lib/contexts.js",
+            "import": "./es/contexts.js"
+        },
+        "./hooks": {
+            "require": "./lib/hooks.js",
+            "import": "./es/hooks.js"
+        },
+        "./utils": {
+            "require": "./lib/utils.js",
+            "import": "./es/utils.js"
+        },
+        "./editor": {
+            "require": "./lib/editor.js",
+            "import": "./es/editor.js"
+        },
+        "./editor/*": {
+            "require": "./lib/editor/*.js",
+            "import": "./es/editor/*.js"
+        },
+        "./css/*": "./css/*.css",
+        "./css/*.css": "./css/*.css",
+        "./assets/css/*.css": "./assets/css/*.css"
     },
     "files": [
         "lib",

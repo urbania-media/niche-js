@@ -5,6 +5,15 @@ export const EditorContext = React.createContext(null);
 
 export const useEditor = () => useContext(EditorContext);
 
+/*@__NO_SIDE_EFFECTS__*/
+export function useIsEditor() {
+    if (!__EDITOR__) {
+        return false;
+    }
+    const editorContext = useContext(EditorContext);
+    return editorContext !== null;
+};
+
 const propTypes = {
     children: PropTypes.node.isRequired,
 };

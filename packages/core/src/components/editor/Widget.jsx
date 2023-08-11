@@ -1,9 +1,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import classNames from 'classnames';
+// import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-
-import { useEditor } from '../../contexts';
+// eslint-disable-next-line import/no-unresolved
+import { useIsEditor } from '@niche-js/core/contexts';
 
 const propTypes = {
     tag: PropTypes.string,
@@ -18,12 +18,12 @@ const defaultProps = {
 };
 
 function Widget({ tag, className, children }) {
-    const editor = useEditor();
+    const isEditor = /*#__PURE__*/useIsEditor();
     const Tag = tag || 'div';
     return (
         <Tag
-            className={classNames([{ [className]: className !== null }])}
-            {...(editor !== null ? { 'data-niche-widget': 'true' } : null)}
+            className={className}
+            {...(isEditor ? { 'data-niche-widget': 'true' } : null)}
         >
             {children}
         </Tag>

@@ -29,14 +29,15 @@
     "main": "lib/index.js",
     "module": "es/index.js",
     "exports": {
-        ".": "./lib/index.js",
-        "./locale": "./locale",
-        "./locale/*": "./locale/*.cjs.js"
-    },
-    "browser": {
-        ".": "./es/index.js",
-        "./locale": "./locale",
-        "./locale/*": "./locale/*.cjs.js"
+        ".": {
+            "require": "./lib/index.js",
+            "import": "./es/index.js"
+        },
+        "./locale/*.json": "./locale/*.json",
+        "./locale/*": {
+            "require": "./locale/*.cjs.js",
+            "import": "./locale/*.js"
+        }
     },
     "files": [
         "locale",

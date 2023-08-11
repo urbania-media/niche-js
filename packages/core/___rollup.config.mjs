@@ -1,4 +1,5 @@
 import alias from '@rollup/plugin-alias';
+import replace from '@rollup/plugin-replace';
 import path from 'path';
 
 import { createConfig } from '../../rollup.config.mjs';
@@ -95,14 +96,37 @@ const files = {
     },
 };
 
-export default Object.keys(files).reduce(
-    (configs, file) => [
-        ...configs,
-        createConfig({
-            file,
-            format: 'both',
-            ...files[file],
-        }),
-    ],
-    [],
-);
+export default [
+    ...Object.keys(files).reduce(
+        (configs, file) => [
+            ...configs,
+            createConfig({
+                file,
+                format: 'both',
+                ...files[file],
+                appendPlugins: [
+                    replace({
+                        values: {
+                            'isEditor': JSON.stringify(
+                                false,
+                            ),
+                        },
+                        // delimiters: ['\\b', ";"],
+                        preventAssignment: true,
+                    }),
+                ]
+            }),
+            createConfig({
+                file,
+                format: 'both',
+                outputCjs: `lib/editor/${file}`,
+                outputEs: `es/editor/${file}`,
+                replaceValues: {
+                    __EDITOR__: JSON.stringify(true),
+                },
+                ...files[file],
+            }),
+        ],
+        [],
+    ),
+];

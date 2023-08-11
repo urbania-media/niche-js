@@ -31,17 +31,21 @@
     "module": "es/index.js",
     "style": "assets/css/styles.css",
     "exports": {
-        ".": "./lib/index.js",
-        "./assets/css/styles.css": "./assets/css/styles.css"
-    },
-    "browser": {
-        ".": "./es/index.js",
+        ".": {
+            "require": "./lib/index.js",
+            "import": "./es/index.js"
+        },
+        "./editor": {
+            "require": "./lib/editor.js",
+            "import": "./es/editor.js"
+        },
         "./assets/css/styles.css": "./assets/css/styles.css"
     },
     "files": [
         "lib",
         "es",
-        "assets"
+        "assets",
+        "editor.js"
     ],
     "scripts": {
         "prepare": "../../scripts/prepare-package.sh"
