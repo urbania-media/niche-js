@@ -1,3 +1,5 @@
+@import "@niche-js/core/assets/css/styles.css";
+
 body {
     font-size: 16px;
     text-rendering: optimizelegibility;

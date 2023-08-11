@@ -455,14 +455,16 @@ function EditorArticle({
                     platforms={platforms}
                     onPlatformChange={onPlatformChange}
                     outline={
-                        <Outline
-                            components={components}
-                            onClick={onOutlineClick}
-                            onClickRemove={onOutlineClickRemove}
-                        />
+                        <div className={styles.outline}>
+                            <Outline
+                                components={components}
+                                onClick={onOutlineClick}
+                                onClickRemove={onOutlineClickRemove}
+                            />
+                        </div>
                     }
                     settings={
-                        <>
+                        <div className={styles.settings}>
                             {selectedHeaderComponent !== null ? (
                                 <Settings
                                     value={selectedHeaderComponent}
@@ -482,7 +484,7 @@ function EditorArticle({
                                     ]}
                                 />
                             ) : null}
-                        </>
+                        </div>
                     }
                 >
                     <EditorProvider>
