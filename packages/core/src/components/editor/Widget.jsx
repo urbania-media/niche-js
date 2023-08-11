@@ -18,7 +18,7 @@ const defaultProps = {
 };
 
 function Widget({ tag, className, children }) {
-    const isEditor = useIsEditor();
+    const isEditor = /*#__PURE__*/useIsEditor();
     const Tag = tag || 'div';
     return (
         <Tag

@@ -19,7 +19,7 @@ const defaultProps = {
 };
 
 function EditableImage({ name, src, alt, className }) {
-    const isEditor = useIsEditor();
+    const isEditor = /*#__PURE__*/useIsEditor();
     return isEditor ? (
         <img
             className={classNames([{ [className]: className !== null }])}

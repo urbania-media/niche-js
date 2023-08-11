@@ -5,7 +5,8 @@ export const EditorContext = React.createContext(null);
 
 export const useEditor = () => useContext(EditorContext);
 
-export const useIsEditor = () => {
+/*@__NO_SIDE_EFFECTS__*/
+export function useIsEditor() {
     if (!__EDITOR__) {
         return false;
     }

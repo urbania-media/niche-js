@@ -29,6 +29,7 @@
     "main": "lib/index.js",
     "module": "es/index.js",
     "style": "assets/css/styles.css",
+    "sideEffects": false,
     "exports": {
         ".": {
             "require": "./lib/index.js",

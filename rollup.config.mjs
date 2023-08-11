@@ -150,6 +150,13 @@ export const createConfig = ({
                 },
                 preventAssignment: true,
             }),
+            !isEditor &&
+                replace({
+                    values: {
+                        isEditor: JSON.stringify(false),
+                    },
+                    preventAssignment: true,
+                }),
             ...appendPlugins,
         ].filter(Boolean),
     };
@@ -198,7 +205,7 @@ export default [
         appendPlugins: [
             isEditor && editorReplacePlugin,
             // resolve({
-            //     resolveOnly: [/@niche-js\/core/]
+            //     resolveOnly: [/@niche-js\/core/],
             // }),
         ].filter(Boolean),
     }),
@@ -221,9 +228,7 @@ export default [
                   format: 'both',
                   outputCjs: 'lib/editor.js',
                   outputEs: 'es/editor.js',
-                  replaceValues: {
-                      __EDITOR__: JSON.stringify(true),
-                  },
+                  isEditor: true,
                   prependPlugins: [editorReplacePlugin],
               }),
               ...currentPackageExports.map((packageExport) =>
@@ -232,9 +237,7 @@ export default [
                       format: 'both',
                       outputCjs: `lib/editor/${packageExport}.js`,
                       outputEs: `es/editor/${packageExport}.js`,
-                      replaceValues: {
-                          __EDITOR__: JSON.stringify(true),
-                      },
+                      isEditor: true,
                       prependPlugins: [editorReplacePlugin],
                   }),
               ),
