@@ -64,8 +64,8 @@ export const createConfig = ({
         input: input || `src/${file}`,
         output: outputConfig,
         treeshake: {
-            moduleSideEffects: false,
-            manualPureFunctions: ['useIsEditor']
+            moduleSideEffects: (id, external) => id.match(/\.(css|scss)$/) !== null,
+            manualPureFunctions: ['useIsEditor'],
         },
         plugins: [
             ...prependPlugins,

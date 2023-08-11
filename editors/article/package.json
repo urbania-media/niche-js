@@ -54,7 +54,7 @@
         "@niche-js/ckeditor": "^0.0.34",
         "@niche-js/core": "^0.0.34",
         "@niche-js/fields": "^0.0.34",
-        "@panneau/core": "^3.0.16",
+        "@panneau/core": "^3.0.18",
         "classnames": "^2.2.6",
         "prop-types": "^15.7.2",
         "react-intl": "^6.4.4",
