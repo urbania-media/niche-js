@@ -3,7 +3,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { useIsEditor } from '../../contexts/EditorContext';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { useIsEditor } from '@niche-js/core/contexts';
 
 const propTypes = {
     tag: PropTypes.string,
@@ -18,7 +19,7 @@ const defaultProps = {
 };
 
 function Widget({ tag, className, children }) {
-    const isEditor = useIsEditor();
+    const isEditor = /* #__PURE__ */useIsEditor();
     const Tag = tag || 'div';
     return (
         <Tag className={className} {...(isEditor ? { 'data-niche-widget': 'true' } : null)}>

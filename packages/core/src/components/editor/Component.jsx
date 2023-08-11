@@ -5,8 +5,8 @@ import React from 'react';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { PropTypes as NichePropTypes } from '@niche-js/core';
-
-import { useIsEditor } from '../../contexts/EditorContext';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { useIsEditor } from '@niche-js/core/contexts';
 
 const propTypes = {
     component: NichePropTypes.component.isRequired,
@@ -24,7 +24,7 @@ const defaultProps = {
 };
 
 function Component({ component, tag, inline, className, children }) {
-    const isEditor = useIsEditor();
+    const isEditor = /* #__PURE__ */useIsEditor();
     const { id = null, uuid = null, role = null, type = null, platform = null } = component || {};
     const Tag = tag || 'div';
     return (
