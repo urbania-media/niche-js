@@ -2,8 +2,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-// eslint-disable-next-line import/no-unresolved
-import { useIsEditor } from '@niche-js/core/contexts';
+import { useIsEditor } from '../../contexts/EditorContext';
 
 const propTypes = {
     name: PropTypes.string.isRequired,

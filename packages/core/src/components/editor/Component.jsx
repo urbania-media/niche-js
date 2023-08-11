@@ -6,7 +6,7 @@ import React from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { PropTypes as NichePropTypes } from '@niche-js/core';
 
-import { useIsEditor } from '../../contexts';
+import { useIsEditor } from '../../contexts/EditorContext';
 
 const propTypes = {
     component: NichePropTypes.component.isRequired,
