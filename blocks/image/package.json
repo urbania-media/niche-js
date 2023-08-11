@@ -32,12 +32,10 @@
     "style": "assets/css/styles.css",
     "exports": {
         ".": "./lib/index.js",
-        "./editor": "./lib/editor.js",
         "./assets/css/styles.css": "./assets/css/styles.css"
     },
     "browser": {
         ".": "./es/index.js",
-        "./editor": "./es/editor.js",
         "./assets/css/styles.css": "./assets/css/styles.css"
     },
     "files": [

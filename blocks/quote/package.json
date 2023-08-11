@@ -32,16 +32,19 @@
     "style": "assets/css/styles.css",
     "exports": {
         ".": "./lib/index.js",
+        "./editor": "./lib/editor.js",
         "./assets/css/styles.css": "./assets/css/styles.css"
     },
     "browser": {
         ".": "./es/index.js",
+        "./editor": "./ed/editor.js",
         "./assets/css/styles.css": "./assets/css/styles.css"
     },
     "files": [
         "lib",
         "es",
-        "assets"
+        "assets",
+        "editor.js"
     ],
     "scripts": {
         "prepare": "../../scripts/prepare-package.sh"

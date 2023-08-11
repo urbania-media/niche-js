@@ -2,8 +2,8 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-
-import { useEditor } from '../../contexts';
+// eslint-disable-next-line import/no-unresolved
+import { useIsEditor } from '@niche-js/core/contexts';
 
 const propTypes = {
     name: PropTypes.string.isRequired,
@@ -19,8 +19,8 @@ const defaultProps = {
 };
 
 function EditableImage({ name, src, alt, className }) {
-    const editor = useEditor();
-    return editor !== null ? (
+    const isEditor = useIsEditor();
+    return isEditor ? (
         <img
             className={classNames([{ [className]: className !== null }])}
             data-niche-editable-image={name}
