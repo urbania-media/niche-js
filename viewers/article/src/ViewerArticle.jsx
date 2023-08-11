@@ -40,6 +40,8 @@ function ViewerArticle({
     const { components = null, metadata = null } = document || {};
     const { brand = null } = metadata || {};
 
+    console.log(components);
+
     const blocksManager = useBlocksComponentsManager();
     const blocks = (components || []).filter(({ role = null }) => role === 'block');
 

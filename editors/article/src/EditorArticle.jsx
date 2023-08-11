@@ -184,7 +184,7 @@ function EditorArticle({
     const blocks = blocksManager.getComponents();
 
     const headerDocument = useMemo(() => {
-        const { components: documentComponents = [] } = document;
+        const { components: documentComponents = [] } = document || {};
         const platformComponent =
             platform !== null
                 ? (documentComponents || []).find(
@@ -200,7 +200,7 @@ function EditorArticle({
 
         return {
             ...document,
-            components: [finalComponent],
+            components: finalComponent !== null ? [finalComponent] : [],
         };
     }, [document, platform]);
 
@@ -273,6 +273,7 @@ function EditorArticle({
                     subtitle: null,
                     surtitle: null,
                     image: null,
+                    uuid: uuidV4(),
                     ...firstHeader,
                 };
 
@@ -443,6 +444,7 @@ function EditorArticle({
     // const outlineComponents = components.filter(
     //     ({ role = null, type = null }) => role !== 'header',
     // );
+
     console.log('selectedHeaderComponent', selectedHeaderComponent);
 
     return (
