@@ -24,7 +24,7 @@ const defaultProps = {
 };
 
 function Component({ component, tag, inline, className, children }) {
-    const isEditor = /*#__PURE__*/useIsEditor();
+    const isEditor = useIsEditor();
     const { id = null, uuid = null, role = null, type = null, platform = null } = component || {};
     const Tag = tag || 'div';
     return (

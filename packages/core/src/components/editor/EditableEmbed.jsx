@@ -2,6 +2,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
+
 import { useIsEditor } from '../../contexts/EditorContext';
 
 const propTypes = {
@@ -18,7 +19,7 @@ const defaultProps = {
 };
 
 function EditableImage({ name, src, alt, className }) {
-    const isEditor = /*#__PURE__*/useIsEditor();
+    const isEditor = useIsEditor();
     return isEditor ? (
         <img
             className={classNames([{ [className]: className !== null }])}
