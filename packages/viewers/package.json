@@ -61,7 +61,7 @@
         "@babel/runtime": "^7.12.5",
         "@niche-js/core": "^0.0.34",
         "@niche-js/viewer-article": "^0.0.34",
-        "@panneau/core": "^3.0.9",
+        "@panneau/core": "^3.0.16",
         "prop-types": "^15.7.2"
     },
     "publishConfig": {

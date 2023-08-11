@@ -3,8 +3,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-// eslint-disable-next-line import/no-unresolved
-import { useIsEditor } from '@niche-js/core/contexts';
+import { useIsEditor } from '../../contexts/EditorContext';
 
 // import styles from '../../styles/editor/editable.module.css';
 
@@ -26,7 +25,7 @@ const defaultProps = {
 };
 
 function Editable({ name, tag, attributes, html, inline, className }) {
-    const isEditor = /*#__PURE__*/useIsEditor();
+    const isEditor = useIsEditor();
     const Tag = inline ? 'div' : tag || 'div'; // Tag can be different in model
     return isEditor ? (
         <Tag
