@@ -1,6 +1,6 @@
 {
     "name": "@niche-js/ckeditor",
-    "version": "0.0.35",
+    "version": "0.0.36",
     "private": false,
     "description": "",
     "keywords": [
@@ -53,8 +53,6 @@
         "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
     },
     "dependencies": {
-<<<<<<< HEAD
-        "@ckeditor/ckeditor5-engine": "^39.0.1",
         "@ckeditor/ckeditor5-basic-styles": "^39.0.1",
         "@ckeditor/ckeditor5-build-balloon": "^39.0.1",
         "@ckeditor/ckeditor5-build-classic": "^39.0.1",
@@ -62,24 +60,11 @@
         "@ckeditor/ckeditor5-dev-utils": "^38.2.1",
         "@ckeditor/ckeditor5-editor-balloon": "^39.0.1",
         "@ckeditor/ckeditor5-editor-classic": "^39.0.1",
+        "@ckeditor/ckeditor5-engine": "^39.0.1",
         "@ckeditor/ckeditor5-essentials": "^39.0.1",
         "@ckeditor/ckeditor5-heading": "^39.0.1",
         "@ckeditor/ckeditor5-highlight": "^39.0.1",
         "@ckeditor/ckeditor5-image": "^39.0.1",
-=======
-        "@ckeditor/ckeditor5-basic-styles": "^39.0.0",
-        "@ckeditor/ckeditor5-build-balloon": "^39.0.0",
-        "@ckeditor/ckeditor5-build-classic": "^39.0.0",
-        "@ckeditor/ckeditor5-core": "^39.0.0",
-        "@ckeditor/ckeditor5-dev-utils": "^38.2.1",
-        "@ckeditor/ckeditor5-editor-balloon": "^39.0.0",
-        "@ckeditor/ckeditor5-editor-classic": "^39.0.0",
-        "@ckeditor/ckeditor5-engine": "^39.0.0",
-        "@ckeditor/ckeditor5-essentials": "^39.0.0",
-        "@ckeditor/ckeditor5-heading": "^39.0.0",
-        "@ckeditor/ckeditor5-highlight": "^39.0.0",
-        "@ckeditor/ckeditor5-image": "^39.0.0",
->>>>>>> 5df42bfe8c626eccebf4f19ef3b1eb9f5130d988
         "@ckeditor/ckeditor5-inspector": "^4.1.0",
         "@ckeditor/ckeditor5-link": "^39.0.1",
         "@ckeditor/ckeditor5-list": "^39.0.1",
@@ -92,13 +77,8 @@
         "@ckeditor/ckeditor5-upload": "^39.0.1",
         "@ckeditor/ckeditor5-widget": "^39.0.1",
         "@folklore/fetch": "^0.1.17",
-<<<<<<< HEAD
-        "@niche-js/block-image": "^0.0.34",
         "ckeditor5": "^39.0.1",
-=======
-        "@niche-js/block-image": "^0.0.35",
-        "ckeditor5": "^39.0.0",
->>>>>>> 5df42bfe8c626eccebf4f19ef3b1eb9f5130d988
+        "@niche-js/block-image": "^0.0.36",
         "lodash": "^4.17.21",
         "uuid": "^9.0.0"
     },
