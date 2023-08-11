@@ -63,6 +63,9 @@ export const createConfig = ({
     return {
         input: input || `src/${file}`,
         output: outputConfig,
+        treeshake: {
+            moduleSideEffects: false,
+        },
         plugins: [
             ...prependPlugins,
             imageAssets({
