@@ -2,7 +2,7 @@
 import babelPluginRuntime from '@babel/plugin-transform-runtime';
 import babelPresetEnv from '@babel/preset-env';
 import babelPresetReact from '@babel/preset-react';
-import alias from '@rollup/plugin-alias';
+// import alias from '@rollup/plugin-alias';
 import babel from '@rollup/plugin-babel';
 import commonjs from '@rollup/plugin-commonjs';
 // import url from '@rollup/plugin-url';
@@ -11,13 +11,14 @@ import resolve from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
 import terser from '@rollup/plugin-terser';
 import babelPluginFormatJs from 'babel-plugin-formatjs';
-import fs from 'fs';
+// import fs from 'fs';
 import path from 'path';
 import postcss from 'rollup-plugin-postcss';
 
+import getPackage from './scripts/build/getPackage';
+import getPackages from './scripts/build/getPackages';
+
 import generateScopedName from './scripts/build/generateScopedName.mjs';
-import getPackage from './scripts/build/getPackage.js';
-import getPackages from './scripts/build/getPackages.js';
 import imageAssets from './scripts/build/imageAssets.mjs';
 
 export const createConfig = ({
@@ -63,6 +64,10 @@ export const createConfig = ({
     return {
         input: input || `src/${file}`,
         output: outputConfig,
+        treeshake: {
+            moduleSideEffects: (id, external) => id.match(/\.(css|scss)$/) !== null,
+            manualPureFunctions: ['useIsEditor'],
+        },
         plugins: [
             ...prependPlugins,
             imageAssets({

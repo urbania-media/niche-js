@@ -3,9 +3,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { useIsEditor } from '../../contexts/EditorContext';
-
-// import styles from '../../styles/editor/editable.module.css';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { useIsEditor } from '@niche-js/core/contexts';
 
 const propTypes = {
     name: PropTypes.string.isRequired,
