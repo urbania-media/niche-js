@@ -19,7 +19,7 @@ const defaultProps = {
 };
 
 function Widget({ tag, className, children }) {
-    const isEditor = /* #__PURE__ */useIsEditor();
+    const isEditor = useIsEditor();
     const Tag = tag || 'div';
     return (
         <Tag className={className} {...(isEditor ? { 'data-niche-widget': 'true' } : null)}>

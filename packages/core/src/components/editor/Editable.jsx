@@ -24,7 +24,7 @@ const defaultProps = {
 };
 
 function Editable({ name, tag, attributes, html, inline, className }) {
-    const isEditor = /* #__PURE__ */useIsEditor();
+    const isEditor = useIsEditor();
     const Tag = inline ? 'div' : tag || 'div'; // Tag can be different in model
     return isEditor ? (
         <Tag

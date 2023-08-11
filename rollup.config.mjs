@@ -65,6 +65,7 @@ export const createConfig = ({
         output: outputConfig,
         treeshake: {
             moduleSideEffects: false,
+            manualPureFunctions: ['useIsEditor']
         },
         plugins: [
             ...prependPlugins,
