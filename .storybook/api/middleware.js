@@ -1,11 +1,12 @@
-const path = require('path');
-const fs = require('fs');
-const express = require('express');
-const _ = require('lodash');
-const dayjs = require('dayjs');
-const { sync: globSync } = require('glob');
+import fs from 'fs';
+import path from 'path';
 
-module.exports = () => {
+import dayjs from 'dayjs';
+import express from 'express';
+import { sync as globSync } from 'glob';
+import _ from 'lodash';
+
+export default () => {
     const router = express.Router();
 
     router.use(express.json());

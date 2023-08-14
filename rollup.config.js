@@ -1,4 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
+// import fs from 'fs';
+import path from 'path';
+
 import babelPluginRuntime from '@babel/plugin-transform-runtime';
 import babelPresetEnv from '@babel/preset-env';
 import babelPresetReact from '@babel/preset-react';
@@ -11,15 +14,14 @@ import resolve from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
 import terser from '@rollup/plugin-terser';
 import babelPluginFormatJs from 'babel-plugin-formatjs';
-// import fs from 'fs';
-import path from 'path';
 import postcss from 'rollup-plugin-postcss';
 
-import getPackage from './scripts/build/getPackage';
-import getPackages from './scripts/build/getPackages';
+import generateScopedName from './scripts/build/generateScopedName';
+import imageAssets from './scripts/build/imageAssets';
 
-import generateScopedName from './scripts/build/generateScopedName.mjs';
-import imageAssets from './scripts/build/imageAssets.mjs';
+
+const getPackage = require('./scripts/build/getPackage');
+const getPackages = require('./scripts/build/getPackages');
 
 export const createConfig = ({
     file = 'index.js',

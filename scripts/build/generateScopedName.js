@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
-import { pkgUpSync } from 'pkg-up';
+
+import { sync as pkgUpSync } from 'pkg-up';
 import slugify from 'slugify';
 
 const generateScopedName = (localName, filePath) => {

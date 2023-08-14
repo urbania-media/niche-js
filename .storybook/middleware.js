@@ -1,12 +1,14 @@
-require('dotenv').config();
+import dotenv from 'dotenv';
 
-const proxyMiddleware = require('./api/proxy');
-const apiMiddleware = require('./api/middleware');
+import apiMiddleware from './api/middleware';
+import proxyMiddleware from './api/proxy';
+
+dotenv.config();
 
 // For local API with micromag.studio
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
-module.exports = (router) => {
+export default (router) => {
     const proxyUrl = process.env.API_PROXY_URL || null;
 
     if (proxyUrl !== null) {

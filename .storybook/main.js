@@ -1,15 +1,22 @@
-import { dirname, join } from 'path';
+/* eslint-disable no-param-reassign */
+import path from 'path';
+
+import { styles } from '@ckeditor/ckeditor5-dev-utils';
+import getCSSModuleLocalIdent from 'react-dev-utils/getCSSModuleLocalIdent';
 import { DefinePlugin } from 'webpack';
 
-/* eslint-disable no-param-reassign */
-// const { createWebpackConfig } = require('@folklore/cli');
-const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
+import getPackagesAliases from '../scripts/build/getPackagesAliases';
+import getPackagesPaths from '../scripts/build/getPackagesPaths';
 
-const path = require('path');
-const { styles } = require('@ckeditor/ckeditor5-dev-utils');
-const getPackagesPaths = require('../scripts/build/getPackagesPaths');
-const getPackagesAliases = require('../scripts/build/getPackagesAliases');
-module.exports = {
+/**
+ * This function is used to resolve the absolute path of a package.
+ * It is needed in projects that use Yarn PnP or are set up within a monorepo.
+ */
+function getAbsolutePath(value) {
+    return path.dirname(require.resolve(path.join(value, 'package.json')));
+}
+
+export default {
     stories: getPackagesPaths()
         .filter((it) => it.match(/\/cli$/) === null)
         .map((packagePath) => path.join(packagePath, './src/**/*.stories.@(jsx|mdx)')),
@@ -145,10 +152,3 @@ module.exports = {
         return config;
     },
 };
-/**
- * This function is used to resolve the absolute path of a package.
- * It is needed in projects that use Yarn PnP or are set up within a monorepo.
- */
-function getAbsolutePath(value) {
-    return dirname(require.resolve(join(value, 'package.json')));
-}

@@ -5,6 +5,7 @@
     "tabWidth": 4,
     "semi": true,
     "importOrder": [
+        "^(fs|path)$",
         "<THIRD_PARTY_MODULES>",
         "^@niche-js/(.*)$",
         "^[./](.*)?/(utils|hooks|lib)",

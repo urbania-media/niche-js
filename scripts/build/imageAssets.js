@@ -1,6 +1,7 @@
+import path from 'path';
+
 import url from '@rollup/plugin-url';
 import { createFilter } from '@rollup/pluginutils';
-import path from 'path';
 
 export default (options = {}) => {
     const filter = createFilter(options.include, options.exclude);
