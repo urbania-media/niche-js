@@ -1,10 +1,20 @@
-import { useComponentsManager, useComponents, useComponent } from '@panneau/core/contexts';
+import {
+    useComponentsManager,
+    useComponents,
+    useComponent,
+    ComponentsProvider,
+    useFieldComponent,
+    FIELDS_NAMESPACE,
+    useFieldsComponentsManager,
+} from '@panneau/core/contexts';
 
 export const EDITORS_NAMESPACE = 'editors';
 export const VIEWERS_NAMESPACE = 'viewers';
 export const COMPONENTS_NAMESPACE = 'components';
 export const BLOCKS_NAMESPACE = 'blocks';
 export const HEADERS_NAMESPACE = 'headers';
+
+export { ComponentsProvider, useFieldComponent, FIELDS_NAMESPACE, useFieldsComponentsManager };
 
 /**
  * Editors hooks

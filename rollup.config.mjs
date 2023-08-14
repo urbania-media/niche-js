@@ -86,8 +86,10 @@ export const createConfig = ({
             resolve({
                 extensions: ['.mjs', '.js', '.jsx', '.json', '.node'],
                 jail: path.join(process.cwd(), 'src'),
-                browser: true,
                 ...resolveOptions,
+            }),
+            resolve({
+                resolveOnly: ['@panneau/core', '@panneau/core/contexts'],
             }),
             commonjs({}),
             babel({

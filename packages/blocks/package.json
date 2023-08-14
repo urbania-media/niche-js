@@ -70,7 +70,6 @@
         "@niche-js/block-quote": "^0.0.36",
         "@niche-js/block-text": "^0.0.36",
         "@niche-js/core": "^0.0.36",
-        "@panneau/core": "^3.0.19",
         "prop-types": "^15.7.2"
     },
     "publishConfig": {

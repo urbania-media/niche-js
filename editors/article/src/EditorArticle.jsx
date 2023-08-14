@@ -1,4 +1,3 @@
-import { ComponentsProvider } from '@panneau/core/contexts';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { useCallback, useState, useEffect, useRef, useMemo } from 'react';
@@ -15,6 +14,7 @@ import {
     HEADERS_NAMESPACE,
     useHeadersComponentsManager,
     PlatformProvider,
+    ComponentsProvider,
 } from '@niche-js/core/contexts';
 import { findParentBlock } from '@niche-js/core/utils';
 
