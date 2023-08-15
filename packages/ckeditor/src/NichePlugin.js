@@ -75,7 +75,13 @@ export default class NichePlugin extends Plugin {
             allowContentOf: null,
             isLimit: true,
             // inheritAllFrom: '$container',
-            allowChildren: ['nicheUI', 'nicheEditable', 'nicheEditableInline', 'imageBlock', '$text'],
+            allowChildren: [
+                'nicheUI',
+                'nicheEditable',
+                'nicheEditableInline',
+                'imageBlock',
+                '$text',
+            ],
             allowAttributes: ['tag', 'class', 'key'],
         });
 
@@ -443,6 +449,20 @@ export default class NichePlugin extends Plugin {
             return null;
         }
 
+        function findElementFromAttributes(element, attributes) {
+            return findElement(element, (el) => {
+                const elKeys =
+                    typeof el.getAttributeKeys !== 'undefined' ? [...el.getAttributeKeys()] : [];
+                return (
+                    elKeys.findIndex(
+                        (it) =>
+                            attributes.findIndex((attribute) => it.match(attribute) !== null) !==
+                            -1,
+                    ) !== -1
+                );
+            });
+        }
+
         function createModelFromView(modelWriter, viewElement) {
             if (viewElement.is('text')) {
                 return modelWriter.createElement('nicheUI', {
@@ -483,41 +503,17 @@ export default class NichePlugin extends Plugin {
 
         conversion.for('upcast').elementToElement({
             view: (element) => {
-                const parentComponent = findElement(element, (el) => {
-                    const elKeys =
-                        typeof el.getAttributeKeys !== 'undefined'
-                            ? [...el.getAttributeKeys()]
-                            : [];
-
-                    return elKeys.findIndex((it) => it.match(/uuid/) !== null) !== -1;
-                });
-
-                if (parentComponent === null) {
+                const blockParent = findElementFromAttributes(element, [/uuid/]);
+                if (blockParent === null) {
                     return null;
                 }
 
-                const widgetParent = findElement(element, (el) => {
-                    const elKeys =
-                        typeof el.getAttributeKeys !== 'undefined'
-                            ? [...el.getAttributeKeys()]
-                            : [];
-
-                    return elKeys.findIndex((it) => it.match(/data-niche-widget/) !== null) !== -1;
-                });
-
+                const widgetParent = findElementFromAttributes(element, [/data-niche-widget/]);
                 if (widgetParent === null) {
                     return null;
                 }
 
-                const parentEditable = findElement(element, (el) => {
-                    const elKeys =
-                        typeof el.getAttributeKeys !== 'undefined'
-                            ? [...el.getAttributeKeys()]
-                            : [];
-                    return (
-                        elKeys.findIndex((it) => it.match(/^data-niche-editable/) !== null) !== -1
-                    );
-                });
+                const parentEditable = findElementFromAttributes(element, [/^data-niche-editable/]);
                 if (parentEditable !== null) {
                     return null;
                 }
