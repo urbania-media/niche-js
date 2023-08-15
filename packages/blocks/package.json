@@ -1,6 +1,6 @@
 {
     "name": "@niche-js/blocks",
-    "version": "0.0.40",
+    "version": "0.0.41",
     "private": false,
     "description": "",
     "keywords": [
@@ -63,13 +63,13 @@
     },
     "dependencies": {
         "@babel/runtime": "^7.12.5",
-        "@niche-js/block-embed": "^0.0.40",
-        "@niche-js/block-heading": "^0.0.40",
-        "@niche-js/block-image": "^0.0.40",
-        "@niche-js/block-images": "^0.0.40",
-        "@niche-js/block-quote": "^0.0.40",
-        "@niche-js/block-text": "^0.0.40",
-        "@niche-js/core": "^0.0.40",
+        "@niche-js/block-embed": "^0.0.41",
+        "@niche-js/block-heading": "^0.0.41",
+        "@niche-js/block-image": "^0.0.41",
+        "@niche-js/block-images": "^0.0.41",
+        "@niche-js/block-quote": "^0.0.41",
+        "@niche-js/block-text": "^0.0.41",
+        "@niche-js/core": "^0.0.41",
         "prop-types": "^15.7.2"
     },
     "publishConfig": {
