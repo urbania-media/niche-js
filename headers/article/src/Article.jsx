@@ -29,19 +29,38 @@ function Article({ title, subtitle, surtitle, image, className }) {
     const { url = null, alt = null } = image || {};
     return (
         <Widget className={classNames([styles.container, { [className]: className !== null }])}>
-            <Editable
-                className={styles.surtitle}
-                tag="div"
-                name="surtitle"
-                html={surtitle}
-                inline
-            />
-            <Editable className={styles.title} tag="h1" name="title" html={title} inline />
-            <Editable className={styles.subtitle} tag="h3" name="subtitle" html={subtitle} inline />
-            {url !== null ? (
-                <EditableImage className={styles.image} name="image" src={url} alt={alt} />
-            ) : null}
-            <div>Test</div>
+            <div className={styles.inner} style={{
+                color: '#fc0'
+            }}>
+            sfdgdfgsdfgsdfg
+                <Editable
+                    className={styles.surtitle}
+                    tag="div"
+                    name="surtitle"
+                    html={surtitle}
+                    inline
+                />
+                <div className={styles.inner} style={{
+                color: '#00c'
+            }}>
+                <Editable className={styles.title} tag="h1" name="title" html={title} inline />
+                </div>
+                <Editable
+                    className={styles.subtitle}
+                    tag="h3"
+                    name="subtitle"
+                    html={subtitle}
+                    inline
+                />
+                {url !== null ? (
+                    <EditableImage className={styles.image} name="image" src={url} alt={alt} />
+                ) : null}
+            </div>
+            <div style={{
+                color: '#c00'
+            }}>
+                NICHE
+            </div>
         </Widget>
     );
 }
