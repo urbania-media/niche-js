@@ -10,6 +10,8 @@ import {
 import { Widget, toWidget, toWidgetEditable } from '@ckeditor/ckeditor5-widget';
 import { v4 as uuidV4 } from 'uuid';
 
+import { findParentBlock } from '@niche-js/core/utils';
+
 /* eslint-disable no-underscore-dangle */
 export default class NichePlugin extends Plugin {
     static get requires() {
@@ -62,6 +64,13 @@ export default class NichePlugin extends Plugin {
             allowAttributes: ['tag', 'class', 'key'],
         });
         schema.register('nicheEditable', {
+            allowIn: ['nicheComponent'],
+            allowContentOf: '$root',
+            isLimit: true,
+            allowAttributes: ['tag', 'class', 'key'],
+        });
+
+        schema.register('nicheUI', {
             allowIn: ['nicheComponent'],
             allowContentOf: '$root',
             isLimit: true,
@@ -413,6 +422,89 @@ export default class NichePlugin extends Plugin {
         //         });
         //     },
         // });
+
+        function findElement(element, matcher) {
+            // Works for both kind of views, model or view
+            // console.log('fins', element, matcher);
+
+            const match = matcher(element);
+            if (match === true) {
+                // console.log('match', match);
+                return element;
+            }
+
+            if (typeof element.parent !== 'undefined' && element.parent !== null) {
+                // console.log('parent', match);
+                return findElement(element.parent, matcher);
+            }
+
+            return null;
+        }
+
+        const getElementAsJson = (element) => {
+            console.log('element', element.is('text'));
+
+            if (element.is('text')) {
+                return {
+                    name: 'text',
+                    data: element.data,
+                };
+            }
+
+            return {
+                name: element.name,
+                class:
+                    typeof element.getAttribute !== 'undefined'
+                        ? element.getAttribute('class')
+                        : null,
+                // text: element.get
+                children:
+                    typeof element.getChildren !== 'undefined'
+                        ? [...element.getChildren()].map((it) => getElementAsJson(it))
+                        : null,
+            };
+        };
+
+        conversion.for('upcast').elementToElement({
+            view: (element) => {
+                const parentComponent = findElement(element, (el) => {
+                    const elKeys =
+                        typeof el.getAttributeKeys !== 'undefined'
+                            ? [...el.getAttributeKeys()]
+                            : [];
+
+                    return elKeys.findIndex((it) => it.match(/uuid/) !== null) !== -1;
+                });
+
+                console.log('parent', parentComponent);
+
+                if (parentComponent === null) {
+                    return null;
+                }
+
+                const parentEditable = findElement(element, (el) => {
+                    const elKeys =
+                        typeof el.getAttributeKeys !== 'undefined'
+                            ? [...el.getAttributeKeys()]
+                            : [];
+                    return (
+                        elKeys.findIndex((it) => it.match(/^data-niche-editable/) !== null) !== -1
+                    );
+                });
+                if (parentEditable !== null) {
+                    return null;
+                }
+
+                return { name: true };
+            },
+            model: (viewElement, { writer: modelWriter }) => {
+                console.log('json', getElementAsJson(viewElement));
+                return modelWriter.createElement('nicheUI', {
+                    json: getElementAsJson(viewElement),
+                });
+            },
+            converterPriority: 'high',
+        });
     }
 
     // findBlockNode(node) {

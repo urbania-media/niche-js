@@ -77,6 +77,7 @@
         "@ckeditor/ckeditor5-upload": "^39.0.1",
         "@ckeditor/ckeditor5-widget": "^39.0.1",
         "@folklore/fetch": "^0.1.17",
+        "@niche-js/core": "^0.0.40",
         "@niche-js/block-image": "^0.0.40",
         "ckeditor5": "^39.0.1",
         "lodash": "^4.17.21",
