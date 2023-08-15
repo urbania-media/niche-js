@@ -34,6 +34,10 @@
             "require": "./lib/index.js",
             "import": "./es/index.js"
         },
+        "./editor": {
+            "require": "./lib/editor.js",
+            "import": "./es/editor.js"
+        },
         "./css/styles": "./css/styles.css",
         "./css/styles.css": "./css/styles.css",
         "./assets/css/styles.css": "./assets/css/styles.css"
