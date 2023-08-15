@@ -107,6 +107,7 @@ function EditorArticle({
                       {
                           type: 'select',
                           name: 'type',
+                          clearable: false,
                           options: (headerDefinitions || []).map(
                               ({ type = null, name = null }) => ({
                                   value: type,

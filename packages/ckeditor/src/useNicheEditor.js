@@ -56,8 +56,12 @@ function useNicheEditor({ body, onChange = null, onClick = null, onFocus = null,
                 setReady(false);
             });
         return () => {
-            editorRef.current.destroy();
-            editorRef.current = null;
+            if (editorRef.current !== null) {
+                if (typeof editorRef.current.destroy !== 'undefined') {
+                    editorRef.current.destroy();
+                }
+                editorRef.current = null;
+            }
             setReady(false);
         };
     }, [debug, setReady]);
