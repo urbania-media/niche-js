@@ -8,21 +8,26 @@ import { useIsEditor } from '@niche-js/core/contexts';
 
 const propTypes = {
     tag: PropTypes.string,
+    withoutUI: PropTypes.bool,
     className: PropTypes.string,
     children: PropTypes.node,
 };
 
 const defaultProps = {
     tag: 'div',
+    withoutUI: false,
     className: null,
     children: null,
 };
 
-function Widget({ tag, className, children }) {
+function Widget({ tag, withoutUI, className, children }) {
     const isEditor = useIsEditor();
     const Tag = tag || 'div';
     return (
-        <Tag className={className} {...(isEditor ? { 'data-niche-widget': 'true' } : null)}>
+        <Tag
+            className={className}
+            {...(isEditor ? { 'data-niche-widget': withoutUI ? 'false' : 'true' } : null)}
+        >
             {children}
         </Tag>
     );

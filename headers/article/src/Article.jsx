@@ -28,11 +28,16 @@ const defaultProps = {
 function Article({ title, subtitle, surtitle, image, className }) {
     const { url = null, alt = null } = image || {};
     return (
-        <Widget className={classNames([styles.container, { [className]: className !== null }])}>
-            <div className={styles.inner} style={{
-                color: '#fc0'
-            }}>
-            sfdgdfgsdfgsdfg
+        <Widget
+            withoutUI
+            className={classNames([styles.container, { [className]: className !== null }])}
+        >
+            <div
+                className={styles.inner}
+                style={{
+                    color: '#fc0',
+                }}
+            >
                 <Editable
                     className={styles.surtitle}
                     tag="div"
@@ -40,10 +45,13 @@ function Article({ title, subtitle, surtitle, image, className }) {
                     html={surtitle}
                     inline
                 />
-                <div className={styles.inner} style={{
-                color: '#00c'
-            }}>
-                <Editable className={styles.title} tag="h1" name="title" html={title} inline />
+                <div
+                    className={styles.inner}
+                    style={{
+                        color: '#00c',
+                    }}
+                >
+                    <Editable className={styles.title} tag="h1" name="title" html={title} inline />
                 </div>
                 <Editable
                     className={styles.subtitle}
@@ -56,9 +64,11 @@ function Article({ title, subtitle, surtitle, image, className }) {
                     <EditableImage className={styles.image} name="image" src={url} alt={alt} />
                 ) : null}
             </div>
-            <div style={{
-                color: '#c00'
-            }}>
+            <div
+                style={{
+                    color: '#c00',
+                }}
+            >
                 NICHE
             </div>
         </Widget>

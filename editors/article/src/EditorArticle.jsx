@@ -239,6 +239,8 @@ function EditorArticle({
             const editorData = editor.getData();
             const data = editorData !== '' ? editorData : null;
 
+            // console.log(data);
+
             if (onChange !== null) {
                 const { components: newHeaders = null } = data || {};
                 const { components: documentComponents = [] } = documentRef.current || {};
@@ -258,7 +260,7 @@ function EditorArticle({
                 );
                 const firstHeader = platformHeader || defaultHeader || null;
 
-                console.log('fh', newHeaders, firstHeader, platformHeader, defaultHeader);
+                // console.log('fh', newHeaders, firstHeader, platformHeader, defaultHeader);
 
                 const otherHeaders = documentComponents.filter(
                     ({ role = null, id = null }) =>
@@ -424,7 +426,7 @@ function EditorArticle({
         body: contentBody,
         onChange: onContentChange,
         onClick: onContentClick,
-        // debug: true,
+        //  debug: true,
     });
 
     const hasSettings = selectedComponent !== null && selectedComponent?.type;

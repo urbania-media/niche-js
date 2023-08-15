@@ -14,7 +14,7 @@ export default class NicheDataProcessor {
     }
 
     toData(viewFragment = null) {
-        // console.log('to data', viewFragment.childCount, viewFragment);
+        console.log('to data', viewFragment.childCount, viewFragment);
 
         const components = [...new Array(viewFragment.childCount).keys()]
             .map((index) => {
@@ -120,15 +120,6 @@ export default class NicheDataProcessor {
                 };
             }
 
-            // TODO: Figure out a better rule for sub children?
-            if (subChild.name === 'figure') {
-                const attributes = this.getFieldsFromChild(subChild);
-                return {
-                    ...acc,
-                    ...attributes,
-                };
-            }
-
             const editableKey =
                 subChild.getAttribute('data-niche-editable-inline') ||
                 subChild.getAttribute('data-niche-editable') ||
@@ -139,6 +130,14 @@ export default class NicheDataProcessor {
                 return {
                     ...acc,
                     [editableKey]: this.getInnerHTML(subChild),
+                };
+            }
+
+            if (child.childCount > 0) {
+                const attributes = this.getFieldsFromChild(subChild);
+                return {
+                    ...acc,
+                    ...attributes,
                 };
             }
 

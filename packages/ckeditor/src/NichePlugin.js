@@ -282,7 +282,7 @@ export default class NichePlugin extends Plugin {
                     'data-niche-role': modelElement.getAttribute('role'),
                     'data-niche-platform': modelElement.getAttribute('platform') || null,
                 });
-                return widget ? toWidget(block, viewWriter) : block;
+                return widget === 'true' ? toWidget(block, viewWriter) : block;
             },
         });
 
@@ -505,6 +505,7 @@ export default class NichePlugin extends Plugin {
             view: (element) => {
                 const blockParent = findElementFromAttributes(element, [/uuid/]);
                 if (blockParent === null) {
+                    // blockParent.getAttribute('data-niche-') not text or heading
                     return null;
                 }
 
