@@ -41,6 +41,7 @@ const propTypes = {
     ),
     componentsSettings: PropTypes.arrayOf(PropTypes.shape({})),
     settings: PropTypes.arrayOf(PropTypes.shape({})), // global editor settings
+    debug: PropTypes.string,
     className: PropTypes.string,
     onChange: PropTypes.func,
 };
@@ -53,6 +54,7 @@ const defaultProps = {
     components: null,
     componentsSettings: null,
     settings: null,
+    debug: 'header',
     className: null,
     onChange: null,
 };
@@ -65,6 +67,7 @@ function EditorArticle({
     components: componentDefinitions,
     componentsSettings,
     settings,
+    debug,
     className,
     onChange,
 }) {
@@ -413,7 +416,7 @@ function EditorArticle({
         body: headerBody,
         onChange: onHeaderChange,
         onClick: onHeaderClick,
-        // debug: true,
+        debug: debug === 'header',
     });
 
     const contentBody = useMemo(
@@ -425,7 +428,7 @@ function EditorArticle({
         body: contentBody,
         onChange: onContentChange,
         onClick: onContentClick,
-        debug: true,
+        debug: debug === 'content',
     });
 
     const hasSettings = selectedComponent !== null && selectedComponent?.type;
