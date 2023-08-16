@@ -22,7 +22,7 @@ const propTypes = {
 
 const defaultProps = {
     document: null,
-    sectionOnly: false,
+    sectionOnly: null,
     className: null,
     headerClassName: null,
     contentClassName: null,

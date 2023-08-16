@@ -225,7 +225,7 @@ function EditorArticle({
     const onSettingsChange = useCallback(
         (newValue) => {
             const { uuid: componentUUID = null } = newValue || {};
-            const newComponents = components.reduce((acc, comp) => {
+            const newComponents = (components || []).reduce((acc, comp) => {
                 const { uuid = null } = comp || {};
                 if (componentUUID !== null && uuid === componentUUID) {
                     return [...acc, newValue];

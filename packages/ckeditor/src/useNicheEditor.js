@@ -21,7 +21,7 @@ function useNicheEditor({ body, onChange = null, onClick = null, onFocus = null,
             editor.model.change((writer) => {
                 try {
                     writer.setSelection(range);
-                    // console.log('set range', range);
+                    console.log('set range', range);
                 } catch (e) {
                     // console.log('failed to focus on range', e, range);
                 }

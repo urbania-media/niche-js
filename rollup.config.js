@@ -178,9 +178,7 @@ const {
 } = getPackage(process.cwd());
 
 const editorReplaceValues = getPackages()
-    .filter(
-        ({ name, hasEditor: packageHasEditor }) => name !== currentPackageName && packageHasEditor,
-    )
+    .filter(({ hasEditor: packageHasEditor }) => packageHasEditor)
     .reduce(
         (map, { name: packageName, exports: packageExports = [] }) => ({
             ...map,
@@ -197,6 +195,8 @@ const editorReplaceValues = getPackages()
         }),
         {},
     );
+
+// console.log('editorReplaceValues', getPackages(), editorReplaceValues);
 
 const editorReplacePlugin = replace({
     values: {
