@@ -477,6 +477,10 @@ function EditorArticle({
 
     const { fields: settingsFields = null } = settingsDefinition || {};
 
+    if (settingsFields !== null) {
+        console.log('settingsFields', settingsFields);
+    }
+
     // const outlineComponents = components.filter(
     //     ({ role = null, type = null }) => role !== 'header',
     // );
