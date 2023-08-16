@@ -2,7 +2,7 @@ import { ClickObserver } from '@ckeditor/ckeditor5-engine';
 import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
 import { useEffect, useRef, useState } from 'react';
 
-import NicheEditor from './build';
+import NicheEditor from '@niche-js/ckeditor/build';
 
 function useNicheEditor({ body, onChange = null, onClick = null, onFocus = null, debug = false }) {
     const [ready, setReady] = useState(false);
@@ -52,7 +52,7 @@ function useNicheEditor({ body, onChange = null, onClick = null, onFocus = null,
                 setReady(true);
             })
             .catch((error) => {
-                console.error(error.stack);
+                console.error(error);
                 setReady(false);
             });
         return () => {

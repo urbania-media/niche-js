@@ -19,7 +19,6 @@ import postcss from 'rollup-plugin-postcss';
 import generateScopedName from './scripts/build/generateScopedName';
 import imageAssets from './scripts/build/imageAssets';
 
-
 const getPackage = require('./scripts/build/getPackage');
 const getPackages = require('./scripts/build/getPackages');
 
@@ -218,19 +217,21 @@ export default [
             // }),
         ].filter(Boolean),
     }),
-    ...currentPackageExports.map((packageExport) =>
-        createConfig({
-            file: `${packageExport}.js`,
-            format: 'both',
-            isEditor,
-            appendPlugins: [
-                isEditor && editorReplacePlugin,
-                // resolve({
-                //     resolveOnly: [/@niche-js\/core/]
-                // }),
-            ].filter(Boolean),
-        }),
-    ),
+    ...(currentPackageName !== '@niche-js/ckeditor'
+        ? currentPackageExports.map((packageExport) =>
+              createConfig({
+                  file: `${packageExport}.js`,
+                  format: 'both',
+                  isEditor,
+                  appendPlugins: [
+                      isEditor && editorReplacePlugin,
+                      // resolve({
+                      //     resolveOnly: [/@niche-js\/core/]
+                      // }),
+                  ].filter(Boolean),
+              }),
+          )
+        : []),
     ...(hasEditor
         ? [
               createConfig({
