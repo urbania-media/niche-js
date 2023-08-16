@@ -84,6 +84,22 @@ function EditorArticle({
     const [selectedComponent, setSelectedComponent] = useState(null);
     const [selectedHeaderComponent, setSelectedHeaderComponent] = useState(null);
 
+    const selectComponent = useCallback(
+        (type = null, component = null) => {
+            if (type === 'header') {
+                setSelectedComponent(null);
+                setSelectedHeaderComponent(component);
+            } else if (type === 'content') {
+                setSelectedComponent(component);
+                setSelectedHeaderComponent(null);
+            } else {
+                setSelectedComponent(null);
+                setSelectedHeaderComponent(null);
+            }
+        },
+        [setSelectedComponent, setSelectedHeaderComponent],
+    );
+
     const [platformId, setPlatformId] = useState(initialPlatformId);
     const platform = (platforms || []).find(({ id = null }) => id === platformId) || null;
     const onPlatformChange = useCallback(
@@ -149,7 +165,7 @@ function EditorArticle({
 
             const { platform: newPlatform = null } = newHeaderDefinition || {};
 
-            // console.log('typeChanged', typeChanged, headerPlatform, newPlatform);
+            console.log('onHeaderSettingsChange', typeChanged, headerPlatform, newPlatform);
 
             let finalNewValue = newValue;
             if (typeChanged && headerPlatform === null && newPlatform !== null) {
@@ -176,10 +192,9 @@ function EditorArticle({
             const nextValue = { ...documentRef.current, components: newComponents };
             onChange(nextValue);
             documentRef.current = nextValue;
-
-            setSelectedHeaderComponent(finalNewValue);
+            selectComponent('header', finalNewValue);
         },
-        [onChange, headerDefinitions, setSelectedHeaderComponent],
+        [onChange, headerDefinitions, selectComponent],
     );
 
     const ViewerComponent = useViewerComponent(viewer || documentType || 'article');
@@ -242,7 +257,7 @@ function EditorArticle({
 
     const onSettingsChange = useCallback(
         (newValue) => {
-            const { uuid: componentUUID = null } = newValue || {};
+            const { role = null, uuid: componentUUID = null } = newValue || {};
             const newComponents = (components || []).reduce((acc, comp) => {
                 const { uuid = null } = comp || {};
                 if (componentUUID !== null && uuid === componentUUID) {
@@ -251,9 +266,11 @@ function EditorArticle({
                 return [...acc, comp];
             }, []);
             onChange({ ...document, components: newComponents });
-            setSelectedComponent(newValue);
+            if (componentUUID !== null) {
+                selectComponent(role === 'header' ? 'header' : 'content', newValue);
+            }
         },
-        [document, onChange, setSelectedComponent],
+        [document, onChange, selectComponent],
     );
 
     const onHeaderChange = useCallback(
@@ -357,12 +374,12 @@ function EditorArticle({
                     const selected =
                         (documentComponents || []).find(({ uuid = null }) => uuid === blockUUID) ||
                         null;
-                    setSelectedComponent(selected);
-                    setSelectedHeaderComponent(null);
+
+                    selectComponent('content', selected);
                 }
             }
         },
-        [setSelectedComponent],
+        [selectComponent],
     );
 
     const onHeaderClick = useCallback(
@@ -377,12 +394,11 @@ function EditorArticle({
                     const selected =
                         (documentComponents || []).find(({ uuid = null }) => uuid === blockUUID) ||
                         null;
-                    setSelectedHeaderComponent(selected);
-                    setSelectedComponent(null);
+                    selectComponent('header', selected);
                 }
             }
         },
-        [setSelectedComponent],
+        [selectComponent],
     );
 
     const onOutlineClick = useCallback(
@@ -399,14 +415,10 @@ function EditorArticle({
                 const selected =
                     (components || []).find(({ uuid = null }) => uuid === componentUUID) || null;
                 const { role: selectedRole = null } = component || {};
-                if (selectedRole === 'header') {
-                    setSelectedHeaderComponent(selected);
-                } else {
-                    setSelectedComponent(selected);
-                }
+                selectComponent(selectedRole === 'header' ? 'header' : 'content', selected);
             }
         },
-        [components, setSelectedComponent, setSelectedHeaderComponent],
+        [components, selectComponent],
     );
 
     const onOutlineClickRemove = useCallback(
@@ -414,7 +426,7 @@ function EditorArticle({
             const { uuid: blockUUID = null } = block || {};
             if (blockUUID !== null) {
                 if (selectedComponent !== null && selectedComponent.uuid === blockUUID) {
-                    setSelectedComponent(null);
+                    selectComponent(null);
                 }
                 const others =
                     (components || []).filter(({ uuid = null }) => uuid !== blockUUID) || null;
@@ -423,7 +435,7 @@ function EditorArticle({
                 documentRef.current = nextValue;
             }
         },
-        [document, components, selectedComponent, setSelectedComponent],
+        [document, components, selectedComponent, selectComponent],
     );
 
     const headerBody = useMemo(
@@ -449,7 +461,7 @@ function EditorArticle({
         debug: debug === 'content',
     });
 
-    const hasSettings = selectedComponent !== null && selectedComponent?.type;
+    const hasSettings = selectedComponent !== null && typeof selectedComponent.type !== 'undefined';
     const settingsDefinition = hasSettings
         ? (componentDefinitions || []).find(
               ({
@@ -462,6 +474,8 @@ function EditorArticle({
                   (platform === null || platform.id === componentPlatform),
           ) || null
         : null;
+
+    const { fields: settingsFields = null } = settingsDefinition || {};
 
     // const outlineComponents = components.filter(
     //     ({ role = null, type = null }) => role !== 'header',
@@ -499,9 +513,7 @@ function EditorArticle({
                                     value={selectedComponent}
                                     onChange={onSettingsChange}
                                     fields={[
-                                        ...(settingsDefinition !== null
-                                            ? settingsDefinition?.fields || []
-                                            : []),
+                                        ...(settingsFields || []),
                                         ...(componentsSettings || []),
                                     ]}
                                 />
