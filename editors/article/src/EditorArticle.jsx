@@ -28,6 +28,7 @@ const propTypes = {
         components: PropTypes.arrayOf(PropTypes.shape({})),
     }),
     viewer: PropTypes.string,
+    RenderContainer: PropTypes.node,
     platformId: PropTypes.string,
     platforms: PropTypes.arrayOf(PropTypes.shape({})),
     components: PropTypes.arrayOf(
@@ -49,6 +50,7 @@ const propTypes = {
 const defaultProps = {
     document: null,
     viewer: null,
+    RenderContainer: null,
     platformId: null,
     platforms: null,
     components: null,
@@ -62,6 +64,7 @@ const defaultProps = {
 function EditorArticle({
     document,
     viewer,
+    RenderContainer,
     platformId: initialPlatformId,
     platforms,
     components: componentDefinitions,
@@ -211,15 +214,30 @@ function EditorArticle({
     const renderDocument = useCallback(
         (doc, section = null) =>
             renderToString(
-                <EditorProvider>
-                    <ComponentsProvider namespace={HEADERS_NAMESPACE} components={headers}>
-                        <ComponentsProvider namespace={BLOCKS_NAMESPACE} components={blocks}>
-                            <ViewerComponent document={doc} sectionOnly={section} />
+                RenderContainer !== null ? (
+                    <RenderContainer>
+                        <EditorProvider>
+                            <ComponentsProvider namespace={HEADERS_NAMESPACE} components={headers}>
+                                <ComponentsProvider
+                                    namespace={BLOCKS_NAMESPACE}
+                                    components={blocks}
+                                >
+                                    <ViewerComponent document={doc} sectionOnly={section} />
+                                </ComponentsProvider>
+                            </ComponentsProvider>
+                        </EditorProvider>
+                    </RenderContainer>
+                ) : (
+                    <EditorProvider>
+                        <ComponentsProvider namespace={HEADERS_NAMESPACE} components={headers}>
+                            <ComponentsProvider namespace={BLOCKS_NAMESPACE} components={blocks}>
+                                <ViewerComponent document={doc} sectionOnly={section} />
+                            </ComponentsProvider>
                         </ComponentsProvider>
-                    </ComponentsProvider>
-                </EditorProvider>,
+                    </EditorProvider>
+                ),
             ),
-        [],
+        [RenderContainer],
     );
 
     const onSettingsChange = useCallback(
