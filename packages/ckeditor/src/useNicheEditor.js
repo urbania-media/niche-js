@@ -1,4 +1,4 @@
-// import { ClickObserver } from '@ckeditor/ckeditor5-engine';
+import { ClickObserver } from '@ckeditor/ckeditor5-engine';
 import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
 import { useEffect, useRef, useState } from 'react';
 
@@ -37,9 +37,10 @@ function useNicheEditor({ body, onChange = null, onClick = null, onFocus = null,
         }
         NicheEditor.create(currentContainer)
             .then((editor) => {
-                //  console.log('Editor was initialized', editor, body);
-                // const { view } = editor.editing;
-                // view.addObserver(ClickObserver);
+                console.log('Editor was initialized', editor, body);
+
+                const { view } = editor.editing;
+                view.addObserver(ClickObserver);
 
                 editor.setData(body);
 
