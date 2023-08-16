@@ -240,8 +240,6 @@ function EditorArticle({
             const editorData = editor.getData();
             const data = editorData !== '' ? editorData : null;
 
-            // console.log(data);
-
             if (onChange !== null) {
                 const { components: newHeaders = null } = data || {};
                 const { components: documentComponents = [] } = documentRef.current || {};
@@ -415,7 +413,7 @@ function EditorArticle({
         body: headerBody,
         onChange: onHeaderChange,
         onClick: onHeaderClick,
-        debug: true,
+        // debug: true,
     });
 
     const contentBody = useMemo(
@@ -427,7 +425,7 @@ function EditorArticle({
         body: contentBody,
         onChange: onContentChange,
         onClick: onContentClick,
-        //  debug: true,
+        debug: true,
     });
 
     const hasSettings = selectedComponent !== null && selectedComponent?.type;
@@ -448,7 +446,7 @@ function EditorArticle({
     //     ({ role = null, type = null }) => role !== 'header',
     // );
 
-    console.log('selectedHeaderComponent', selectedHeaderComponent);
+    // console.log('selectedHeaderComponent', selectedHeaderComponent);
 
     return (
         <PlatformProvider platform={platform}>

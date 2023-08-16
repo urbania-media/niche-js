@@ -14,7 +14,7 @@ export default class NicheDataProcessor {
     }
 
     toData(viewFragment = null) {
-        console.log('to data', viewFragment.childCount, viewFragment);
+        //  console.log('to data', viewFragment.childCount, viewFragment);
 
         const components = [...new Array(viewFragment.childCount).keys()]
             .map((index) => {
@@ -83,7 +83,7 @@ export default class NicheDataProcessor {
                     };
                 }
 
-                console.log('BEWARE COMPONENT NOT FOUND', child);
+                console.log('COMPONENT NOT FOUND', child);
 
                 return null;
             })
@@ -116,6 +116,20 @@ export default class NicheDataProcessor {
                         alt: subChild.getAttribute('alt'),
                         srcSet: subChild.getAttribute('srcset'),
                         class: subChild.parent ? subChild.parent.getAttribute('class') : null,
+                    },
+                };
+            }
+
+            if (subChild.name === 'iframe') {
+                const key = subChild.getAttribute('key');
+                return {
+                    ...acc,
+                    [key || 'embed']: {
+                        iframeUrl: subChild.getAttribute('src'),
+                        // TODO: get the right data for this
+                        // alt: subChild.getAttribute('alt'),
+                        // srcSet: subChild.getAttribute('srcset'),
+                        class: subChild.parent.getAttribute('class'),
                     },
                 };
             }

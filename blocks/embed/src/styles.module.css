@@ -6,3 +6,7 @@
     display: block;
     max-width: 100%;
 }
+
+.iframe {
+    border: 2px solid #ff0;
+}

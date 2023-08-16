@@ -40,7 +40,7 @@ function ViewerArticle({
     const { components = null, metadata = null } = document || {};
     const { brand = null } = metadata || {};
 
-    console.log(components);
+    console.log('viewer document components', components);
 
     const blocksManager = useBlocksComponentsManager();
     const blocks = (components || []).filter(({ role = null }) => role === 'block');
@@ -49,6 +49,8 @@ function ViewerArticle({
     const header = (components || []).find(({ role = null }) => role === 'header');
     const { type: headerType = null } = header || {};
     const HeaderComponent = headersManager.getComponent(headerType);
+
+    console.log('viewer managers', blocksManager, headersManager);
 
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>

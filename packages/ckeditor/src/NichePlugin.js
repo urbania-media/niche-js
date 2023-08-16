@@ -416,7 +416,7 @@ export default class NichePlugin extends Plugin {
         //     },
         //     model: (viewElement, { writer: modelWriter }) => {
         //         const element = viewElement;
-        //         console.log('iframe', element);
+        //         // console.log('iframe', element);
         //         const blockContainer = element.parent;
         //         const widget = element.getAttribute('src') || null;
         //         return modelWriter.createElement('oembed', {
@@ -429,20 +429,16 @@ export default class NichePlugin extends Plugin {
         //             role: blockContainer.getAttribute('data-niche-role'),
         //         });
         //     },
+        //     converterPriority: 'high',
         // });
 
         function findElement(element, matcher) {
-            // Works for both kind of views, model or view
-            // console.log('fins', element, matcher);
-
             const match = matcher(element);
             if (match === true) {
-                // console.log('match', match);
                 return element;
             }
 
             if (typeof element.parent !== 'undefined' && element.parent !== null) {
-                // console.log('parent', match);
                 return findElement(element.parent, matcher);
             }
 
@@ -505,7 +501,14 @@ export default class NichePlugin extends Plugin {
             view: (element) => {
                 const blockParent = findElementFromAttributes(element, [/uuid/]);
                 if (blockParent === null) {
-                    // blockParent.getAttribute('data-niche-') not text or heading
+                    return null;
+                }
+
+                // blockParent.getAttribute('data-niche-') not text or heading
+                if (
+                    blockParent.getAttribute('data-niche-type') === 'text' ||
+                    blockParent.getAttribute('data-niche-type') === 'heading'
+                ) {
                     return null;
                 }
 
