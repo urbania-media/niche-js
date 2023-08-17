@@ -100,6 +100,10 @@ export default {
                 // '@uppy/core/dist/style.css': require.resolve('@uppy/core/dist/style.css'),
                 // '@uppy/core': require.resolve('@uppy/core'),
                 // '@uppy/react': require.resolve('@uppy/react'),
+                '@niche-js/ckeditor/build': path.resolve(
+                    process.cwd(),
+                    './packages/ckeditor/src/build',
+                ),
                 ...getPackagesAliases(),
             },
         };

@@ -45,6 +45,7 @@ function Article({ title, subtitle, surtitle, image, className }) {
                     html={surtitle}
                     inline
                 />
+                Allo
                 <div
                     className={styles.inner}
                     style={{
@@ -63,6 +64,7 @@ function Article({ title, subtitle, surtitle, image, className }) {
                 {url !== null ? (
                     <EditableImage className={styles.image} name="image" src={url} alt={alt} />
                 ) : null}
+                <div style={{ color: 'blue' }} />
             </div>
             <div
                 style={{

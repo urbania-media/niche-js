@@ -80,7 +80,7 @@ export default class NichePlugin extends Plugin {
                 'nicheEditable',
                 'nicheEditableInline',
                 'imageBlock',
-                '$text',
+                // '$text',
             ],
             allowAttributes: ['tag', 'class', 'key'],
         });
@@ -461,6 +461,7 @@ export default class NichePlugin extends Plugin {
 
         function createModelFromView(modelWriter, viewElement) {
             if (viewElement.is('text')) {
+                console.log('txt', viewElement);
                 return modelWriter.createElement('nicheUI', {
                     tag: 'text',
                     text: viewElement.data,
@@ -480,25 +481,50 @@ export default class NichePlugin extends Plugin {
 
             const children =
                 typeof viewElement.getChildren !== 'undefined'
-                    ? [...viewElement.getChildren()]
-                          .map((it) => createModelFromView(modelWriter, it))
-                          .filter((it) => it.name === 'nicheUI')
-                    : [];
+                    ? [...viewElement.getChildren()].map((it) =>
+                          createModelFromView(modelWriter, it),
+                      )
+                    : //   .filter(
+                      //       (it) => it.name === 'nicheUI' && it.getAttribute('tag') === 'text',
+                      //   )
+                      [];
+
+            console.log(
+                'childrenn',
+                JSON.stringify(
+                    children.map((it) =>
+                        it.name === 'nicheUI' && it.getAttribute('tag') === 'text'
+                            ? it.getAttribute('text')
+                            : null,
+                    ),
+                ),
+            );
 
             const modelElement = modelWriter.createElement(
                 'nicheUI',
                 {
                     tag: viewElement.name,
                     attributes: JSON.stringify(attributes),
+                    texts: JSON.stringify(
+                        children.map((it) =>
+                            it.name === 'nicheUI' && it.getAttribute('tag') === 'text'
+                                ? it.getAttribute('text')
+                                : null,
+                        ),
+                    ),
                 },
-                children,
+                // children,
             );
+
+            // modelWriter.appendChild(modelElement, children);
 
             return modelElement;
         }
 
         conversion.for('upcast').elementToElement({
             view: (element) => {
+                console.log('elname', element.name);
+
                 const blockParent = findElementFromAttributes(element, [/uuid/]);
                 if (blockParent === null) {
                     return null;
@@ -536,26 +562,60 @@ export default class NichePlugin extends Plugin {
             converterPriority: 'high',
         });
 
-        function createViewFromModelUi(viewWriter, modelElement) {
+        function createViewFromModelUi(viewWriter, modelElement, isChild = false) {
+            if (modelElement.is('text')) {
+                return viewWriter.createText(modelElement.data);
+            }
+
             const tag = modelElement.getAttribute('tag');
             if (tag === 'text') {
                 return viewWriter.createText(modelElement.getAttribute('text'));
             }
-            return viewWriter.createContainerElement(
+
+            console.log(
+                'create',
+                isChild,
+                modelElement,
+                JSON.parse(modelElement.getAttribute('attributes') || '{}'),
+            );
+
+            const textChildren =
+                modelElement.getChildren !== 'undefined'
+                    ? [...modelElement.getChildren()].filter(
+                          (it) => it.name === 'nicheUI' && it.getAttribute('tag') === 'text',
+                      )
+                    : [];
+
+            const texts = JSON.parse(modelElement.getAttribute('texts') || '[]');
+
+            console.log('textChildren', textChildren, [...modelElement.getChildren()]);
+
+            const element = viewWriter.createContainerElement(
                 tag,
                 // {},
                 JSON.parse(modelElement.getAttribute('attributes') || '{}'),
-                typeof modelElement.getChildren !== 'undefined'
-                    ? [...modelElement.getChildren()]
-                          .filter((it) => it.name === 'nicheUI')
-                          .map((it) => createViewFromModelUi(viewWriter, it))
-                    : [],
+                // texts.filter((it) => it !== null).map((it) => viewWriter.createText(it)),
             );
+
+            texts.forEach((text, index) => {
+                if (text !== null) {
+                    const textElement = viewWriter.createText(text);
+
+                    element._insertChild(2, textElement);
+                    console.log('ele', element, [...element.getChildren()], index, text);
+                    // const position = viewWriter.createPositionAt(element, index);
+
+                    // viewWriter.insert(textElement, position);
+                }
+            });
+
+            return element;
         }
 
         conversion.for('downcast').elementToElement({
             model: 'nicheUI',
             view: (modelElement, { writer: viewWriter }) => {
+                console.log('downcast', modelElement.getAttribute('tag'), modelElement);
                 const viewElement = createViewFromModelUi(viewWriter, modelElement);
                 return viewElement;
             },
