@@ -600,9 +600,8 @@ export default class NichePlugin extends Plugin {
             texts.forEach((text, index) => {
                 if (text !== null) {
                     const textElement = viewWriter.createText(text);
-
-                    element._insertChild(2, textElement);
-                    console.log('ele', element, [...element.getChildren()], index, text);
+                    // element._insertChild(1, textElement);
+                    // console.log('ele', element, [...element.getChildren()], index, text);
                     // const position = viewWriter.createPositionAt(element, index);
 
                     // viewWriter.insert(textElement, position);
