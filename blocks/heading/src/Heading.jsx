@@ -19,10 +19,16 @@ const defaultProps = {
 // Beware
 function Heading({ body, size, className }) {
     const Component = `h${size || 6}`;
+    // return (
+    //     <div className={classNames([styles.container, { [className]: className !== null }])}>
+    //         <Component dangerouslySetInnerHTML={{ __html: body }} />
+    //     </div>
+    // );
     return (
-        <div className={classNames([styles.container, { [className]: className !== null }])}>
-            <Component dangerouslySetInnerHTML={{ __html: body }} />
-        </div>
+        <Component
+            className={classNames([styles.container, { [className]: className !== null }])}
+            dangerouslySetInnerHTML={{ __html: body }}
+        />
     );
 }
 

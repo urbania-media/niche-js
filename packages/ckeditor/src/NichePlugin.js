@@ -141,15 +141,28 @@ export default class NichePlugin extends Plugin {
                         break;
                 }
                 const isParagraph = heading === 'paragraph';
-                const parent = viewElement?.parent?.parent || null;
-                const id = parent !== null ? parent.getAttribute('data-niche-id') || null : null;
+                // const parent = viewElement?.parent?.parent || null;
+                const componentParent =
+                    findElementFromAttributes(viewElement, ['data-niche-uuid']) || null;
+                const id =
+                    componentParent !== null
+                        ? componentParent.getAttribute('data-niche-id') || null
+                        : null;
                 const uuid =
-                    parent !== null ? parent.getAttribute('data-niche-uuid') || null : null;
+                    componentParent !== null
+                        ? componentParent.getAttribute('data-niche-uuid') || null
+                        : null;
+
 
                 return modelWriter.createElement(heading, {
                     tag: heading,
                     id,
-                    class: !isParagraph ? viewElement.parent.getAttribute('class') || null : null,
+                    class: !isParagraph
+                        ? (componentParent !== null
+                              ? componentParent.getChild(0)
+                              : viewElement.parent
+                          ).getAttribute('class') || null
+                        : null,
                     uuid,
                     type: !isParagraph ? 'heading' : 'text',
                     role: 'block',
@@ -166,7 +179,7 @@ export default class NichePlugin extends Plugin {
                     if (editable !== null) {
                         return null;
                     }
-                    const blockParent = element?.parent?.parent || null;
+                    const blockParent = findElementFromAttributes(element, ['data-niche-uuid']) || null;
                     if (blockParent !== null) {
                         const role = blockParent.getAttribute('data-niche-role') || null;
                         if (
