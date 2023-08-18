@@ -10,7 +10,14 @@ import {
 import { Widget, toWidget, toWidgetEditable } from '@ckeditor/ckeditor5-widget';
 import { v4 as uuidV4 } from 'uuid';
 
-import { findParentBlock } from '@niche-js/core/utils';
+import {
+    findElement,
+    findElementFromAttributes,
+    createNicheModelAttributes,
+    createNicheViewAttributes,
+    createViewFromNicheUi,
+    createNicheUiFromView,
+} from './utils';
 
 /* eslint-disable no-underscore-dangle */
 export default class NichePlugin extends Plugin {
@@ -18,12 +25,73 @@ export default class NichePlugin extends Plugin {
         return [Widget];
     }
 
-    init() {
-        const { plugins = [] } = this.editor.config.get('niche') || {};
-        this.plugins = plugins.map((CustomPlugin) => new CustomPlugin(this.editor));
-        this.plugins.forEach((plugin) => plugin.init());
+    static componentAttributes = ['widget', 'id', 'uuid', 'type', 'role', 'platform'];
 
-        // The commands
+    init() {
+        this.initSchema();
+
+        this.initParagraphAndHeading();
+
+        this.initComponent();
+
+        this.initEditable();
+
+        this.initImage();
+
+        this.initEmbeds();
+
+        this.initUi();
+    }
+
+    initSchema() {
+        const { schema } = this.editor.model;
+
+        // The main elements
+        schema.register('nicheComponent', {
+            inheritAllFrom: '$container',
+            allowChildren: ['$inlineObject', '$blockObject'],
+            allowAttributes: ['tag', 'class', ...NichePlugin.componentAttributes],
+        });
+
+        // Editable fields
+        schema.register('nicheEditableInline', {
+            allowIn: ['nicheComponent'],
+            allowContentOf: '$block',
+            isLimit: true,
+            allowAttributes: ['tag', 'class', 'key'],
+        });
+        schema.register('nicheEditable', {
+            allowIn: ['nicheComponent'],
+            allowContentOf: '$root',
+            isLimit: true,
+            allowAttributes: ['tag', 'class', 'key'],
+        });
+
+        // Images
+        schema.extend('imageBlock', {
+            inheritAllFrom: '$blockObject',
+            allowAttributes: ['key', 'class', 'alt', 'src', 'srcset', 'data-image'],
+        });
+
+        schema.register('nicheUi', {
+            allowIn: ['nicheComponent', 'nicheUi'],
+            allowContentOf: null,
+            isLimit: true,
+            // inheritAllFrom: '$container',
+            allowChildren: [
+                'nicheUi',
+                'nicheEditable',
+                'nicheEditableInline',
+                'imageBlock',
+                // '$text',
+            ],
+            allowAttributes: ['tag', 'attributes', 'texts'],
+        });
+    }
+
+    initParagraphAndHeading() {
+        const { conversion } = this.editor;
+
         this.editor.commands.get('enter').on('afterExecute', () => {
             const block =
                 this.editor.model.document.selection.getSelectedBlocks().next()?.value || null;
@@ -45,48 +113,6 @@ export default class NichePlugin extends Plugin {
                 });
             }
         });
-
-        const { schema } = this.editor.model;
-        const { conversion } = this.editor;
-
-        // The main elements
-        schema.register('nicheComponent', {
-            inheritAllFrom: '$container',
-            allowChildren: ['$inlineObject', '$blockObject'],
-            allowAttributes: ['tag', 'class', 'id', 'type', 'role', 'widget'],
-        });
-
-        // Editable fields
-        schema.register('nicheEditableInline', {
-            allowIn: ['nicheComponent'],
-            allowContentOf: '$block',
-            isLimit: true,
-            allowAttributes: ['tag', 'class', 'key'],
-        });
-        schema.register('nicheEditable', {
-            allowIn: ['nicheComponent'],
-            allowContentOf: '$root',
-            isLimit: true,
-            allowAttributes: ['tag', 'class', 'key'],
-        });
-
-        schema.register('nicheUI', {
-            allowIn: ['nicheComponent', 'nicheUI'],
-            allowContentOf: null,
-            isLimit: true,
-            // inheritAllFrom: '$container',
-            allowChildren: [
-                'nicheUI',
-                'nicheEditable',
-                'nicheEditableInline',
-                'imageBlock',
-                // '$text',
-            ],
-            allowAttributes: ['tag', 'class', 'key'],
-        });
-
-        // Extend base schema?
-        // schema.extend('paragraph', {});
 
         // The paragraph/heading problem
         conversion.for('upcast').elementToElement({
@@ -177,54 +203,24 @@ export default class NichePlugin extends Plugin {
                 key: 'class',
             },
         });
+    }
+
+    initComponent() {
+        const { conversion } = this.editor;
 
         // Base conversions
-        conversion.for('downcast').attributeToAttribute({
-            model: {
-                key: 'role',
-                values: 'block',
-            },
-            view: {
-                key: 'data-niche-role',
-            },
+        NichePlugin.componentAttributes.forEach((attribute) => {
+            conversion.for('downcast').attributeToAttribute({
+                model: {
+                    key: attribute,
+                    // values: 'block',
+                },
+                view: {
+                    key: `data-niche-${attribute}`,
+                },
+            });
         });
 
-        conversion.for('downcast').attributeToAttribute({
-            model: {
-                key: 'type',
-            },
-            view: {
-                key: 'data-niche-type',
-            },
-        });
-
-        conversion.for('downcast').attributeToAttribute({
-            model: {
-                key: 'uuid',
-            },
-            view: {
-                key: 'data-niche-uuid',
-            },
-        });
-
-        conversion.for('downcast').attributeToAttribute({
-            model: {
-                key: 'id',
-            },
-            view: {
-                key: 'data-niche-id',
-            },
-        });
-
-        // Images
-        schema.extend('imageBlock', {
-            inheritAllFrom: '$blockObject',
-            allowAttributes: ['key', 'class', 'alt', 'src', 'srcset', 'data-image'],
-        });
-
-        /**
-         * Niche blocks
-         */
         conversion.for('upcast').elementToElement({
             view: {
                 attributes: {
@@ -237,16 +233,10 @@ export default class NichePlugin extends Plugin {
             model: (viewElement, { writer: modelWriter }) => {
                 const blockContainer = viewElement;
                 const block = blockContainer.getChild(0);
-                const widget = block.getAttribute('data-niche-widget') || null;
                 return modelWriter.createElement('nicheComponent', {
                     tag: block.name,
                     class: block.getAttribute('class'),
-                    widget: widget !== null,
-                    id: blockContainer.getAttribute('data-niche-id') || null,
-                    uuid: blockContainer.getAttribute('data-niche-uuid'),
-                    type: blockContainer.getAttribute('data-niche-type'),
-                    role: blockContainer.getAttribute('data-niche-role'),
-                    platform: blockContainer.getAttribute('data-niche-platform') || null,
+                    ...createNicheModelAttributes(viewElement),
                 });
             },
         });
@@ -255,14 +245,8 @@ export default class NichePlugin extends Plugin {
             model: 'nicheComponent',
             view: (modelElement, { writer: viewWriter }) => {
                 const block = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
-                    id: modelElement.getAttribute('id'),
                     class: modelElement.getAttribute('class'),
-                    'data-niche-widget': modelElement.getAttribute('widget'),
-                    'data-niche-id': modelElement.getAttribute('id') || null,
-                    'data-niche-uuid': modelElement.getAttribute('uuid'),
-                    'data-niche-type': modelElement.getAttribute('type'),
-                    'data-niche-role': modelElement.getAttribute('role'),
-                    'data-niche-platform': modelElement.getAttribute('platform') || null,
+                    ...createNicheViewAttributes(modelElement),
                 });
                 return block;
             },
@@ -273,19 +257,16 @@ export default class NichePlugin extends Plugin {
             view: (modelElement, { writer: viewWriter }) => {
                 const widget = modelElement.getAttribute('widget');
                 const block = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
-                    id: modelElement.getAttribute('id'),
                     class: modelElement.getAttribute('class'),
-                    'data-niche-widget': widget,
-                    'data-niche-id': modelElement.getAttribute('id') || null,
-                    'data-niche-uuid': modelElement.getAttribute('uuid'),
-                    'data-niche-type': modelElement.getAttribute('type'),
-                    'data-niche-role': modelElement.getAttribute('role'),
-                    'data-niche-platform': modelElement.getAttribute('platform') || null,
+                    ...createNicheViewAttributes(modelElement),
                 });
                 return widget === 'true' ? toWidget(block, viewWriter) : block;
             },
         });
+    }
 
+    initEditable() {
+        const { conversion } = this.editor;
         /**
          * Niche inline editable tags
          */
@@ -363,11 +344,10 @@ export default class NichePlugin extends Plugin {
                 return toWidgetEditable(div, viewWriter);
             },
         });
+    }
 
-        /**
-         * Niche image editables
-         */
-
+    initImage() {
+        const { conversion } = this.editor;
         const imageUtils = this.editor.plugins.get('ImageUtils');
         conversion
             .for('upcast')
@@ -405,6 +385,10 @@ export default class NichePlugin extends Plugin {
         //     .add( downcastImageAttribute( imageUtils, 'imageBlock', 'src' ) )
         //     .add( downcastImageAttribute( imageUtils, 'imageBlock', 'alt' ) )
         //     .add( downcastSrcsetAttribute( imageUtils, 'imageBlock' ) );
+    }
+
+    initEmbeds() {
+        const { conversion } = this.editor;
 
         /**
          * Niche embeds
@@ -431,112 +415,25 @@ export default class NichePlugin extends Plugin {
         //     },
         //     converterPriority: 'high',
         // });
+    }
 
-        function findElement(element, matcher) {
-            const match = matcher(element);
-            if (match === true) {
-                return element;
-            }
-
-            if (typeof element.parent !== 'undefined' && element.parent !== null) {
-                return findElement(element.parent, matcher);
-            }
-
-            return null;
-        }
-
-        function findElementFromAttributes(element, attributes) {
-            return findElement(element, (el) => {
-                const elKeys =
-                    typeof el.getAttributeKeys !== 'undefined' ? [...el.getAttributeKeys()] : [];
-                return (
-                    elKeys.findIndex(
-                        (it) =>
-                            attributes.findIndex((attribute) => it.match(attribute) !== null) !==
-                            -1,
-                    ) !== -1
-                );
-            });
-        }
-
-        function createModelFromView(modelWriter, viewElement) {
-            if (viewElement.is('text')) {
-                console.log('txt', viewElement);
-                return modelWriter.createElement('nicheUI', {
-                    tag: 'text',
-                    text: viewElement.data,
-                });
-            }
-
-            const attributes =
-                typeof viewElement.getAttributeKeys !== 'undefined'
-                    ? [...viewElement.getAttributeKeys()].reduce(
-                          (map, key) => ({
-                              ...map,
-                              [key]: viewElement.getAttribute(key),
-                          }),
-                          {},
-                      )
-                    : {};
-
-            const children =
-                typeof viewElement.getChildren !== 'undefined'
-                    ? [...viewElement.getChildren()].map((it) =>
-                          createModelFromView(modelWriter, it),
-                      )
-                    : //   .filter(
-                      //       (it) => it.name === 'nicheUI' && it.getAttribute('tag') === 'text',
-                      //   )
-                      [];
-
-            console.log(
-                'childrenn',
-                JSON.stringify(
-                    children.map((it) =>
-                        it.name === 'nicheUI' && it.getAttribute('tag') === 'text'
-                            ? it.getAttribute('text')
-                            : null,
-                    ),
-                ),
-            );
-
-            const modelElement = modelWriter.createElement(
-                'nicheUI',
-                {
-                    tag: viewElement.name,
-                    attributes: JSON.stringify(attributes),
-                    texts: JSON.stringify(
-                        children.map((it) =>
-                            it.name === 'nicheUI' && it.getAttribute('tag') === 'text'
-                                ? it.getAttribute('text')
-                                : null,
-                        ),
-                    ),
-                },
-                // children,
-            );
-
-            // modelWriter.appendChild(modelElement, children);
-
-            return modelElement;
-        }
+    initUi() {
+        const { conversion } = this.editor;
 
         conversion.for('upcast').elementToElement({
             view: (element) => {
-                console.log('elname', element.name);
+                // const blockParent = findElementFromAttributes(element, [/uuid/]);
+                // if (blockParent === null) {
+                //     return null;
+                // }
 
-                const blockParent = findElementFromAttributes(element, [/uuid/]);
-                if (blockParent === null) {
-                    return null;
-                }
-
-                // blockParent.getAttribute('data-niche-') not text or heading
-                if (
-                    blockParent.getAttribute('data-niche-type') === 'text' ||
-                    blockParent.getAttribute('data-niche-type') === 'heading'
-                ) {
-                    return null;
-                }
+                // // blockParent.getAttribute('data-niche-') not text or heading
+                // if (
+                //     blockParent.getAttribute('data-niche-type') === 'text' ||
+                //     blockParent.getAttribute('data-niche-type') === 'heading'
+                // ) {
+                //     return null;
+                // }
 
                 const widgetParent = findElementFromAttributes(element, [/data-niche-widget/]);
                 if (widgetParent === null) {
@@ -556,66 +453,16 @@ export default class NichePlugin extends Plugin {
                 return { name: true };
             },
             model: (viewElement, { writer: modelWriter }) => {
-                const modelElement = createModelFromView(modelWriter, viewElement);
+                const modelElement = createNicheUiFromView(modelWriter, viewElement);
                 return modelElement;
             },
-            converterPriority: 'high',
+            // converterPriority: 'high',
         });
 
-        function createViewFromModelUi(viewWriter, modelElement, isChild = false) {
-            if (modelElement.is('text')) {
-                return viewWriter.createText(modelElement.data);
-            }
-
-            const tag = modelElement.getAttribute('tag');
-            if (tag === 'text') {
-                return viewWriter.createText(modelElement.getAttribute('text'));
-            }
-
-            console.log(
-                'create',
-                isChild,
-                modelElement,
-                JSON.parse(modelElement.getAttribute('attributes') || '{}'),
-            );
-
-            const textChildren =
-                modelElement.getChildren !== 'undefined'
-                    ? [...modelElement.getChildren()].filter(
-                          (it) => it.name === 'nicheUI' && it.getAttribute('tag') === 'text',
-                      )
-                    : [];
-
-            const texts = JSON.parse(modelElement.getAttribute('texts') || '[]');
-
-            console.log('textChildren', textChildren, [...modelElement.getChildren()]);
-
-            const element = viewWriter.createContainerElement(
-                tag,
-                // {},
-                JSON.parse(modelElement.getAttribute('attributes') || '{}'),
-                // texts.filter((it) => it !== null).map((it) => viewWriter.createText(it)),
-            );
-
-            texts.forEach((text, index) => {
-                if (text !== null) {
-                    const textElement = viewWriter.createText(text);
-                    // element._insertChild(1, textElement);
-                    // console.log('ele', element, [...element.getChildren()], index, text);
-                    // const position = viewWriter.createPositionAt(element, index);
-
-                    // viewWriter.insert(textElement, position);
-                }
-            });
-
-            return element;
-        }
-
         conversion.for('downcast').elementToElement({
-            model: 'nicheUI',
+            model: 'nicheUi',
             view: (modelElement, { writer: viewWriter }) => {
-                console.log('downcast', modelElement.getAttribute('tag'), modelElement);
-                const viewElement = createViewFromModelUi(viewWriter, modelElement);
+                const viewElement = createViewFromNicheUi(viewWriter, modelElement);
                 return viewElement;
             },
         });

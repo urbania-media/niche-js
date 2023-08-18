@@ -45,7 +45,7 @@ function Article({ title, subtitle, surtitle, image, className }) {
                     html={surtitle}
                     inline
                 />
-                Allo
+                <div>Allo</div>
                 <div
                     className={styles.inner}
                     style={{
