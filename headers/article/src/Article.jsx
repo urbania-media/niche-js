@@ -32,12 +32,7 @@ function Article({ title, subtitle, surtitle, image, className }) {
             withoutUI
             className={classNames([styles.container, { [className]: className !== null }])}
         >
-            <div
-                className={styles.inner}
-                style={{
-                    color: '#fc0',
-                }}
-            >
+            <div className={styles.inner}>
                 <Editable
                     className={styles.surtitle}
                     tag="div"
@@ -45,13 +40,7 @@ function Article({ title, subtitle, surtitle, image, className }) {
                     html={surtitle}
                     inline
                 />
-                <div>Allo</div>
-                <div
-                    className={styles.inner}
-                    style={{
-                        color: '#00c',
-                    }}
-                >
+                <div className={styles.inner}>
                     <Editable className={styles.title} tag="h1" name="title" html={title} inline />
                 </div>
                 <Editable
@@ -64,14 +53,6 @@ function Article({ title, subtitle, surtitle, image, className }) {
                 {url !== null ? (
                     <EditableImage className={styles.image} name="image" src={url} alt={alt} />
                 ) : null}
-                <div style={{ color: 'blue' }} />
-            </div>
-            <div
-                style={{
-                    color: '#c00',
-                }}
-            >
-                NICHE
             </div>
         </Widget>
     );

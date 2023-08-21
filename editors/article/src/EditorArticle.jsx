@@ -447,6 +447,9 @@ function EditorArticle({
         onChange: onHeaderChange,
         onClick: onHeaderClick,
         debug: debug === 'header',
+        config: {
+            blockToolbar: null,
+        }
     });
 
     const contentBody = useMemo(
