@@ -15,7 +15,7 @@ const propTypes = {
 
 const defaultProps = {
     body: null,
-    caption: 'CAPTION',
+    caption: null,
     className: null,
 };
 
