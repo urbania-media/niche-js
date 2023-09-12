@@ -21,13 +21,17 @@ const defaultProps = {
 function Image({ media, className }) {
     const { url = null, alt = 'Alternate text', caption = 'Image caption' } = media || {};
     return (
-        <Widget className={classNames([styles.container, { [className]: className !== null }])}>
+        <Widget
+            tag="figure"
+            className={classNames([styles.container, { [className]: className !== null }, 'image'])}
+        >
             {url !== null ? (
                 <EditableImage className={styles.img} name="media" src={url} alt={alt} />
             ) : null}
             {caption !== null ? (
                 <Editable
                     className={styles.caption}
+                    tag="figcaption"
                     name="caption"
                     placeholder="Caption"
                     inline
