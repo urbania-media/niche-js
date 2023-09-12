@@ -25,10 +25,9 @@ function Heading({ body, size, className }) {
     //     </div>
     // );
     return (
-        <Component
-            className={classNames([styles.container, { [className]: className !== null }])}
-            dangerouslySetInnerHTML={{ __html: body }}
-        />
+        <div className={classNames([styles.container, { [className]: className !== null }])}>
+            <Component dangerouslySetInnerHTML={{ __html: body }} />
+        </div>
     );
 }
 
