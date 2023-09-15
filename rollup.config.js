@@ -90,9 +90,9 @@ export const createConfig = ({
                 jail: path.join(process.cwd(), 'src'),
                 ...resolveOptions,
             }),
-            resolve({
-                resolveOnly: ['@panneau/core'],
-            }),
+            // resolve({
+            //     resolveOnly: ['@panneau/core', '@panneau/core/contexts'],
+            // }),
             commonjs({}),
             babel({
                 extensions: ['.mjs', '.js', '.jsx', '.json', '.node'],
