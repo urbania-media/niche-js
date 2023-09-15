@@ -91,7 +91,7 @@ export const createConfig = ({
                 ...resolveOptions,
             }),
             resolve({
-                resolveOnly: ['@panneau/core', '@panneau/core/contexts'],
+                resolveOnly: ['@panneau/core'],
             }),
             commonjs({}),
             babel({
