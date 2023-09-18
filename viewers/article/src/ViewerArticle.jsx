@@ -10,9 +10,8 @@ import { useHeadersComponentsManager, useBlocksComponentsManager } from '@niche-
 import styles from './styles.module.css';
 
 const propTypes = {
-    document: PropTypes.shape({
-        components: NichePropTypes.components,
-    }),
+    components: NichePropTypes.components,
+    metadata: NichePropTypes.metadata,
     sectionOnly: PropTypes.oneOf([null, 'header', 'content']),
     className: PropTypes.string,
     contentClassName: PropTypes.string,
@@ -21,7 +20,8 @@ const propTypes = {
 };
 
 const defaultProps = {
-    document: null,
+    components: null,
+    metadata: null,
     sectionOnly: null,
     className: null,
     headerClassName: null,
@@ -30,17 +30,15 @@ const defaultProps = {
 };
 
 function ViewerArticle({
-    document,
+    components,
+    metadata,
     sectionOnly,
     className,
     headerClassName,
     contentClassName,
     editorRef,
 }) {
-    const { components = null, metadata = null } = document || {};
     const { brand = null } = metadata || {};
-
-    console.log('viewer document components', components);
 
     const blocksManager = useBlocksComponentsManager();
     const blocks = (components || []).filter(({ role = null }) => role === 'block');
@@ -50,7 +48,13 @@ function ViewerArticle({
     const { type: headerType = null } = header || {};
     const HeaderComponent = headersManager.getComponent(headerType);
 
-    console.log('viewer managers', blocksManager, headersManager);
+    console.log(
+        'niche-js viewer document components',
+        components,
+        'niche-js viewer managers',
+        blocksManager,
+        headersManager,
+    );
 
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>
