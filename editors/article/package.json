@@ -1,6 +1,6 @@
 {
     "name": "@niche-js/editor-article",
-    "version": "0.0.61",
+    "version": "0.0.62",
     "private": false,
     "description": "Niche block",
     "keywords": [
@@ -50,9 +50,9 @@
         "react-dom": "^18.0.0"
     },
     "dependencies": {
-        "@niche-js/ckeditor": "^0.0.61",
-        "@niche-js/core": "^0.0.61",
-        "@niche-js/fields": "^0.0.61",
+        "@niche-js/ckeditor": "^0.0.62",
+        "@niche-js/core": "^0.0.62",
+        "@niche-js/fields": "^0.0.62",
         "classnames": "^2.2.6",
         "lodash": "^4.17.21",
         "prop-types": "^15.7.2",
