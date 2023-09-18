@@ -1,6 +1,6 @@
 {
     "name": "@niche-js/block-image",
-    "version": "0.0.62",
+    "version": "0.0.63",
     "private": false,
     "description": "Niche block",
     "keywords": [
@@ -57,7 +57,7 @@
         "react-dom": "^18.0.0"
     },
     "dependencies": {
-        "@niche-js/core": "^0.0.62",
+        "@niche-js/core": "^0.0.63",
         "classnames": "^2.2.6",
         "prop-types": "^15.7.2",
         "react-intl": "^6.4.4"
