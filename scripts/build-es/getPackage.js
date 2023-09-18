@@ -1,7 +1,7 @@
-const path = require('path');
-const fs = require('fs');
+import fs from 'fs';
+import path from 'path';
 
-function getPackage(packagePath) {
+export default function getPackage(packagePath) {
     if (!fs.existsSync(path.join(packagePath, './package.json'))) {
         return null;
     }
@@ -25,5 +25,3 @@ function getPackage(packagePath) {
         exports: subExports.filter((it) => it.match(/^(editor|css|assets)\/?/) === null),
     };
 }
-
-module.exports = getPackage;

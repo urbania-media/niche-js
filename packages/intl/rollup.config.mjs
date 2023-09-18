@@ -1,8 +1,11 @@
 import replace from '@rollup/plugin-replace';
 
-import { createConfig } from '../../rollup.config.mjs';
+// For commonjs compat
+import { createConfig } from '../../rollup.config.js';
 
 const locales = ['fr', 'en'];
+
+console.log('HELLO', locales, createConfig, createConfig);
 
 const localesFiles = locales.reduce(
     (configs, locale) => [

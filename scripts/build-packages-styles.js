@@ -9,7 +9,7 @@ const { program } = require('commander');
 let templateFile = null;
 let outFile = null;
 
-console.log('hello');
+// console.log('hello');
 
 program
     .arguments('<template> <out>')

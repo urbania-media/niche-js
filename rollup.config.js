@@ -16,11 +16,10 @@ import terser from '@rollup/plugin-terser';
 import babelPluginFormatJs from 'babel-plugin-formatjs';
 import postcss from 'rollup-plugin-postcss';
 
+import getPackage from './scripts/build-es/getPackage';
+import getPackages from './scripts/build-es/getPackages';
 import generateScopedName from './scripts/build/generateScopedName';
 import imageAssets from './scripts/build/imageAssets';
-
-const getPackage = require('./scripts/build/getPackage');
-const getPackages = require('./scripts/build/getPackages');
 
 export const createConfig = ({
     file = 'index.js',
