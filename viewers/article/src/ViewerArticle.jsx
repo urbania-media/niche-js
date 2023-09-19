@@ -10,8 +10,10 @@ import { useHeadersComponentsManager, useBlocksComponentsManager } from '@niche-
 import styles from './styles.module.css';
 
 const propTypes = {
-    components: NichePropTypes.components,
-    metadata: NichePropTypes.metadata,
+    document: PropTypes.shape({
+        components: NichePropTypes.components,
+        metadata: NichePropTypes.metadata,
+    }),
     sectionOnly: PropTypes.oneOf([null, 'header', 'content']),
     className: PropTypes.string,
     contentClassName: PropTypes.string,
@@ -20,8 +22,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-    components: null,
-    metadata: null,
+    document: null,
     sectionOnly: null,
     className: null,
     headerClassName: null,
@@ -30,14 +31,14 @@ const defaultProps = {
 };
 
 function ViewerArticle({
-    components,
-    metadata,
+    document,
     sectionOnly,
     className,
     headerClassName,
     contentClassName,
     editorRef,
 }) {
+    const { components = null, metadata = null } = document || {};
     const { brand = null } = metadata || {};
 
     const blocksManager = useBlocksComponentsManager();

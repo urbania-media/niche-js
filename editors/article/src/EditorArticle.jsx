@@ -250,7 +250,7 @@ function EditorArticle({
                     <EditorProvider>
                         <ComponentsProvider namespace={HEADERS_NAMESPACE} components={headers}>
                             <ComponentsProvider namespace={BLOCKS_NAMESPACE} components={blocks}>
-                                <ViewerComponent {...doc} sectionOnly={section} />
+                                <ViewerComponent document={doc} sectionOnly={section} />
                             </ComponentsProvider>
                         </ComponentsProvider>
                     </EditorProvider>

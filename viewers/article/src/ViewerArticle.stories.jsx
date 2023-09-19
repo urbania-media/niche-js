@@ -25,7 +25,7 @@ export default {
 
 export const Default = {
     args: {
-        ...article,
+        document: article,
     },
     render: (args) => (
         <div style={{ display: 'block', maxWidth: 960, margin: '0 auto' }}>
@@ -36,7 +36,7 @@ export const Default = {
 
 export const Small = {
     args: {
-        ...article,
+        document: article,
     },
     render: (args) => (
         <div style={{ display: 'block', maxWidth: 320, margin: '0 auto' }}>
@@ -47,7 +47,7 @@ export const Small = {
 
 export const Medium = {
     args: {
-        ...article,
+        document: article,
     },
     render: (args) => (
         <div style={{ display: 'block', maxWidth: 768, margin: '0 auto' }}>
@@ -58,7 +58,7 @@ export const Medium = {
 
 export const Large = {
     args: {
-        ...article,
+        document: article,
     },
     render: (args) => (
         <div style={{ display: 'block', maxWidth: 1300, margin: '0 auto' }}>
