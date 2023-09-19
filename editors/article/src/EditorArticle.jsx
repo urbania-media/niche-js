@@ -252,7 +252,7 @@ function EditorArticle({
                     </EditorProvider>
                 ),
             ),
-        [RenderContainer],
+        [RenderContainer, ViewerComponent, headers, blocks],
     );
 
     const onSettingsChange = useCallback(
