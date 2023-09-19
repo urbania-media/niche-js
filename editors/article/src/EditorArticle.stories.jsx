@@ -1,12 +1,16 @@
 /* eslint-disable react/jsx-props-no-spreading */
 // import FieldsProvider from '@panneau/fields';
+import { ArticleDocument } from '@urbania-media/ui';
 import React, { useState } from 'react';
 import { v4 as uuidV4 } from 'uuid';
 
 import componentDefinitions from '../../../.storybook/api/data/componentDefinitions';
 import platforms from '../../../.storybook/api/data/platforms';
 import BlocksProvider from '../../../packages/blocks/src/BlocksProvider';
-import { EditorProvider } from '../../../packages/core/src/contexts/EditorContext';
+import {
+    ComponentsProvider,
+    VIEWERS_NAMESPACE,
+} from '../../../packages/core/src/contexts/ComponentsContext';
 import FieldsProvider from '../../../packages/fields/src/FieldsProvider';
 import HeadersProvider from '../../../packages/headers/src/HeadersProvider';
 import ViewersProvider from '../../../packages/viewers/src/ViewersProvider';
@@ -23,17 +27,22 @@ export default {
     argTypes: {},
     decorators: [
         (Story) => (
-            <EditorProvider>
-                <FieldsProvider>
-                    <HeadersProvider>
-                        <BlocksProvider>
-                            <ViewersProvider>
+            <FieldsProvider>
+                <HeadersProvider>
+                    <BlocksProvider>
+                        <ViewersProvider>
+                            <ComponentsProvider
+                                namespace={VIEWERS_NAMESPACE}
+                                components={{
+                                    Article: ArticleDocument,
+                                }}
+                            >
                                 <Story />
-                            </ViewersProvider>
-                        </BlocksProvider>
-                    </HeadersProvider>
-                </FieldsProvider>
-            </EditorProvider>
+                            </ComponentsProvider>
+                        </ViewersProvider>
+                    </BlocksProvider>
+                </HeadersProvider>
+            </FieldsProvider>
         ),
     ],
 };

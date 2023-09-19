@@ -58,7 +58,7 @@ const defaultProps = {
     components: null,
     componentsSettings: null,
     // settings: null,
-    debug: 'header',
+    debug: 'content',
     className: null,
     onChange: null,
     onPlatformChange: null,
@@ -259,7 +259,7 @@ function EditorArticle({
                     </EditorProvider>
                 ),
             ),
-        [RenderContainer],
+        [RenderContainer, headers, blocks],
     );
 
     const onSettingsChange = useCallback(
