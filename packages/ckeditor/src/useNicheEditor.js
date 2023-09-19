@@ -4,7 +4,14 @@ import { useEffect, useRef, useState } from 'react';
 
 import NicheEditor from '@niche-js/ckeditor/build';
 
-function useNicheEditor({ body, onChange = null, onClick = null, onFocus = null, debug = false, config = null }) {
+function useNicheEditor({
+    body,
+    onChange = null,
+    onClick = null,
+    onFocus = null,
+    debug = false,
+    config = null,
+}) {
     const [ready, setReady] = useState(false);
     const containerRef = useRef(null);
     const editorRef = useRef(null);
@@ -21,7 +28,7 @@ function useNicheEditor({ body, onChange = null, onClick = null, onFocus = null,
             editor.model.change((writer) => {
                 try {
                     writer.setSelection(range);
-                    console.log('set range', range);
+                    // console.log('set range', range);
                 } catch (e) {
                     // console.log('failed to focus on range', e, range);
                 }
