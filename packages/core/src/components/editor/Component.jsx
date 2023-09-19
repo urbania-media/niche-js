@@ -27,6 +27,9 @@ function Component({ component, tag, inline, className, children }) {
     const isEditor = useIsEditor();
     const { id = null, uuid = null, role = null, type = null, platform = null } = component || {};
     const Tag = tag || 'div';
+
+    console.log('component isEditor', isEditor);
+
     return (
         <Tag
             className={classNames([{ [className]: className !== null }])}

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { useCallback, useState, useEffect, useRef, useMemo } from 'react';
@@ -41,10 +42,11 @@ const propTypes = {
         }),
     ),
     componentsSettings: PropTypes.arrayOf(PropTypes.shape({})),
-    settings: PropTypes.arrayOf(PropTypes.shape({})), // global editor settings
+    // settings: PropTypes.arrayOf(PropTypes.shape({})), // global editor settings
     debug: PropTypes.string,
     className: PropTypes.string,
     onChange: PropTypes.func,
+    onPlatformChange: PropTypes.func,
 };
 
 const defaultProps = {
@@ -55,10 +57,11 @@ const defaultProps = {
     platforms: null,
     components: null,
     componentsSettings: null,
-    settings: null,
-    debug: 'header',
+    // settings: null,
+    debug: 'content',
     className: null,
     onChange: null,
+    onPlatformChange: null,
 };
 
 function EditorArticle({
@@ -69,10 +72,11 @@ function EditorArticle({
     platforms,
     components: componentDefinitions,
     componentsSettings,
-    settings,
+    // settings,
     debug,
     className,
     onChange,
+    onPlatformChange,
 }) {
     const { type: documentType = 'article', components = [] } = document || {};
 
@@ -102,12 +106,15 @@ function EditorArticle({
 
     const [platformId, setPlatformId] = useState(initialPlatformId);
     const platform = (platforms || []).find(({ id = null }) => id === platformId) || null;
-    const onPlatformChange = useCallback(
+    const onFinalPlatformChange = useCallback(
         (newPlatform) => {
             const { id = null } = newPlatform || {};
             setPlatformId(id);
+            if (onPlatformChange !== null) {
+                onPlatformChange(id);
+            }
         },
-        [setPlatformId],
+        [setPlatformId, onPlatformChange],
     );
 
     const headerDefinitions = useMemo(
@@ -237,7 +244,7 @@ function EditorArticle({
                                     namespace={BLOCKS_NAMESPACE}
                                     components={blocks}
                                 >
-                                    <ViewerComponent document={doc} sectionOnly={section} />
+                                    <ViewerComponent {...doc} sectionOnly={section} />
                                 </ComponentsProvider>
                             </ComponentsProvider>
                         </EditorProvider>
@@ -246,7 +253,7 @@ function EditorArticle({
                     <EditorProvider>
                         <ComponentsProvider namespace={HEADERS_NAMESPACE} components={headers}>
                             <ComponentsProvider namespace={BLOCKS_NAMESPACE} components={blocks}>
-                                <ViewerComponent document={doc} sectionOnly={section} />
+                                <ViewerComponent {...doc} sectionOnly={section} />
                             </ComponentsProvider>
                         </ComponentsProvider>
                     </EditorProvider>
@@ -449,7 +456,7 @@ function EditorArticle({
         debug: debug === 'header',
         config: {
             blockToolbar: null,
-        }
+        },
     });
 
     const contentBody = useMemo(
@@ -496,7 +503,7 @@ function EditorArticle({
                 <Editor
                     platformId={platformId}
                     platforms={platforms}
-                    onPlatformChange={onPlatformChange}
+                    onPlatformChange={onFinalPlatformChange}
                     outline={
                         <div className={styles.outline}>
                             <Outline

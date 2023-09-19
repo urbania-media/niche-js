@@ -14,7 +14,7 @@ export function useIsEditor() {
     }
     const editorContext = useContext(EditorContext);
     return editorContext !== null;
-};
+}
 
 const propTypes = {
     children: PropTypes.node.isRequired,
