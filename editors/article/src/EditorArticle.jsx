@@ -237,18 +237,15 @@ function EditorArticle({
         (doc, section = null) =>
             renderToString(
                 RenderContainer !== null ? (
-                    <RenderContainer>
-                        <EditorProvider>
-                            <ComponentsProvider namespace={HEADERS_NAMESPACE} components={headers}>
-                                <ComponentsProvider
-                                    namespace={BLOCKS_NAMESPACE}
-                                    components={blocks}
-                                >
+                    <EditorProvider>
+                        <ComponentsProvider namespace={HEADERS_NAMESPACE} components={headers}>
+                            <ComponentsProvider namespace={BLOCKS_NAMESPACE} components={blocks}>
+                                <RenderContainer>
                                     <ViewerComponent {...doc} sectionOnly={section} />
-                                </ComponentsProvider>
+                                </RenderContainer>
                             </ComponentsProvider>
-                        </EditorProvider>
-                    </RenderContainer>
+                        </ComponentsProvider>
+                    </EditorProvider>
                 ) : (
                     <EditorProvider>
                         <ComponentsProvider namespace={HEADERS_NAMESPACE} components={headers}>
