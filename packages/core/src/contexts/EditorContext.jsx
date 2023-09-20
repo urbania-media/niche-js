@@ -16,15 +16,27 @@ export function useIsEditor() {
     return editorContext !== null;
 }
 
+/* #__NO_SIDE_EFFECTS__ */
+export function useEditorPlatform() {
+    if (!__EDITOR__) {
+        return null;
+    }
+    const { platform = null } = useContext(EditorContext) || {};
+    return platform;
+}
+
 const propTypes = {
+    platform: PropTypes.shape({}),
     children: PropTypes.node.isRequired,
 };
 
-const defaultProps = {};
+const defaultProps = {
+    platform: null,
+};
 
 /* #__NO_SIDE_EFFECTS__ */
-export const EditorProvider = ({ children }) => {
-    const value = useMemo(() => ({ renderState: null }), []);
+export const EditorProvider = ({ platform, children }) => {
+    const value = useMemo(() => ({ platform }), [platform]);
     return <EditorContext.Provider value={value}>{children}</EditorContext.Provider>;
 };
 

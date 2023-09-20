@@ -105,7 +105,10 @@ function EditorArticle({
     );
 
     const [platformId, setPlatformId] = useState(initialPlatformId);
-    const platform = (platforms || []).find(({ id = null }) => id === platformId) || null;
+    const platform =
+        platformId !== null
+            ? (platforms || []).find(({ id = null }) => id === platformId) || null
+            : null;
     const onFinalPlatformChange = useCallback(
         (newPlatform) => {
             const { id = null } = newPlatform || {};
@@ -120,7 +123,7 @@ function EditorArticle({
     const headerDefinitions = useMemo(
         () =>
             (componentDefinitions || []).filter(
-                ({ role: componentRole = null, platform: componentPlatform = null }) =>
+                ({ role: componentRole = null, platformId: componentPlatform = null }) =>
                     componentRole === 'header' &&
                     (componentPlatform === null ||
                         platform === null ||
@@ -237,7 +240,7 @@ function EditorArticle({
         (doc, section = null) =>
             renderToString(
                 RenderContainer !== null ? (
-                    <EditorProvider>
+                    <EditorProvider platform={platform}>
                         <ComponentsProvider namespace={HEADERS_NAMESPACE} components={headers}>
                             <ComponentsProvider namespace={BLOCKS_NAMESPACE} components={blocks}>
                                 <RenderContainer>
@@ -247,7 +250,7 @@ function EditorArticle({
                         </ComponentsProvider>
                     </EditorProvider>
                 ) : (
-                    <EditorProvider>
+                    <EditorProvider platform={platform}>
                         <ComponentsProvider namespace={HEADERS_NAMESPACE} components={headers}>
                             <ComponentsProvider namespace={BLOCKS_NAMESPACE} components={blocks}>
                                 <ViewerComponent document={doc} sectionOnly={section} />
@@ -256,7 +259,7 @@ function EditorArticle({
                     </EditorProvider>
                 ),
             ),
-        [RenderContainer, ViewerComponent, headers, blocks],
+        [RenderContainer, ViewerComponent, headers, blocks, platform],
     );
 
     const onSettingsChange = useCallback(
@@ -495,7 +498,7 @@ function EditorArticle({
     // console.log('selectedHeaderComponent', selectedHeaderComponent);
 
     return (
-        <PlatformProvider platform={platform}>
+        <EditorProvider platform={platform}>
             <div className={classNames([styles.container, { [className]: className !== null }])}>
                 <Editor
                     platformId={platformId}
@@ -532,13 +535,11 @@ function EditorArticle({
                         </div>
                     }
                 >
-                    <EditorProvider>
-                        <ViewerComponent sectionOnly="header" editorRef={headerRef} />
-                        <ViewerComponent sectionOnly="content" editorRef={contentRef} />
-                    </EditorProvider>
+                    <ViewerComponent sectionOnly="header" editorRef={headerRef} />
+                    <ViewerComponent sectionOnly="content" editorRef={contentRef} />
                 </Editor>
             </div>
-        </PlatformProvider>
+        </EditorProvider>
     );
 }
 
