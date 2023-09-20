@@ -535,8 +535,8 @@ function EditorArticle({
                         </div>
                     }
                 >
-                    <ViewerComponent sectionOnly="header" editorRef={headerRef} />
-                    <ViewerComponent sectionOnly="content" editorRef={contentRef} />
+                    <ViewerComponent document={document} sectionOnly="header" editorRef={headerRef} />
+                    <ViewerComponent document={document} sectionOnly="content" editorRef={contentRef} />
                 </Editor>
             </div>
         </EditorProvider>

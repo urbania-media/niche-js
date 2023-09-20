@@ -49,14 +49,6 @@ function ViewerArticle({
     const { type: headerType = null } = header || {};
     const HeaderComponent = headersManager.getComponent(headerType);
 
-    console.log(
-        'niche-js viewer document components',
-        components,
-        'niche-js viewer managers',
-        blocksManager,
-        headersManager,
-    );
-
     return (
         <div className={classNames([styles.container, { [className]: className !== null }])}>
             {sectionOnly === null || sectionOnly === 'header' ? (
