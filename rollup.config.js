@@ -195,8 +195,6 @@ const editorReplaceValues = getPackages()
         {},
     );
 
-// console.log('editorReplaceValues', getPackages(), editorReplaceValues);
-
 const editorReplacePlugin = replace({
     values: {
         ...editorReplaceValues,
