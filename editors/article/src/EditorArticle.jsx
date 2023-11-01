@@ -301,6 +301,7 @@ function EditorArticle({
                                   role === 'header' && componentPlatform === platform.id,
                           )
                         : null;
+
                 const defaultHeader = (newHeaders || []).find(
                     ({ role = null, platform: componentPlatform = null }) =>
                         role === 'header' && componentPlatform === null,
@@ -329,8 +330,10 @@ function EditorArticle({
                     components: [newHeader, ...otherHeaders, ...otherComponents],
                 };
 
-                // console.log('onHeaderChange editorData', editorData);
-                // console.log('onHeaderChange', newHeader, otherHeaders, otherComponents);
+                console.log('onHeaderChange newHeaders', newHeaders);
+                console.log('onHeaderChange match', platformHeader, defaultHeader);
+                console.log('onHeaderChange components', newHeader, otherHeaders, otherComponents);
+
                 // console.log('onHeaderChange nextValue', nextValue);
 
                 onChange(nextValue);
