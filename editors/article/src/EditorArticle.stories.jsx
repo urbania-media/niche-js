@@ -1,13 +1,13 @@
 /* eslint-disable react/jsx-props-no-spreading */
 // eslint-disable-next-line import/no-extraneous-dependencies
-// import { ArticleDocument } from '@urbania-media/ui';
+import { ArticleDocument } from '@urbania-media/ui';
+// import FieldsProvider from '@panneau/fields';
 import React, { useState } from 'react';
 import { v4 as uuidV4 } from 'uuid';
 
-// import FieldsProvider from '@panneau/fields';
 import componentDefinitions from '../../../.storybook/api/data/componentDefinitions';
 import platforms from '../../../.storybook/api/data/platforms';
-import { ArticleDocument } from '../../../node_modules/@urbania-media/ui';
+import UrbaniaArticleDocumentViewer from '../../../.storybook/components/UrbaniaArticleDocumentViewer';
 import BlocksProvider from '../../../packages/blocks/src/BlocksProvider';
 import {
     ComponentsProvider,
@@ -35,10 +35,11 @@ export default {
                         <ViewersProvider>
                             <ComponentsProvider
                                 namespace={VIEWERS_NAMESPACE}
-                                components={{
-                                    Article: ArticleDocument,
-                                    ArticleOver: ArticleDocument, // TODO: export another version
-                                }}
+                                components={
+                                    {
+                                        // Article: UrbaniaArticleDocumentViewer,
+                                    }
+                                }
                             >
                                 <Story />
                             </ComponentsProvider>

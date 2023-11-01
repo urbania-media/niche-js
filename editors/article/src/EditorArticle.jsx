@@ -13,8 +13,7 @@ import {
     BLOCKS_NAMESPACE,
     EditorProvider,
     HEADERS_NAMESPACE,
-    useHeadersComponentsManager,
-    PlatformProvider,
+    useHeadersComponentsManager, // PlatformProvider,
     ComponentsProvider,
 } from '@niche-js/core/contexts';
 import { findParentBlock } from '@niche-js/core/utils';
@@ -79,6 +78,7 @@ function EditorArticle({
     onPlatformChange,
 }) {
     const { type: documentType = 'article', components = [] } = document || {};
+    console.log('editor document', document);
 
     const documentRef = useRef(document);
     useEffect(() => {
@@ -262,8 +262,7 @@ function EditorArticle({
         [RenderContainer, ViewerComponent, headers, blocks, platform],
     );
 
-    console.log('document', document);
-    console.log('headers', headers);
+    // console.log('headers', headers);
 
     const onSettingsChange = useCallback(
         (newValue) => {
@@ -290,6 +289,7 @@ function EditorArticle({
 
             if (onChange !== null) {
                 const { components: newHeaders = null } = data || {};
+
                 const { components: documentComponents = [] } = documentRef.current || {};
                 const otherComponents = (documentComponents || []).filter(
                     ({ role = null }) => role !== 'header',
@@ -307,11 +307,9 @@ function EditorArticle({
                 );
                 const firstHeader = platformHeader || defaultHeader || null;
 
-                // console.log('fh', newHeaders, firstHeader, platformHeader, defaultHeader);
-
                 const otherHeaders = documentComponents.filter(
-                    ({ role = null, id = null }) =>
-                        role === 'header' && (firstHeader === null || id !== firstHeader.id),
+                    ({ role = null, uuid = null }) =>
+                        role === 'header' && (firstHeader === null || uuid !== firstHeader.uuid),
                 );
 
                 const { extra = false } = firstHeader || {};
@@ -331,20 +329,24 @@ function EditorArticle({
                     components: [newHeader, ...otherHeaders, ...otherComponents],
                 };
 
+                // console.log('onHeaderChange editorData', editorData);
+                // console.log('onHeaderChange', newHeader, otherHeaders, otherComponents);
+                // console.log('onHeaderChange nextValue', nextValue);
+
                 onChange(nextValue);
                 documentRef.current = nextValue;
 
-                // Reset editor in case
+                // TODO: Reset editor in case of ??? this might not be needed anymore
                 if (extra || (newHeaders !== null && newHeaders.length > 1)) {
                     // console.log('force header format');
-                    const body = renderDocument(
-                        {
-                            ...documentRef.current,
-                            components: [newHeader],
-                        },
-                        'header',
-                    );
-                    editor.setData(body);
+                    // const body = renderDocument(
+                    //     {
+                    //         ...documentRef.current,
+                    //         components: [newHeader],
+                    //     },
+                    //     'header',
+                    // );
+                    // editor.setData(body);
                 }
             }
         },
@@ -491,18 +493,19 @@ function EditorArticle({
 
     const { fields: settingsFields = null } = settingsDefinition || {};
 
-    if (settingsFields !== null) {
-        console.log('settingsFields', settingsFields);
-    }
+    // if (settingsFields !== null) {
+    //     console.log('settingsFields', settingsFields);
+    // }
 
-    console.log('ViewerComponent', ViewerComponent);
+    // console.log('components', components);
 
     // const outlineComponents = components.filter(
     //     ({ role = null, type = null }) => role !== 'header',
     // );
     // console.log('selectedHeaderComponent', selectedHeaderComponent);
 
-    const documentHeader = document.components.find(({ type = null }) => type === 'header');
+    // console.log('vc', ViewerComponent);
+    // const documentHeader = (components || []).find(({ type = null }) => type === 'header');
 
     return (
         <EditorProvider platform={platform}>
@@ -544,7 +547,7 @@ function EditorArticle({
                 >
                     <ViewerComponent
                         document={document}
-                        header={documentHeader}
+                        // header={documentHeader}
                         sectionOnly="header"
                         editorRef={headerRef}
                     />
