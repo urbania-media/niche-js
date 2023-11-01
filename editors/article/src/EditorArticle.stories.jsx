@@ -1,11 +1,13 @@
 /* eslint-disable react/jsx-props-no-spreading */
-// import FieldsProvider from '@panneau/fields';
-import { ArticleDocument } from '@urbania-media/ui';
+// eslint-disable-next-line import/no-extraneous-dependencies
+// import { ArticleDocument } from '@urbania-media/ui';
 import React, { useState } from 'react';
 import { v4 as uuidV4 } from 'uuid';
 
+// import FieldsProvider from '@panneau/fields';
 import componentDefinitions from '../../../.storybook/api/data/componentDefinitions';
 import platforms from '../../../.storybook/api/data/platforms';
+import { ArticleDocument } from '../../../node_modules/@urbania-media/ui';
 import BlocksProvider from '../../../packages/blocks/src/BlocksProvider';
 import {
     ComponentsProvider,
@@ -35,6 +37,7 @@ export default {
                                 namespace={VIEWERS_NAMESPACE}
                                 components={{
                                     Article: ArticleDocument,
+                                    ArticleOver: ArticleDocument, // TODO: export another version
                                 }}
                             >
                                 <Story />
@@ -55,7 +58,13 @@ const editorArgs = {
 const getInitialDocument = (document) => ({
     ...document,
     components:
-        document !== null ? document.components.map((it) => ({ ...it, uuid: uuidV4() })) : [],
+        document !== null
+            ? (document.components || []).map((it) => ({
+                  ...it,
+                  id: parseInt(it.id || 0, 10),
+                  uuid: uuidV4(),
+              }))
+            : [],
 });
 
 export const Empty = {

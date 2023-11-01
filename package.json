@@ -22,7 +22,8 @@
         "build": "npm run build:all",
         "build:all": "nx run-many --target=prepare",
         "build:nocache": "nx run-many --target=prepare --skip-nx-cache",
-        "graph": "nx graph"
+        "graph": "nx graph",
+        "update-urbania": "npm update @urbania-media/ui"
     },
     "devDependencies": {
         "@babel/eslint-parser": "^7.21.3",
@@ -57,7 +58,7 @@
         "@storybook/react-webpack5": "^7.2.1",
         "@storybook/testing-library": "^0.2.0",
         "@trivago/prettier-plugin-sort-imports": "^4.0.0",
-        "@urbania-media/ui": "^0.1.10",
+        "@urbania-media/ui": "^0.1.19",
         "babel-plugin-formatjs": "^10.4.0",
         "babel-plugin-static-fs": "^3.0.0",
         "bootstrap": "^5.3.1",
@@ -77,10 +78,10 @@
         "express": "^4.18.2",
         "glob": "^9.3.0",
         "http-proxy-middleware": "^2.0.6",
-        "lerna": "^7.1.3",
+        "lerna": "^7.4.2",
         "lodash": "^4.17.21",
         "node-sass-tilde-importer": "^1.0.2",
-        "nx": "^16.5.1",
+        "nx": "^17.0.2",
         "pkg-up": "^3.0.0",
         "postcss": "^8.4.24",
         "postcss-import": "^15.1.0",

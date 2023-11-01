@@ -32,17 +32,14 @@ NicheEditor.builtinPlugins = [
     Italic,
     Heading,
     List,
-
     ImageBlock,
     ImageEditing,
     ImageToolbar,
     ImageUtils,
     ImageResize,
     ImageInsert,
-
     BlockToolbar,
     MediaEmbed,
-
     // Custom plugins
     // ImagePlugin,
     // Blocks

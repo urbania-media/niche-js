@@ -262,6 +262,9 @@ function EditorArticle({
         [RenderContainer, ViewerComponent, headers, blocks, platform],
     );
 
+    console.log('document', document);
+    console.log('headers', headers);
+
     const onSettingsChange = useCallback(
         (newValue) => {
             const { role = null, uuid: componentUUID = null } = newValue || {};
@@ -449,6 +452,7 @@ function EditorArticle({
         () => renderDocument(headerDocument, 'header'),
         [headerDocument, renderDocument],
     );
+
     const { containerRef: headerRef } = useNicheEditor({
         body: headerBody,
         onChange: onHeaderChange,
@@ -491,11 +495,14 @@ function EditorArticle({
         console.log('settingsFields', settingsFields);
     }
 
+    console.log('ViewerComponent', ViewerComponent);
+
     // const outlineComponents = components.filter(
     //     ({ role = null, type = null }) => role !== 'header',
     // );
-
     // console.log('selectedHeaderComponent', selectedHeaderComponent);
+
+    const documentHeader = document.components.find(({ type = null }) => type === 'header');
 
     return (
         <EditorProvider platform={platform}>
@@ -535,8 +542,17 @@ function EditorArticle({
                         </div>
                     }
                 >
-                    <ViewerComponent document={document} sectionOnly="header" editorRef={headerRef} />
-                    <ViewerComponent document={document} sectionOnly="content" editorRef={contentRef} />
+                    <ViewerComponent
+                        document={document}
+                        header={documentHeader}
+                        sectionOnly="header"
+                        editorRef={headerRef}
+                    />
+                    <ViewerComponent
+                        document={document}
+                        sectionOnly="content"
+                        editorRef={contentRef}
+                    />
                 </Editor>
             </div>
         </EditorProvider>
