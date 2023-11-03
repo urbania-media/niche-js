@@ -6,7 +6,7 @@ import React from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useIsEditor } from '@niche-js/core/contexts';
 
-import placeholderImage from '../../images/placeholder.png';
+// import placeholderImage from '../../images/placeholder.png';
 
 const propTypes = {
     name: PropTypes.string.isRequired,
@@ -26,7 +26,7 @@ const defaultProps = {
 function EditableImage({ name, src, alt, placeholder, className }) {
     const isEditor = useIsEditor();
     const title = name || placeholder || 'Image';
-    const defaultImage = src || placeholderImage;
+    const defaultImage = src || null;
     return isEditor ? (
         <img
             className={classNames([{ [className]: className !== null }])}
