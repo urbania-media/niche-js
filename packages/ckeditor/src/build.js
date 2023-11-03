@@ -21,6 +21,10 @@ import { getCSRFHeaders } from '@folklore/fetch';
 
 import NicheDPPlugin from './NicheDataProcessorPlugin';
 import NichePlugin from './NichePlugin';
+import NicheAuthorToolbar from './author/NicheAuthorToolbar';
+import NicheDropdown from './dropdown/NicheDropdown';
+import NicheImage from './image/NicheImage';
+import NicheImageUI from './image/NicheImageUI';
 
 class NicheEditor extends BaseEditor {}
 
@@ -44,13 +48,17 @@ NicheEditor.builtinPlugins = [
     // ImagePlugin,
     // Blocks
     NichePlugin,
+    NicheImage,
+    NicheImageUI,
+    NicheDropdown,
+    NicheAuthorToolbar,
     SimpleUploadAdapter,
     Undo,
 ];
 
 NicheEditor.defaultConfig = {
     blockToolbar: ['heading', 'blocks', 'insertImage', 'mediaEmbed'],
-    toolbar: ['bold', 'italic'],
+    toolbar: ['bold', 'italic', '|', 'placeholder'],
     mediaEmbed: {
         previewsInData: true,
     },
@@ -68,8 +76,8 @@ NicheEditor.defaultConfig = {
     },
     image: {
         toolbar: [
-            // 'imageStyle:block',
-            // 'imageStyle:side',
+            'nicheImage',
+            // 'imageUpload',
             '|',
             'toggleImageCaption',
             'imageTextAlternative',
@@ -82,25 +90,11 @@ NicheEditor.defaultConfig = {
             //     defaultItem: 'imageStyle:regular',
             // },
         ],
-        // styles: {
-        //     // A list of completely custom styling options.
-        //     options: [
-        //         {
-        //             name: 'regular',
-        //             modelElements: ['imageBlock', 'imageInline'],
-        //             title: 'Regular image',
-        //             icon: 'full',
-        //             isDefault: true,
-        //         },
-        //         {
-        //             name: 'blue',
-        //             modelElements: ['imageInline', 'imageBlock'],
-        //             title: 'Blue image',
-        //             icon: 'full',
-        //             className: 'image-blue',
-        //         },
-        //     ],
-        // },
+    },
+    niche: {
+        author: {
+            toolbar: ['placeholder'],
+        },
     },
 };
 

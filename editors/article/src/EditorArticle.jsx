@@ -28,7 +28,6 @@ const propTypes = {
         components: PropTypes.arrayOf(PropTypes.shape({})),
     }),
     viewer: PropTypes.string,
-    RenderContainer: PropTypes.node,
     platformId: PropTypes.string,
     platforms: PropTypes.arrayOf(PropTypes.shape({})),
     components: PropTypes.arrayOf(
@@ -46,27 +45,31 @@ const propTypes = {
     className: PropTypes.string,
     onChange: PropTypes.func,
     onPlatformChange: PropTypes.func,
+    onRequestImageChange: PropTypes.func,
+    RenderContainer: PropTypes.node,
+    RenderContainerProps: PropTypes.shape({}),
 };
 
 const defaultProps = {
     document: null,
     viewer: null,
-    RenderContainer: null,
     platformId: null,
     platforms: null,
     components: null,
     componentsSettings: null,
     // settings: null,
-    debug: 'content',
+    debug: 'header',
     className: null,
     onChange: null,
     onPlatformChange: null,
+    onRequestImageChange: null,
+    RenderContainer: null,
+    RenderContainerProps: null,
 };
 
 function EditorArticle({
     document,
     viewer,
-    RenderContainer,
     platformId: initialPlatformId,
     platforms,
     components: componentDefinitions,
@@ -76,8 +79,12 @@ function EditorArticle({
     className,
     onChange,
     onPlatformChange,
+    onRequestImageChange,
+    RenderContainer,
+    RenderContainerProps,
 }) {
     const { type: documentType = 'article', components = [] } = document || {};
+
     console.log('editor document', document);
 
     const documentRef = useRef(document);
@@ -243,7 +250,7 @@ function EditorArticle({
                     <EditorProvider platform={platform}>
                         <ComponentsProvider namespace={HEADERS_NAMESPACE} components={headers}>
                             <ComponentsProvider namespace={BLOCKS_NAMESPACE} components={blocks}>
-                                <RenderContainer>
+                                <RenderContainer {...RenderContainerProps}>
                                     <ViewerComponent document={doc} sectionOnly={section} />
                                 </RenderContainer>
                             </ComponentsProvider>
@@ -259,7 +266,7 @@ function EditorArticle({
                     </EditorProvider>
                 ),
             ),
-        [RenderContainer, ViewerComponent, headers, blocks, platform],
+        [RenderContainer, RenderContainerProps, ViewerComponent, headers, blocks, platform],
     );
 
     // console.log('headers', headers);
@@ -461,6 +468,7 @@ function EditorArticle({
     const { containerRef: headerRef } = useNicheEditor({
         body: headerBody,
         onChange: onHeaderChange,
+        onRequestImageChange,
         onClick: onHeaderClick,
         debug: debug === 'header',
         config: {
@@ -476,6 +484,7 @@ function EditorArticle({
     const { containerRef: contentRef } = useNicheEditor({
         body: contentBody,
         onChange: onContentChange,
+        onRequestImageChange,
         onClick: onContentClick,
         debug: debug === 'content',
     });
@@ -500,13 +509,19 @@ function EditorArticle({
     //     console.log('settingsFields', settingsFields);
     // }
 
-    // console.log('components', components);
+    // TODO: see how to handle headers? Maybe only show first?
+    const outlineComponents = useMemo(
+        () =>
+            components.filter(
+                ({ platform: componentPlatform = null }) =>
+                    platformId === null ||
+                    componentPlatform == null ||
+                    componentPlatform === platformId,
+            ),
+        [components, platformId],
+    );
 
-    // const outlineComponents = components.filter(
-    //     ({ role = null, type = null }) => role !== 'header',
-    // );
     // console.log('selectedHeaderComponent', selectedHeaderComponent);
-
     // console.log('vc', ViewerComponent);
     // const documentHeader = (components || []).find(({ type = null }) => type === 'header');
 
@@ -520,7 +535,7 @@ function EditorArticle({
                     outline={
                         <div className={styles.outline}>
                             <Outline
-                                components={components}
+                                components={outlineComponents}
                                 onClick={onOutlineClick}
                                 onClickRemove={onOutlineClickRemove}
                             />

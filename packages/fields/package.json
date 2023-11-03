@@ -60,7 +60,7 @@
     "dependencies": {
         "@babel/runtime": "^7.12.5",
         "@niche-js/core": "^0.0.74",
-        "@panneau/fields": "^3.0.44",
+        "@panneau/fields": "^3.0.60",
         "prop-types": "^15.7.2"
     },
     "publishConfig": {

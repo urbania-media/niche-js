@@ -48,6 +48,12 @@
 }
 
 /* stylelint-disable-next-line selector-pseudo-class-no-unknown, selector-class-pattern */
+:global(.placeholder) {
+    background-color: transparent;
+    cursor: default;
+}
+
+/* stylelint-disable-next-line selector-pseudo-class-no-unknown, selector-class-pattern */
 :global(.ck.ck-content) {
     border: 1px solid transparent !important;
     box-shadow: none !important;

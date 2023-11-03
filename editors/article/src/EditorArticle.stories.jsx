@@ -56,6 +56,8 @@ const editorArgs = {
     components: componentDefinitions,
 };
 
+const onRequestImageChange = () => console.log('request new image');
+
 const getInitialDocument = (document) => ({
     ...document,
     components:
@@ -77,7 +79,12 @@ export const Empty = {
         const [currentDocument, onChange] = useState();
         return (
             <div style={{ width: 960, height: 600, margin: 'auto' }}>
-                <Article {...args} document={currentDocument} onChange={onChange} />
+                <Article
+                    {...args}
+                    document={currentDocument}
+                    onChange={onChange}
+                    onRequestImageChange={onRequestImageChange}
+                />
             </div>
         );
     },
@@ -92,7 +99,12 @@ export const Simple = {
         const [currentDocument, onChange] = useState(getInitialDocument(document));
         return (
             <div style={{ width: '100%', height: 600, margin: 'auto' }}>
-                <Article {...args} document={currentDocument} onChange={onChange} />
+                <Article
+                    {...args}
+                    document={currentDocument}
+                    onChange={onChange}
+                    onRequestImageChange={onRequestImageChange}
+                />
             </div>
         );
     },
@@ -107,7 +119,12 @@ export const Urbania = {
         const [currentDocument, onChange] = useState(getInitialDocument(document));
         return (
             <div style={{ width: '100%', height: 800, margin: 'auto' }}>
-                <Article {...args} document={currentDocument} onChange={onChange} />
+                <Article
+                    {...args}
+                    document={currentDocument}
+                    onChange={onChange}
+                    onRequestImageChange={onRequestImageChange}
+                />
             </div>
         );
     },
@@ -126,7 +143,12 @@ export const Trash = {
         const [currentDocument, onChange] = useState(initialDocument);
         return (
             <div style={{ width: '100%', height: 600, margin: 'auto' }}>
-                <Article {...args} document={currentDocument} onChange={onChange} />
+                <Article
+                    {...args}
+                    document={currentDocument}
+                    onChange={onChange}
+                    onRequestImageChange={onRequestImageChange}
+                />
             </div>
         );
     },

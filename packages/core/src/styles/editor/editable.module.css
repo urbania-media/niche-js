@@ -1,3 +1,6 @@
 .container {
-    margin-bottom: 2px;
+    &.empty:not(:focus)::before {
+        content: attr(data-niche-editable-placeholder);
+
+    }
 }

@@ -60,10 +60,18 @@ export default class NichePlugin extends Plugin {
             isLimit: true,
             allowAttributes: ['tag', 'class', 'key'],
         });
+
         schema.register('nicheEditable', {
             allowIn: ['nicheComponent'],
             allowContentOf: '$root',
             isLimit: true,
+            allowAttributes: ['tag', 'class', 'key'],
+        });
+
+        schema.register('nicheEditableAuthor', {
+            allowIn: ['nicheComponent'],
+            allowContentOf: '$root',
+            inheritAllFrom: '$blockObject',
             allowAttributes: ['tag', 'class', 'key'],
         });
 
@@ -82,6 +90,7 @@ export default class NichePlugin extends Plugin {
                 'nicheUi',
                 'nicheEditable',
                 'nicheEditableInline',
+                'nicheEditableAuthor',
                 'imageBlock',
                 // '$text',
             ],
@@ -153,7 +162,6 @@ export default class NichePlugin extends Plugin {
                         ? componentParent.getAttribute('data-niche-uuid') || null
                         : null;
 
-
                 return modelWriter.createElement(heading, {
                     tag: heading,
                     id,
@@ -179,7 +187,8 @@ export default class NichePlugin extends Plugin {
                     if (editable !== null) {
                         return null;
                     }
-                    const blockParent = findElementFromAttributes(element, ['data-niche-uuid']) || null;
+                    const blockParent =
+                        findElementFromAttributes(element, ['data-niche-uuid']) || null;
                     if (blockParent !== null) {
                         const role = blockParent.getAttribute('data-niche-role') || null;
                         if (
@@ -249,6 +258,7 @@ export default class NichePlugin extends Plugin {
                 return modelWriter.createElement('nicheComponent', {
                     tag: block.name,
                     class: block.getAttribute('class'),
+                    title: block.getAttribute('title'),
                     ...createNicheModelAttributes(viewElement),
                 });
             },
@@ -259,6 +269,7 @@ export default class NichePlugin extends Plugin {
             view: (modelElement, { writer: viewWriter }) => {
                 const block = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
                     class: modelElement.getAttribute('class'),
+                    title: modelElement.getAttribute('title'),
                     ...createNicheViewAttributes(modelElement),
                 });
                 return block;
@@ -271,6 +282,7 @@ export default class NichePlugin extends Plugin {
                 const widget = modelElement.getAttribute('widget');
                 const block = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
                     class: modelElement.getAttribute('class'),
+                    title: modelElement.getAttribute('title'),
                     ...createNicheViewAttributes(modelElement),
                 });
                 return widget === 'true' ? toWidget(block, viewWriter) : block;
@@ -293,7 +305,9 @@ export default class NichePlugin extends Plugin {
                 modelWriter.createElement('nicheEditableInline', {
                     tag: viewElement.getAttribute('data-niche-editable-tag') || viewElement.name,
                     class: viewElement.getAttribute('class'),
+                    title: viewElement.getAttribute('title'),
                     key: viewElement.getAttribute('data-niche-editable-inline'),
+                    placeholder: viewElement.getAttribute('data-niche-editable-placeholder'),
                 }),
         });
 
@@ -302,7 +316,9 @@ export default class NichePlugin extends Plugin {
             view: (modelElement, { writer: viewWriter }) => {
                 const div = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
                     class: modelElement.getAttribute('class'),
+                    title: modelElement.getAttribute('title'),
                     'data-niche-editable-inline': modelElement.getAttribute('key'),
+                    'data-niche-editable-placeholder': modelElement.getAttribute('placeholder'),
                 });
                 return div;
             },
@@ -313,7 +329,9 @@ export default class NichePlugin extends Plugin {
             view: (modelElement, { writer: viewWriter }) => {
                 const div = viewWriter.createEditableElement(modelElement.getAttribute('tag'), {
                     class: modelElement.getAttribute('class'),
+                    title: modelElement.getAttribute('title'),
                     'data-niche-editable-inline': modelElement.getAttribute('key'),
+                    'data-niche-editable-placeholder': modelElement.getAttribute('placeholder'),
                 });
                 return toWidgetEditable(div, viewWriter);
             },
@@ -333,6 +351,7 @@ export default class NichePlugin extends Plugin {
                     tag: viewElement.name,
                     class: viewElement.getAttribute('class'),
                     key: viewElement.getAttribute('data-niche-editable'),
+                    placeholder: viewElement.getAttribute('data-niche-editable-placeholder'),
                 }),
         });
 
@@ -342,6 +361,7 @@ export default class NichePlugin extends Plugin {
                 const div = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
                     class: modelElement.getAttribute('class'),
                     'data-niche-editable': modelElement.getAttribute('key'),
+                    'data-niche-editable-placeholder': modelElement.getAttribute('placeholder'),
                 });
                 return div;
             },
@@ -353,8 +373,48 @@ export default class NichePlugin extends Plugin {
                 const div = viewWriter.createEditableElement(modelElement.getAttribute('tag'), {
                     class: modelElement.getAttribute('class'),
                     'data-niche-editable': modelElement.getAttribute('key'),
+                    'data-niche-editable-placeholder': modelElement.getAttribute('placeholder'),
                 });
                 return toWidgetEditable(div, viewWriter);
+            },
+        });
+
+        /**
+         * Niche editable authors
+         */
+        conversion.for('upcast').elementToElement({
+            view: {
+                attributes: {
+                    'data-niche-editable-author': true,
+                },
+            },
+            model: (viewElement, { writer: modelWriter }) =>
+                modelWriter.createElement('nicheEditableAuthor', {
+                    tag: viewElement.name,
+                    class: viewElement.getAttribute('class'),
+                    key: viewElement.getAttribute('data-niche-editable-author'),
+                }),
+        });
+
+        conversion.for('dataDowncast').elementToElement({
+            model: 'nicheEditableAuthor',
+            view: (modelElement, { writer: viewWriter }) => {
+                const div = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
+                    class: modelElement.getAttribute('class'),
+                    'data-niche-editable-author': modelElement.getAttribute('key'),
+                });
+                return div;
+            },
+        });
+
+        conversion.for('editingDowncast').elementToElement({
+            model: 'nicheEditableAuthor',
+            view: (modelElement, { writer: viewWriter }) => {
+                const div = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
+                    class: modelElement.getAttribute('class'),
+                    'data-niche-editable-author': modelElement.getAttribute('key'),
+                });
+                return toWidget(div, viewWriter);
             },
         });
     }
@@ -371,6 +431,7 @@ export default class NichePlugin extends Plugin {
                         src: viewImage.getAttribute('src') || null,
                         alt: viewImage.getAttribute('alt') || null,
                         class: viewImage.getAttribute('class'),
+                        title: viewImage.getAttribute('title'),
                         key: viewImage.getAttribute('data-niche-editable-image'),
                         id: 'image-block-custom',
                     }),
@@ -384,6 +445,7 @@ export default class NichePlugin extends Plugin {
             .add(downcastImageAttribute(imageUtils, 'imageBlock', 'alt'))
             .add(downcastImageAttribute(imageUtils, 'imageBlock', 'class'))
             .add(downcastImageAttribute(imageUtils, 'imageBlock', 'key')) // aka data-niche-editable-image
+            .add(downcastImageAttribute(imageUtils, 'imageBlock', 'title'))
             .add(downcastSrcsetAttribute(imageUtils, 'imageBlock'));
 
         // conversion.for( 'editingDowncast' )

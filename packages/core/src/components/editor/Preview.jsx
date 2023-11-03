@@ -2,8 +2,9 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { useCallback, useState, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
+
 // eslint-disable-next-line import/no-unresolved
-import {useFullscreen} from '@niche-js/core/hooks';
+import { useFullscreen } from '@niche-js/core/hooks';
 
 import styles from '../../styles/editor/preview.module.css';
 

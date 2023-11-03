@@ -1,7 +1,7 @@
 /* eslint-disable react/no-danger */
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { useRef } from 'react';
+import React, { useRef, useMemo } from 'react';
 
 import { Widget } from '@niche-js/core/components';
 
@@ -25,14 +25,15 @@ const defaultProps = {
 function Embed({ embed, className }) {
     const refEmbed = useRef();
     const { iframeUrl = null, html = null } = embed || {};
-    // console.log('iframeUrl', iframeUrl);
+    const finalFrameUrl = useMemo(() => iframeUrl || null, [iframeUrl]);
+    // console.log('iframeUrl', finalFrameUrl);
 
     return (
         <Widget className={classNames([styles.container, { [className]: className !== null }])}>
-            {iframeUrl !== null ? (
+            {finalFrameUrl !== null ? (
                 <div className={styles.iframeContainer}>
                     <iframe
-                        src={iframeUrl}
+                        src={finalFrameUrl}
                         ref={refEmbed}
                         className={styles.iframe}
                         frameBorder="0"
@@ -42,10 +43,10 @@ function Embed({ embed, className }) {
                         width="320"
                         height="240"
                     />
-                    {/* <oembed url={iframeUrl} /> */}
+                    {/* <oembed url={finalFrameUrl} /> */}
                 </div>
             ) : null}
-            {/* {iframeUrl === null && html !== null ? (
+            {/* {finalFrameUrl === null && html !== null ? (
                 <div
                     className={classNames([styles.iframeContainer])}
                     dangerouslySetInnerHTML={{ __html: html }}
