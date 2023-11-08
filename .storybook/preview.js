@@ -1,4 +1,5 @@
 // import withGoogleKeys from './decorators/withGoogleKeys';
+import withApiProvider from './decorators/withApiProvider';
 import withIntlProvider from './decorators/withIntlProvider';
 
 import './fonts/fonts.css';
@@ -15,7 +16,7 @@ const preview = {
             },
         },
     },
-    decorators: [withIntlProvider],
+    decorators: [withIntlProvider, withApiProvider],
 };
 
 export default preview;

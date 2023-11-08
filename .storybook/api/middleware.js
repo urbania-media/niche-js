@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import express from 'express';
 import { sync as globSync } from 'glob';
 import _ from 'lodash';
+import isString from 'lodash/isString';
 
 export default () => {
     const router = express.Router();
@@ -42,7 +43,7 @@ export default () => {
         const total = items.length;
         const lastPage = Math.ceil(total / count);
         return {
-            meta: { current_page: page, last_page: lastPage, total },
+            pagination: { current_page: page, last_page: lastPage, page, lastPage, total, count },
             data: items.slice(startIndex, endIndex),
         };
     };
@@ -59,7 +60,16 @@ export default () => {
         if (query === null || Object.keys(query).length === 0) {
             return items;
         }
-        const { source, ...queryWithoutSource } = query;
+        const { source, search = null, ...queryWithoutSource } = query;
+        if (search !== null) {
+            return _.values(
+                _.filter(items, (it) => {
+                    const searchVal =
+                        it !== null ? it?.title || it?.label || it?.name || null : null;
+                    return searchVal !== null ? searchVal.indexOf(search) !== -1 : false;
+                }),
+            );
+        }
         return _.values(_.filter(items, _.matches(queryWithoutSource)));
     };
 

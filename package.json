@@ -24,7 +24,8 @@
         "build:all": "nx run-many --target=prepare",
         "build:nocache": "nx run-many --target=prepare --skip-nx-cache",
         "graph": "nx graph",
-        "update-urbania": "npm update @urbania-media/ui"
+        "update-urbania": "npm update @urbania-media/ui",
+        "update-panneau": "npm update @panneau/app @panneau/core @panneau/modals @panneau/modals-dialog @panneau/fields"
     },
     "devDependencies": {
         "@babel/eslint-parser": "^7.21.3",
@@ -50,6 +51,7 @@
         "@rollup/plugin-terser": "^0.4.0",
         "@rollup/plugin-url": "^8.0.1",
         "@rollup/pluginutils": "^5.0.2",
+        "@panneau/app": "^3.0.61",
         "@storybook/addon-essentials": "^7.2.1",
         "@storybook/addon-interactions": "^7.2.1",
         "@storybook/addon-links": "^7.2.1",
