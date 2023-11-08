@@ -2,7 +2,7 @@
     "name": "@niche-js/viewer-article",
     "version": "0.0.76",
     "private": false,
-    "description": "Niche block",
+    "description": "Niche viewer",
     "keywords": [
         "niche",
         "javascript"
