@@ -65,3 +65,15 @@
     visibility: hidden;
 }
 
+/* stylelint-disable-next-line selector-pseudo-class-no-unknown, selector-class-pattern */
+:global(.ck.ck-editor__editable .ck-widget .ck-widget__type-around__button) {
+    display: none;
+    visibility: hidden;
+}
+
+/* stylelint-disable-next-line selector-pseudo-class-no-unknown, selector-class-pattern */
+:global(.ck.ck-editor__editable figure.ck-widget) {
+    min-height: 30px; /* Images */
+}
+
+

@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { Editable, EditableImage, EditableAuthor, Widget } from '@niche-js/core/components';
+import { Editable, EditableImage, Widget } from '@niche-js/core/components';
 
 // import { useIsEditor } from '@niche-js/core/contexts';
 import styles from './styles.module.css';
@@ -46,7 +46,7 @@ function Article({ title, subtitle, surtitle, image, author, className }) {
                     tag="div"
                     name="surtitle"
                     html={surtitle}
-                    inline
+                    picker="categories"
                 />
                 <div className={styles.inner}>
                     <Editable className={styles.title} tag="h1" name="title" html={title} inline />
@@ -59,7 +59,7 @@ function Article({ title, subtitle, surtitle, image, author, className }) {
                     inline
                 />
                 <EditableImage className={styles.image} name="image" src={url} alt={alt} />
-                <EditableAuthor
+                <Editable
                     className={styles.image}
                     name="author"
                     placeholder="Author"

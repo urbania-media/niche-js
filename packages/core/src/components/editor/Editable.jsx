@@ -16,6 +16,7 @@ const propTypes = {
     html: PropTypes.string,
     children: PropTypes.node,
     inline: PropTypes.bool,
+    picker: PropTypes.string,
     placeholder: PropTypes.string,
     className: PropTypes.string,
 };
@@ -26,14 +27,25 @@ const defaultProps = {
     html: null,
     children: null,
     inline: false,
+    picker: null,
     placeholder: null,
     className: null,
 };
 
-function Editable({ name, tag, attributes, html, children, inline, placeholder, className }) {
+function Editable({
+    name,
+    tag,
+    attributes,
+    html,
+    children,
+    inline,
+    picker,
+    placeholder,
+    className,
+}) {
     const isEditor = useIsEditor();
     const Tag = inline ? 'div' : tag || 'div'; // Tag can be different in model
-    const title = name || tag || placeholder;
+    const title = name || tag || placeholder; // Fallback stuff
     const emptyHtml = children === null && (isEmpty(html) || html === '&nbsp;');
 
     return isEditor ? (
@@ -49,6 +61,7 @@ function Editable({ name, tag, attributes, html, children, inline, placeholder, 
                 : { 'data-niche-editable': name })}
             {...(attributes !== null ? { 'data-niche-editable-attributes': attributes } : null)}
             {...(title !== null ? { 'data-niche-editable-placeholder': title } : null)}
+            {...(picker !== null ? { 'data-niche-editable-picker': picker } : null)}
         >
             {children}
         </Tag>

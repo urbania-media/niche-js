@@ -2,34 +2,40 @@ import { Plugin } from 'ckeditor5/src/core';
 import { WidgetToolbarRepository } from 'ckeditor5/src/widget';
 import isObject from 'lodash/isObject';
 
-import NicheDropdown from '../dropdown/NicheDropdown';
+import NicheDropdown from './NicheDropdown';
 
 function normalizeDeclarativeConfig(config) {
     return config.map((item) => (isObject(item) ? item.name : item));
 }
 
-function isAuthorWidget(viewElement) {
-    const author = viewElement.getAttribute('data-niche-editable-author') || null;
-    return author !== null;
+function widgetHasOptions(viewElement) {
+    if (!viewElement) {
+        return false;
+    }
+    const optionsName = viewElement.getAttribute('data-niche-editable-options') || null;
+    return optionsName !== null;
 }
 
-function getClosestAuthor(selection) {
-    const selectionPosition = selection.getFirstPosition();
+function getClosestEditable(selection) {
+    if (!selection) {
+        return null;
+    }
 
+    const selectionPosition = selection.getFirstPosition();
     if (!selectionPosition) {
         return null;
     }
 
     const viewElement = selection.getSelectedElement();
 
-    if (viewElement && isAuthorWidget(viewElement)) {
+    if (viewElement && widgetHasOptions(viewElement)) {
         return viewElement;
     }
 
     let { parent } = selectionPosition;
 
     while (parent) {
-        if (parent.is('element') && isAuthorWidget(parent)) {
+        if (parent.is('element') && widgetHasOptions(parent)) {
             return parent;
         }
         parent = parent.parent;
@@ -38,13 +44,13 @@ function getClosestAuthor(selection) {
     return null;
 }
 
-export default class NicheAuthorToolbar extends Plugin {
+export default class NicheDropdownToolbar extends Plugin {
     static get requires() {
         return [WidgetToolbarRepository, NicheDropdown];
     }
 
     static get pluginName() {
-        return 'NicheAuthorToolbar';
+        return 'NicheDropdownToolbar';
     }
 
     /**
@@ -53,12 +59,13 @@ export default class NicheAuthorToolbar extends Plugin {
     afterInit() {
         const { editor } = this;
         const { t } = editor;
+
         const widgetToolbarRepository = editor.plugins.get(WidgetToolbarRepository);
 
-        widgetToolbarRepository.register('nicheEditableAuthor', {
-            ariaLabel: t('Author toolbar'),
-            items: normalizeDeclarativeConfig(editor.config.get('niche.author.toolbar') || []),
-            getRelatedElement: (selection) => getClosestAuthor(selection),
+        widgetToolbarRepository.register(`nicheEditableDropdown`, {
+            ariaLabel: t('Editable dropdown toolbar'),
+            items: normalizeDeclarativeConfig(['dropdown']),
+            getRelatedElement: (selection) => getClosestEditable(selection),
         });
     }
 }

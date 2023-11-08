@@ -5,16 +5,19 @@ export default class NicheDropdownCommand extends Command {
         const { editor } = this;
         const { selection } = editor.model.document;
 
-        editor.model.change((writer) => {
-            // Create a <placeholder> element with the "name" attribute (and all the selection attributes)...
-            const placeholder = writer.createElement('placeholder', {
-                ...Object.fromEntries(selection.getAttributes()),
-                name: value,
-            });
+        console.log('NicheDropdownCommand execute', value, selection);
 
-            // ... and insert it into the document. Put the selection on the inserted element.
-            editor.model.insertObject(placeholder, null, null, { setSelection: 'on' });
-        });
+        // TODO: fix ths with a replace?
+        // editor.model.change((writer) => {
+        //     // Create a <placeholder> element with the "name" attribute (and all the selection attributes)...
+        //     const dropdown = writer.createElement('placeholder', {
+        //         ...Object.fromEntries(selection.getAttributes()),
+        //         name: value,
+        //     });
+
+        //     // ... and insert it into the document. Put the selection on the inserted element.
+        //     editor.model.insertObject(dropdown, null, null, { setSelection: 'on' });
+        // });
     }
 
     refresh() {

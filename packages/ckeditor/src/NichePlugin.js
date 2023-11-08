@@ -68,13 +68,6 @@ export default class NichePlugin extends Plugin {
             allowAttributes: ['tag', 'class', 'key'],
         });
 
-        schema.register('nicheEditableAuthor', {
-            allowIn: ['nicheComponent'],
-            allowContentOf: '$root',
-            inheritAllFrom: '$blockObject',
-            allowAttributes: ['tag', 'class', 'key'],
-        });
-
         // Images
         schema.extend('imageBlock', {
             inheritAllFrom: '$blockObject',
@@ -90,7 +83,6 @@ export default class NichePlugin extends Plugin {
                 'nicheUi',
                 'nicheEditable',
                 'nicheEditableInline',
-                'nicheEditableAuthor',
                 'imageBlock',
                 // '$text',
             ],
@@ -258,7 +250,6 @@ export default class NichePlugin extends Plugin {
                 return modelWriter.createElement('nicheComponent', {
                     tag: block.name,
                     class: block.getAttribute('class'),
-                    title: block.getAttribute('title'),
                     ...createNicheModelAttributes(viewElement),
                 });
             },
@@ -269,7 +260,6 @@ export default class NichePlugin extends Plugin {
             view: (modelElement, { writer: viewWriter }) => {
                 const block = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
                     class: modelElement.getAttribute('class'),
-                    title: modelElement.getAttribute('title'),
                     ...createNicheViewAttributes(modelElement),
                 });
                 return block;
@@ -282,7 +272,6 @@ export default class NichePlugin extends Plugin {
                 const widget = modelElement.getAttribute('widget');
                 const block = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
                     class: modelElement.getAttribute('class'),
-                    title: modelElement.getAttribute('title'),
                     ...createNicheViewAttributes(modelElement),
                 });
                 return widget === 'true' ? toWidget(block, viewWriter) : block;
@@ -305,7 +294,6 @@ export default class NichePlugin extends Plugin {
                 modelWriter.createElement('nicheEditableInline', {
                     tag: viewElement.getAttribute('data-niche-editable-tag') || viewElement.name,
                     class: viewElement.getAttribute('class'),
-                    title: viewElement.getAttribute('title'),
                     key: viewElement.getAttribute('data-niche-editable-inline'),
                     placeholder: viewElement.getAttribute('data-niche-editable-placeholder'),
                 }),
@@ -316,7 +304,6 @@ export default class NichePlugin extends Plugin {
             view: (modelElement, { writer: viewWriter }) => {
                 const div = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
                     class: modelElement.getAttribute('class'),
-                    title: modelElement.getAttribute('title'),
                     'data-niche-editable-inline': modelElement.getAttribute('key'),
                     'data-niche-editable-placeholder': modelElement.getAttribute('placeholder'),
                 });
@@ -329,7 +316,6 @@ export default class NichePlugin extends Plugin {
             view: (modelElement, { writer: viewWriter }) => {
                 const div = viewWriter.createEditableElement(modelElement.getAttribute('tag'), {
                     class: modelElement.getAttribute('class'),
-                    title: modelElement.getAttribute('title'),
                     'data-niche-editable-inline': modelElement.getAttribute('key'),
                     'data-niche-editable-placeholder': modelElement.getAttribute('placeholder'),
                 });
@@ -378,45 +364,6 @@ export default class NichePlugin extends Plugin {
                 return toWidgetEditable(div, viewWriter);
             },
         });
-
-        /**
-         * Niche editable authors
-         */
-        conversion.for('upcast').elementToElement({
-            view: {
-                attributes: {
-                    'data-niche-editable-author': true,
-                },
-            },
-            model: (viewElement, { writer: modelWriter }) =>
-                modelWriter.createElement('nicheEditableAuthor', {
-                    tag: viewElement.name,
-                    class: viewElement.getAttribute('class'),
-                    key: viewElement.getAttribute('data-niche-editable-author'),
-                }),
-        });
-
-        conversion.for('dataDowncast').elementToElement({
-            model: 'nicheEditableAuthor',
-            view: (modelElement, { writer: viewWriter }) => {
-                const div = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
-                    class: modelElement.getAttribute('class'),
-                    'data-niche-editable-author': modelElement.getAttribute('key'),
-                });
-                return div;
-            },
-        });
-
-        conversion.for('editingDowncast').elementToElement({
-            model: 'nicheEditableAuthor',
-            view: (modelElement, { writer: viewWriter }) => {
-                const div = viewWriter.createContainerElement(modelElement.getAttribute('tag'), {
-                    class: modelElement.getAttribute('class'),
-                    'data-niche-editable-author': modelElement.getAttribute('key'),
-                });
-                return toWidget(div, viewWriter);
-            },
-        });
     }
 
     initImage() {
@@ -447,28 +394,13 @@ export default class NichePlugin extends Plugin {
             .add(downcastImageAttribute(imageUtils, 'imageBlock', 'key')) // aka data-niche-editable-image
             .add(downcastImageAttribute(imageUtils, 'imageBlock', 'title'))
             .add(downcastSrcsetAttribute(imageUtils, 'imageBlock'));
-
-        // conversion.for( 'editingDowncast' )
-        //     .elementToStructure( {
-        //             model: 'imageBlock',
-        //             view: ( modelElement, { writer } ) => imageUtils.toImageWidget(
-        //                     createBlockImageViewElement( writer ), writer, t( 'image widget' )
-        //             )
-        //     } );
-
-        // conversion.for( 'downcast' )
-        //     .add( downcastImageAttribute( imageUtils, 'imageBlock', 'src' ) )
-        //     .add( downcastImageAttribute( imageUtils, 'imageBlock', 'alt' ) )
-        //     .add( downcastSrcsetAttribute( imageUtils, 'imageBlock' ) );
     }
 
     initEmbeds() {
-        const { conversion } = this.editor;
-
+        // const { conversion } = this.editor;
         /**
          * Niche embeds
          */
-
         // conversion.for('upcast').elementToElement({
         //     view: {
         //         name: 'iframe',
