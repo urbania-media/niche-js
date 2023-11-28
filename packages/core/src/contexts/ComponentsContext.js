@@ -13,6 +13,7 @@ export const VIEWERS_NAMESPACE = 'viewers';
 export const COMPONENTS_NAMESPACE = 'components';
 export const BLOCKS_NAMESPACE = 'blocks';
 export const HEADERS_NAMESPACE = 'headers';
+export const PICKERS_NAMESPACE = 'pickers';
 
 export { ComponentsProvider, useFieldComponent, FIELDS_NAMESPACE, useFieldsComponentsManager };
 
@@ -70,3 +71,14 @@ export const useHeadersComponents = (defaultComponents = {}) =>
 
 export const useHeaderComponent = (name, defaultComponent = null) =>
     useComponent(name, defaultComponent, HEADERS_NAMESPACE);
+
+/**
+ * Pickers hooks
+ */
+export const usePickersComponentsManager = () => useComponentsManager(PICKERS_NAMESPACE);
+
+export const usePickersComponents = (defaultComponents = {}) =>
+    useComponents(PICKERS_NAMESPACE, defaultComponents);
+
+export const usePickerComponent = (name, defaultComponent = null) =>
+    useComponent(name, defaultComponent, PICKERS_NAMESPACE);

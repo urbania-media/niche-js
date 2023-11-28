@@ -1,3 +1,13 @@
 .container {
-    margin-bottom: 2px;
+    position: relative;
+
+    &.empty:not(:focus)::before {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        content: attr(data-niche-editable-placeholder);
+        opacity: 0.5;
+        pointer-events: none;
+        transform: translate3d(-50%, -50%, 0);
+    }
 }

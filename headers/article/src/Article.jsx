@@ -5,6 +5,7 @@ import React from 'react';
 
 import { Editable, EditableImage, Widget } from '@niche-js/core/components';
 
+// import { useIsEditor } from '@niche-js/core/contexts';
 import styles from './styles.module.css';
 
 const propTypes = {
@@ -12,6 +13,10 @@ const propTypes = {
     subtitle: PropTypes.string,
     surtitle: PropTypes.string,
     image: PropTypes.shape({
+        url: PropTypes.string,
+    }),
+    author: PropTypes.shape({
+        name: PropTypes.string,
         url: PropTypes.string,
     }),
     className: PropTypes.string,
@@ -22,11 +27,14 @@ const defaultProps = {
     subtitle: null,
     surtitle: null,
     image: null,
+    author: null,
     className: null,
 };
 
-function Article({ title, subtitle, surtitle, image, className }) {
+function Article({ title, subtitle, surtitle, image, author, className }) {
+    // const isEditor = useIsEditor();
     const { url = null, alt = null } = image || {};
+
     return (
         <Widget
             withoutUI
@@ -38,21 +46,26 @@ function Article({ title, subtitle, surtitle, image, className }) {
                     tag="div"
                     name="surtitle"
                     html={surtitle}
-                    inline
+                    picker="categories"
                 />
                 <div className={styles.inner}>
                     <Editable className={styles.title} tag="h1" name="title" html={title} inline />
                 </div>
                 <Editable
                     className={styles.subtitle}
-                    tag="h3"
+                    tag="h4"
                     name="subtitle"
                     html={subtitle}
                     inline
                 />
-                {url !== null ? (
-                    <EditableImage className={styles.image} name="image" src={url} alt={alt} />
-                ) : null}
+                <EditableImage className={styles.image} name="image" src={url} alt={alt} />
+                <Editable
+                    className={styles.image}
+                    name="author"
+                    placeholder="Author"
+                    // eslint-disable-next-line react/jsx-props-no-spreading
+                    {...author}
+                />
             </div>
         </Widget>
     );

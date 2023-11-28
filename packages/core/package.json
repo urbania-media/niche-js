@@ -1,6 +1,6 @@
 {
     "name": "@niche-js/core",
-    "version": "0.0.71",
+    "version": "0.0.77",
     "private": false,
     "description": "",
     "keywords": [
@@ -92,7 +92,7 @@
         "@folklore/services": "^0.1.24",
         "@folklore/size": "^0.1.20",
         "@folklore/tracking": "^0.0.9",
-        "@panneau/core": "^3.0.44",
+        "@panneau/core": "^3.0.45",
         "bootstrap": "^5.3.1",
         "bootstrap-icons": "1.10.5",
         "change-case": "^4.1.2",

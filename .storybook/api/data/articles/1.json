@@ -1,9 +1,9 @@
 {
-    "id": "2",
+    "id": 1,
     "title": "Les vraies questions URBANIA – Édition FESTIF",
     "components": [
         {
-            "id": "1",
+            "id": 1,
             "role": "header",
             "type": "article",
             "title": "Les vraies questions URBANIA – Édition FESTIF",
@@ -15,7 +15,7 @@
             }
         },
         {
-            "id": "2",
+            "id": 2,
             "role": "header",
             "type": "article_over",
             "title": "Over FESTIF",
@@ -28,7 +28,7 @@
             }
         },
         {
-            "id": null,
+            "id": 3,
             "role": "block",
             "type": "embed",
             "embed": {
@@ -39,6 +39,7 @@
             }
         },
         {
+            "id": 4,
             "role": "block",
             "type": "text",
             "body": "<p>Envie de découvrir une tonne d’histoires de gens passionnés (ou juste de vous divertir un bon coup)? <a href='https://goo.gl/WpXp1X'>Abonnez-vous à notre chaîne YouTube</a> et suivez-nous sur<a href='https://www.instagram.com/_urbania/'> Instagram</a> et<a href='https://www.tiktok.com/@_urbania'> TikTok</a> pour ne rien manquer!</p>"

@@ -26,7 +26,13 @@ function Image({ media, className }) {
             className={classNames([styles.container, { [className]: className !== null }])}
         >
             {url !== null ? (
-                <EditableImage className={styles.img} name="media" src={url} alt={alt} />
+                <EditableImage
+                    className={styles.img}
+                    name="media"
+                    placeholder="Image"
+                    src={url}
+                    alt={alt}
+                />
             ) : null}
             {caption !== null ? (
                 <Editable

@@ -78,18 +78,15 @@ export function createNicheUiFromView(modelWriter, viewElement) {
             ? children.reduce((allTexts, node) => allTexts && node.is('text'), true)
             : false;
 
-    const modelElement = modelWriter.createElement(
-        'nicheUi',
-        {
-            tag: viewElement.name,
-            attributes: JSON.stringify(attributes),
-            ...(childrenAreTexts
-                ? {
-                      texts: JSON.stringify(children.map((it) => it.data)),
-                  }
-                : null),
-        },
-    );
+    const modelElement = modelWriter.createElement('nicheUi', {
+        tag: viewElement.name,
+        attributes: JSON.stringify(attributes),
+        ...(childrenAreTexts
+            ? {
+                  texts: JSON.stringify(children.map((it) => it.data)),
+              }
+            : null),
+    });
 
     return modelElement;
 }

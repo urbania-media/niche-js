@@ -1,5 +1,5 @@
 [
-    { "id": 1, "name": "Tag1" },
-    { "id": 2, "name": "Tag2" },
-    { "id": 2, "name": "Tag3" }
+    { "id": 1, "name": "Tag1", "label": "Tag 1", "value": "tag-1" },
+    { "id": 2, "name": "Tag2", "label": "Tag 2", "value": "tag-2" },
+    { "id": 2, "name": "Tag3", "label": "Tag 3", "value": "tag-3" }
 ]

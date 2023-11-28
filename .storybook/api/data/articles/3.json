@@ -43,6 +43,7 @@
             }
         ]
     },
+
     "images": {
         "default": {
             "id": "24389",
@@ -273,6 +274,10 @@
             "title": "Side hustle",
             "surtitle": "Insolite",
             "subtitle": "On a test\u00e9 un \u00ab side hustle \u00bb qui promet un revenu passif sans effort.",
+            "author": {
+                "name": "Hugo Meunier",
+                "url": "https://urbania.ca"
+            },
             "image": {
                 "id": "24388",
                 "type": "image",

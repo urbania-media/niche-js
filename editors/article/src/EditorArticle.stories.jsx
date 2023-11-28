@@ -1,11 +1,13 @@
 /* eslint-disable react/jsx-props-no-spreading */
+// eslint-disable-next-line import/no-extraneous-dependencies
+// import { ArticleDocument } from '@urbania-media/ui';
 // import FieldsProvider from '@panneau/fields';
-import { ArticleDocument } from '@urbania-media/ui';
 import React, { useState } from 'react';
 import { v4 as uuidV4 } from 'uuid';
 
 import componentDefinitions from '../../../.storybook/api/data/componentDefinitions';
 import platforms from '../../../.storybook/api/data/platforms';
+// import UrbaniaArticleDocumentViewer from '../../../.storybook/components/UrbaniaArticleDocumentViewer';
 import BlocksProvider from '../../../packages/blocks/src/BlocksProvider';
 import {
     ComponentsProvider,
@@ -33,9 +35,11 @@ export default {
                         <ViewersProvider>
                             <ComponentsProvider
                                 namespace={VIEWERS_NAMESPACE}
-                                components={{
-                                    Article: ArticleDocument,
-                                }}
+                                components={
+                                    {
+                                        // Article: UrbaniaArticleDocumentViewer,
+                                    }
+                                }
                             >
                                 <Story />
                             </ComponentsProvider>
@@ -52,10 +56,18 @@ const editorArgs = {
     components: componentDefinitions,
 };
 
+const onRequestImageChange = () => console.log('request new image');
+
 const getInitialDocument = (document) => ({
     ...document,
     components:
-        document !== null ? document.components.map((it) => ({ ...it, uuid: uuidV4() })) : [],
+        document !== null
+            ? (document.components || []).map((it) => ({
+                  ...it,
+                  id: parseInt(it.id || 0, 10),
+                  uuid: uuidV4(),
+              }))
+            : [],
 });
 
 export const Empty = {
@@ -67,7 +79,12 @@ export const Empty = {
         const [currentDocument, onChange] = useState();
         return (
             <div style={{ width: 960, height: 600, margin: 'auto' }}>
-                <Article {...args} document={currentDocument} onChange={onChange} />
+                <Article
+                    {...args}
+                    document={currentDocument}
+                    onChange={onChange}
+                    onRequestImageChange={onRequestImageChange}
+                />
             </div>
         );
     },
@@ -82,7 +99,12 @@ export const Simple = {
         const [currentDocument, onChange] = useState(getInitialDocument(document));
         return (
             <div style={{ width: '100%', height: 600, margin: 'auto' }}>
-                <Article {...args} document={currentDocument} onChange={onChange} />
+                <Article
+                    {...args}
+                    document={currentDocument}
+                    onChange={onChange}
+                    onRequestImageChange={onRequestImageChange}
+                />
             </div>
         );
     },
@@ -97,7 +119,12 @@ export const Urbania = {
         const [currentDocument, onChange] = useState(getInitialDocument(document));
         return (
             <div style={{ width: '100%', height: 800, margin: 'auto' }}>
-                <Article {...args} document={currentDocument} onChange={onChange} />
+                <Article
+                    {...args}
+                    document={currentDocument}
+                    onChange={onChange}
+                    onRequestImageChange={onRequestImageChange}
+                />
             </div>
         );
     },
@@ -116,7 +143,12 @@ export const Trash = {
         const [currentDocument, onChange] = useState(initialDocument);
         return (
             <div style={{ width: '100%', height: 600, margin: 'auto' }}>
-                <Article {...args} document={currentDocument} onChange={onChange} />
+                <Article
+                    {...args}
+                    document={currentDocument}
+                    onChange={onChange}
+                    onRequestImageChange={onRequestImageChange}
+                />
             </div>
         );
     },

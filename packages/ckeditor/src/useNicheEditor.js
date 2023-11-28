@@ -9,6 +9,7 @@ function useNicheEditor({
     onChange = null,
     onClick = null,
     onFocus = null,
+    onRequestImageChange = null,
     debug = false,
     config = null,
 }) {
@@ -50,6 +51,8 @@ function useNicheEditor({
                 // view.addObserver(ClickObserver);
 
                 editor.setData(body);
+                // eslint-disable-next-line no-param-reassign
+                editor.onRequestImageChange = onRequestImageChange;
 
                 if (debug) {
                     CKEditorInspector.attach(editor);
@@ -78,7 +81,6 @@ function useNicheEditor({
         if (!ready || currentEditor === null || onClick === null) {
             return () => {};
         }
-
         const finalOnClick = (event) => {
             onClick(event, currentEditor);
         };
