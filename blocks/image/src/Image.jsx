@@ -23,7 +23,7 @@ function Image({ media, className }) {
     return (
         <Widget
             tag="figure"
-            className={classNames([styles.container, { [className]: className !== null }, 'image'])}
+            className={classNames([styles.container, { [className]: className !== null }])}
         >
             {url !== null ? (
                 <EditableImage className={styles.img} name="media" src={url} alt={alt} />
