@@ -1,6 +1,6 @@
 {
     "name": "@niche-js/picker-credits",
-    "version": "0.0.79",
+    "version": "0.0.80",
     "private": false,
     "description": "Niche picker",
     "keywords": [
@@ -50,12 +50,12 @@
         "react-dom": "^18.0.0"
     },
     "dependencies": {
-        "@niche-js/core": "^0.0.79",
-        "@niche-js/fields": "^0.0.79",
-        "@niche-js/data": "^0.0.79",
-        "@panneau/modal-dialog": "^3.0.67",
+        "@niche-js/core": "^0.0.80",
+        "@niche-js/data": "^0.0.80",
+        "@niche-js/fields": "^0.0.80",
         "@panneau/element-button": "^3.0.55",
         "@panneau/field-select": "^3.0.67",
+        "@panneau/modal-dialog": "^3.0.67",
         "classnames": "^2.2.6",
         "lodash": "^4.17.21",
         "prop-types": "^15.7.2",
