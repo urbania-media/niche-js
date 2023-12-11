@@ -1,6 +1,6 @@
 {
     "name": "@niche-js/data",
-    "version": "0.0.77",
+    "version": "0.0.79",
     "private": false,
     "description": "",
     "keywords": [
@@ -50,7 +50,7 @@
     },
     "dependencies": {
         "@folklore/fetch": "^0.1.15",
-        "@niche-js/core": "^0.0.77",
+        "@niche-js/core": "^0.0.79",
         "lodash": "^4.17.21",
         "prop-types": "^15.7.2",
         "query-string": "^8.1.0",
@@ -60,5 +60,5 @@
         "access": "public",
         "registry": "https://registry.npmjs.org/"
     },
-    "gitHead": "25cb59e59eeeacd37e795964e64b07f7aa359977"
+    "gitHead": "20d90b4bd105f37036fd40b29345c9ccd1373cca"
 }

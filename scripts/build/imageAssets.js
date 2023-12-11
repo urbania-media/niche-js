@@ -1,16 +1,16 @@
-import path from 'path';
-
+/* eslint-disable object-shorthand, func-names */
 import url from '@rollup/plugin-url';
 import { createFilter } from '@rollup/pluginutils';
+import path from 'path';
 
-export default (options = {}) => {
+export default function imageAssets(options = {}) {
     const filter = createFilter(options.include, options.exclude);
     const { load, ...plugin } = url({
         ...options,
         publicPath: '../assets/images/',
     });
     return {
-        resolveId: async (module, importer) => {
+        resolveId: async function (module, importer) {
             if (module.match(/^\./) === null) {
                 return null;
             }
@@ -18,7 +18,7 @@ export default (options = {}) => {
             if (!filter(id)) {
                 return null;
             }
-            const exportData = (await load(id)) || null;
+            const exportData = (await load.call(this, id)) || null;
             const matches = exportData.match(/^export default "([^\"]+)"$/);
             return matches !== null && matches[1].match(/^data:/) === null
                 ? {
@@ -30,4 +30,4 @@ export default (options = {}) => {
         load,
         ...plugin,
     };
-};
+}

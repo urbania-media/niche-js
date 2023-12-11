@@ -85,6 +85,7 @@ function ViewerArticle({
                                     component={block}
                                     key={`block-${id}-${type}-${uuid}`}
                                     inline={type === 'text' || type === 'heading'}
+                                    className={`block block-${type}`}
                                 >
                                     <BlockComponent {...block} />
                                 </Component>
