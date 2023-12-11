@@ -53,6 +53,8 @@
         "@niche-js/ckeditor": "^0.0.77",
         "@niche-js/core": "^0.0.77",
         "@niche-js/fields": "^0.0.77",
+        "@panneau/core": "^3.0.45",
+        "@panneau/element-modal": "^3.0.55",
         "classnames": "^2.2.6",
         "lodash": "^4.17.21",
         "prop-types": "^15.7.2",

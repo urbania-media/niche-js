@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState } from 'react';
 
+import withApi from '../../../.storybook/decorators/withApiProvider';
 import FieldsProvider from '../../../packages/fields/src/FieldsProvider';
 import Credits from './PickerCredits';
 
@@ -10,6 +11,7 @@ export default {
     tags: ['autodocs'],
     argTypes: {},
     decorators: [
+        withApi,
         (Story) => (
             <FieldsProvider>
                 <Story />

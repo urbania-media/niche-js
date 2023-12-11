@@ -7,6 +7,10 @@ class Api extends Base {
         super(opts);
         this.medias = new MediasApi(opts);
         this.categories = new BaseResource(this, { id: 'categories' });
+        this.authors = new BaseResource(this, { id: 'authors' });
+        this.organisations = new BaseResource(this, { id: 'organisations' });
+        this.tags = new BaseResource(this, { id: 'tags' });
+        this.collections = new BaseResource(this, { id: 'collections' });
     }
 }
 

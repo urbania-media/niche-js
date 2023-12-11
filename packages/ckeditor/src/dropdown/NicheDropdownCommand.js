@@ -24,7 +24,8 @@ export default class NicheDropdownCommand extends Command {
         const { model } = this.editor;
         const { selection } = model.document;
 
-        const isAllowed = model.schema.checkChild(selection.focus.parent, 'placeholder');
+        // const isAllowed = model.schema.checkChild(selection.focus.parent, 'placeholder');
+        const isAllowed = false;
 
         this.isEnabled = true || isAllowed;
     }

@@ -30,7 +30,6 @@ export default class NicheDeleteUI extends Plugin {
             view.bind('isOn').to(command, 'value');
 
             view.on('execute', () => {
-                console.log('execute niche delete command');
                 editor.execute('nicheDelete');
             });
 

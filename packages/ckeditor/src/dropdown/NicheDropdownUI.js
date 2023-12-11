@@ -51,7 +51,7 @@ export default class NicheDropdownUI extends Plugin {
             // Execute the command when the dropdown item is clicked (executed).
             this.listenTo(dropdownView, 'execute', (evt) => {
                 editor.execute('dropdown', { value: evt.source.commandParam });
-                editor.editing.view.focus();
+                // editor.editing.view.focus();
             });
 
             // this.listenTo(dropdownView, 'change:isOpen', (evt) => {

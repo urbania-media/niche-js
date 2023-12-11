@@ -1,20 +1,30 @@
 import { Command } from '@ckeditor/ckeditor5-core';
 
+import { findParentBlock } from '@niche-js/core/utils';
+
 export default class NicheDeleteCommand extends Command {
-    execute(params) {
+    execute() {
         const { editor } = this;
-        const { selection } = editor.model.document;
+        const { model } = editor || {};
+        const { onRequestRemove = null } = editor || {};
+        const { selection } = model.document;
 
-        console.log('NicheDeleteCommand execute', params, selection);
-
-        // TODO: trigger onChange blah
+        if (selection && onRequestRemove !== null) {
+            const viewElement = selection.getSelectedElement() || null;
+            const key = viewElement !== null ? viewElement.getAttribute('key') || null : null;
+            const uuid = viewElement !== null ? findParentBlock(viewElement) || null : null;
+            if (key !== null && uuid !== null) {
+                onRequestRemove(key, uuid);
+            }
+        }
     }
 
     refresh() {
-        // const { model } = this.editor;
-        // const { selection } = model.document;
-        // const isAllowed = model.schema.checkChild(selection.focus.parent, 'div');
+        const { editor } = this;
+        const { onRequestRemove } = editor || {};
+        const { selection } = editor.model.document;
+        const viewElement = selection.getSelectedElement() || null;
 
-        this.isEnabled = true; // isAllowed;
+        this.isEnabled = viewElement !== null && onRequestRemove !== null; // isAllowed;
     }
 }

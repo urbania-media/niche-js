@@ -1,20 +1,22 @@
 /* eslint-disable react/jsx-props-no-spreading */
+import { Modals } from '@panneau/element-modal';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { useCallback, useState, useEffect, useRef, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { renderToString } from 'react-dom/server';
 import { v4 as uuidV4 } from 'uuid';
 
 import { useNicheEditor } from '@niche-js/ckeditor';
 import { Editor } from '@niche-js/core/components';
 import {
-    useViewerComponent,
-    useBlocksComponentsManager,
     BLOCKS_NAMESPACE,
+    ComponentsProvider,
     EditorProvider,
     HEADERS_NAMESPACE,
-    useHeadersComponentsManager, // PlatformProvider,
-    ComponentsProvider,
+    useBlocksComponentsManager,
+    useHeadersComponentsManager,
+    useModalComponent,
+    useViewerComponent,
 } from '@niche-js/core/contexts';
 import { findParentBlock } from '@niche-js/core/utils';
 
@@ -91,6 +93,12 @@ function EditorArticle({
     useEffect(() => {
         documentRef.current = document;
     }, [document]);
+
+    const [modal, setModal] = useState(null);
+
+    const onDismissPicker = useCallback(() => {
+        setModal(null);
+    }, [setModal]);
 
     const [selectedComponent, setSelectedComponent] = useState(null);
     const [selectedHeaderComponent, setSelectedHeaderComponent] = useState(null);
@@ -295,6 +303,7 @@ function EditorArticle({
             const data = editorData !== '' ? editorData : null;
 
             if (onChange !== null) {
+                console.log('header change', data);
                 const { components: newHeaders = null } = data || {};
 
                 const { components: documentComponents = [] } = documentRef.current || {};
@@ -337,10 +346,9 @@ function EditorArticle({
                     components: [newHeader, ...otherHeaders, ...otherComponents],
                 };
 
-                console.log('onHeaderChange newHeaders', newHeaders);
-                console.log('onHeaderChange match', platformHeader, defaultHeader);
-                console.log('onHeaderChange components', newHeader, otherHeaders, otherComponents);
-
+                // console.log('onHeaderChange newHeaders', newHeaders);
+                // console.log('onHeaderChange match', platformHeader, defaultHeader);
+                // console.log('onHeaderChange components', newHeader, otherHeaders, otherComponents);
                 // console.log('onHeaderChange nextValue', nextValue);
 
                 onChange(nextValue);
@@ -368,6 +376,7 @@ function EditorArticle({
             const editorData = editor.getData();
             const data = editorData !== '' ? editorData : null;
             if (data && onChange !== null) {
+                console.log('content', data);
                 const { components: newBlocks = null } = data || {};
                 const { components: documentComponents = [] } = documentRef.current || {};
                 const otherComponents = (documentComponents || []).filter(
@@ -460,6 +469,58 @@ function EditorArticle({
         [document, components, selectedComponent, selectComponent],
     );
 
+    const onRequestPicker = useCallback(
+        (picker, key, uuid) => {
+            setModal({
+                type: 'picker',
+                component: picker,
+                onChange: (newValue) => {
+                    const data = document || null;
+                    if (key !== null && uuid !== null && onChange !== null) {
+                        const { components: documentComponents = null } = data || {};
+                        onChange({
+                            ...document,
+                            components: documentComponents.reduce((acc, component) => {
+                                const { uuid: componentUUID = null } = component || {};
+                                if (uuid !== null && componentUUID === uuid) {
+                                    acc.push({ ...component, [key]: newValue });
+                                    return acc;
+                                }
+                                acc.push(component);
+                                return acc;
+                            }, []),
+                        });
+                    }
+                    onDismissPicker();
+                },
+                onClose: onDismissPicker,
+            });
+        },
+        [document, setModal, onDismissPicker, onChange],
+    );
+
+    const onRequestRemove = useCallback(
+        (key, uuid) => {
+            const data = document || null;
+            if (key !== null && uuid !== null && onChange !== null) {
+                const { components: documentComponents = null } = data || {};
+                onChange({
+                    ...document,
+                    components: documentComponents.reduce((acc, component) => {
+                        const { uuid: componentUUID = null } = component || {};
+                        if (uuid !== null && componentUUID === uuid) {
+                            acc.push({ ...component, [key]: null });
+                            return acc;
+                        }
+                        acc.push(component);
+                        return acc;
+                    }, []),
+                });
+            }
+        },
+        [document, onChange],
+    );
+
     const headerBody = useMemo(
         () => renderDocument(headerDocument, 'header'),
         [headerDocument, renderDocument],
@@ -468,8 +529,13 @@ function EditorArticle({
     const { containerRef: headerRef } = useNicheEditor({
         body: headerBody,
         onChange: onHeaderChange,
+        onRequestPicker,
+        onRequestRemove,
         onRequestImageChange,
         onClick: onHeaderClick,
+        onFocus: () => {
+            console.log('hello focus header');
+        },
         debug: debug === 'header',
         config: {
             blockToolbar: null,
@@ -484,8 +550,13 @@ function EditorArticle({
     const { containerRef: contentRef } = useNicheEditor({
         body: contentBody,
         onChange: onContentChange,
+        // onRequestPicker,
+        // onRequestRemove,
         onRequestImageChange,
         onClick: onContentClick,
+        onFocus: () => {
+            console.log('hello focus body');
+        },
         debug: debug === 'content',
     });
 
@@ -524,6 +595,9 @@ function EditorArticle({
     // console.log('selectedHeaderComponent', selectedHeaderComponent);
     // console.log('vc', ViewerComponent);
     // const documentHeader = (components || []).find(({ type = null }) => type === 'header');
+
+    const { type: modalType = null, ...modalProps } = modal || {};
+    const ModalComponent = useModalComponent(modalType);
 
     return (
         <EditorProvider platform={platform}>
@@ -574,8 +648,10 @@ function EditorArticle({
                         sectionOnly="content"
                         editorRef={contentRef}
                     />
+                    {ModalComponent !== null ? <ModalComponent {...modalProps} /> : null}
                 </Editor>
             </div>
+            <Modals />
         </EditorProvider>
     );
 }

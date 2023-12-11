@@ -22,3 +22,9 @@ msgstr "Étiquette d'image"
 msgctxt "OPxJx/"
 msgid "Layout"
 msgstr "Mise en page"
+
+# Button message
+#: eU9cEI
+msgctxt "eU9cEI"
+msgid "Confirm"
+msgstr "Confirmer"

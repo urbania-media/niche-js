@@ -62,6 +62,7 @@
         "@niche-js/core": "^0.0.77",
         "@niche-js/picker-categories": "0.0.77",
         "@niche-js/picker-credits": "0.0.77",
+        "@niche-js/picker-medias": "0.0.77",
         "prop-types": "^15.7.2"
     },
     "publishConfig": {

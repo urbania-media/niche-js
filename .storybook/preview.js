@@ -4,6 +4,7 @@ import withIntlProvider from './decorators/withIntlProvider';
 
 import './fonts/fonts.css';
 import './styles.css';
+import '@panneau/app/assets/css/styles.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const preview = {

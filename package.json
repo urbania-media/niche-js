@@ -9,7 +9,8 @@
         "viewers/*",
         "packages/*",
         "editors/*",
-        "pickers/*"
+        "pickers/*",
+        "modals/*"
     ],
     "author": "",
     "license": "ISC",
@@ -25,7 +26,7 @@
         "build:nocache": "nx run-many --target=prepare --skip-nx-cache",
         "graph": "nx graph",
         "update-urbania": "npm update @urbania-media/ui",
-        "update-panneau": "npm update @panneau/app @panneau/core @panneau/modals @panneau/modals-dialog @panneau/fields"
+        "update-panneau": "npm update @panneau/app @panneau/core @panneau/modals @panneau/modals-dialog @panneau/fields @panneau/field-autocomplete"
     },
     "devDependencies": {
         "@babel/eslint-parser": "^7.21.3",
@@ -40,8 +41,10 @@
         "@ckeditor/ckeditor5-dev-utils": "^39.2.0",
         "@ckeditor/ckeditor5-theme-lark": "^40.0.0",
         "@folklore/cli": "^0.0.50",
+        "@folklore/fetch": "^0.1.17",
         "@formatjs/cli": "^6.0.4",
         "@formatjs/cli-lib": "^6.0.3",
+        "@panneau/app": "^3.0.61",
         "@rollup/plugin-alias": "^4.0.3",
         "@rollup/plugin-babel": "^6.0.3",
         "@rollup/plugin-commonjs": "^24.0.1",
@@ -51,7 +54,6 @@
         "@rollup/plugin-terser": "^0.4.0",
         "@rollup/plugin-url": "^8.0.1",
         "@rollup/pluginutils": "^5.0.2",
-        "@panneau/app": "^3.0.61",
         "@storybook/addon-essentials": "^7.2.1",
         "@storybook/addon-interactions": "^7.2.1",
         "@storybook/addon-links": "^7.2.1",

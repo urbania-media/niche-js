@@ -14,6 +14,7 @@ export const COMPONENTS_NAMESPACE = 'components';
 export const BLOCKS_NAMESPACE = 'blocks';
 export const HEADERS_NAMESPACE = 'headers';
 export const PICKERS_NAMESPACE = 'pickers';
+export const MODALS_NAMESPACE = 'modals';
 
 export { ComponentsProvider, useFieldComponent, FIELDS_NAMESPACE, useFieldsComponentsManager };
 
@@ -82,3 +83,14 @@ export const usePickersComponents = (defaultComponents = {}) =>
 
 export const usePickerComponent = (name, defaultComponent = null) =>
     useComponent(name, defaultComponent, PICKERS_NAMESPACE);
+
+/**
+ * Modals hooks
+ */
+export const useModalsComponentsManager = () => useComponentsManager(MODALS_NAMESPACE);
+
+export const useModalsComponents = (defaultComponents = {}) =>
+    useComponents(MODALS_NAMESPACE, defaultComponents);
+
+export const useModalComponent = (name, defaultComponent = null) =>
+    useComponent(name, defaultComponent, MODALS_NAMESPACE);

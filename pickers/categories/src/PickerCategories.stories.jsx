@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-props-no-spreading */
-// import '@panneau/app/assets/css/styles';
 import React, { useState } from 'react';
 
 import withApi from '../../../.storybook/decorators/withApiProvider';
@@ -21,9 +20,7 @@ export default {
     ],
 };
 
-const pickerArgs = {
-    //
-};
+const pickerArgs = {};
 
 export const Empty = {
     args: {
@@ -31,6 +28,22 @@ export const Empty = {
     },
     render: ({ value: initialValue = null, ...args }) => {
         const [value, onChange] = useState(initialValue);
+        return (
+            <div>
+                <Categories {...args} value={value} onChange={onChange} />
+            </div>
+        );
+    },
+};
+
+export const WithInitialValue = {
+    args: {
+        ...pickerArgs,
+    },
+    render: ({ ...args }) => {
+        const [value, onChange] = useState([
+            { id: '135432', label: 'Top', value: 'top', name: 'Top' },
+        ]);
         return (
             <div>
                 <Categories {...args} value={value} onChange={onChange} />

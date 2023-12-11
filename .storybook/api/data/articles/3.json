@@ -276,7 +276,8 @@
             "subtitle": "On a test\u00e9 un \u00ab side hustle \u00bb qui promet un revenu passif sans effort.",
             "author": {
                 "name": "Hugo Meunier",
-                "url": "https://urbania.ca"
+                "url": "https://urbania.ca",
+                "role": "HAHAHA"
             },
             "image": {
                 "id": "24388",
@@ -318,6 +319,13 @@
                     }
                 ]
             }
+        },
+        {
+            "id": "27",
+            "role": "block",
+            "type": "quote",
+            "body": "<p><a href=\"https://www.tacomadailyindex.com/blog/the-7-figure-accelerator-reviews-is-it-legit-know-this-before-try-philip-johansen-program/2468022/\" target=\"_blank\" rel=\"noopener\">Environ 2 500 $</a>. Pour une approche \u00ab&nbsp;sans d\u00e9pense en amont&nbsp;\u00bb, on repassera.</p>",
+            "caption": "Hello"
         },
         {
             "id": "0",

@@ -107,6 +107,19 @@ export default class NicheDataProcessor {
                 return acc;
             }
 
+            if (subChild.name === 'p') {
+                const key = subChild.getAttribute('key');
+                return {
+                    ...acc,
+                    [key || 'media']: {
+                        url: subChild.getAttribute('src'),
+                        alt: subChild.getAttribute('alt'),
+                        srcSet: subChild.getAttribute('srcset'),
+                        class: subChild.parent ? subChild.parent.getAttribute('class') : null,
+                    },
+                };
+            }
+
             if (subChild.name === 'img') {
                 const key = subChild.getAttribute('key');
                 return {
@@ -147,6 +160,18 @@ export default class NicheDataProcessor {
                 };
             }
 
+            const fieldKey = subChild.getAttribute('data-niche-editable-name') || null;
+            if (fieldKey !== null) {
+                console.log('fieldKey name', fieldKey);
+                return {
+                    ...acc,
+                    [fieldKey]:
+                        subChild.childCount > 1
+                            ? this.getFieldsFromChild(subChild)
+                            : this.getInnerPHTML(subChild),
+                };
+            }
+
             if (child.childCount > 0) {
                 const attributes = this.getFieldsFromChild(subChild);
                 return {
@@ -165,6 +190,17 @@ export default class NicheDataProcessor {
         const container = doc.createElement('div');
         container.appendChild(domFragment);
         return container.children[0].innerHTML;
+    }
+
+    getInnerPHTML(fragment) {
+        const domFragment = this.htmlDataProcessor.domConverter.viewToDom(fragment);
+        const doc = document.implementation.createHTMLDocument('');
+        const container = doc.createElement('div');
+        container.appendChild(domFragment);
+        if (container.children[0].children.length === 1) {
+            return container.children[0].children[0].textContent || null;
+        }
+        return container.children[0].innerHTML || null;
     }
 
     getHTML(fragment) {

@@ -24,9 +24,8 @@ const defaultProps = {
 
 function Embed({ embed, className }) {
     const refEmbed = useRef();
-    const { iframeUrl = null, html = null } = embed || {};
+    const { iframeUrl = null } = embed || {};
     const finalFrameUrl = useMemo(() => iframeUrl || null, [iframeUrl]);
-    // console.log('iframeUrl', finalFrameUrl);
 
     return (
         <Widget className={classNames([styles.container, { [className]: className !== null }])}>

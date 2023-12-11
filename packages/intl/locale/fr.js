@@ -1,5 +1,9 @@
 import manager from '@niche-js/intl';
 
+var eU9cEI = [{
+  type: 0,
+  value: "Confirmer"
+}];
 var messages = {
   "0aV7v8": [{
     type: 0,
@@ -8,7 +12,8 @@ var messages = {
   "OPxJx/": [{
     type: 0,
     value: "Mise en page"
-  }]
+  }],
+  eU9cEI: eU9cEI
 };
 
 /* eslint-disable */

@@ -25,12 +25,19 @@ function Quote({ body, caption, className }) {
             tag="figure"
             className={classNames([styles.container, { [className]: className !== null }, 'quote'])}
         >
-            <Editable tag="blockquote" name="body" className={styles.body} html={body} />
+            <Editable
+                tag="blockquote"
+                name="body"
+                className={styles.body}
+                html={body}
+                placeholder="Quote"
+            />
             <Editable
                 tag="figcaption"
                 name="caption"
                 className={styles.caption}
                 html={caption}
+                placeholder="Quote caption"
                 inline
             />
         </Widget>

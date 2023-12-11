@@ -9,6 +9,11 @@
             "title": "Les vraies questions URBANIA – Édition FESTIF",
             "surtitle": "FESTIF",
             "subtitle": "Le FESTIF en bref",
+            "author": {
+                "name": "Hugo Meunier",
+                "url": "https://urbania.ca",
+                "role": "HOHOHO"
+            },
             "image": {
                 "url": "https://picsum.photos/200/300",
                 "caption": "Picsum"
@@ -22,6 +27,11 @@
             "surtitle": "FESTIF",
             "subtitle": "Le FESTIF en bref",
             "platform": "urbania_fr",
+            "author": {
+                "name": "Hugo Meunier",
+                "url": "https://urbania.ca",
+                "role": "HAHAHA"
+            },
             "image": {
                 "url": "https://picsum.photos/200/300",
                 "caption": "Picsum"

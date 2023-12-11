@@ -1,19 +1,30 @@
 import { Command } from '@ckeditor/ckeditor5-core';
 
+import { findParentBlock } from '@niche-js/core/utils';
+
 export default class NicheEditCommand extends Command {
-    execute(params) {
+    execute() {
         const { editor } = this;
-        const { selection } = editor.model.document;
+        const { model } = editor || {};
+        const { onRequestPicker = null } = editor || {};
+        const { selection } = model.document;
 
-        console.log('NicheEditCommand execute', params, selection);
-
-        // TODO: trigger onChange blah
+        if (selection && onRequestPicker !== null) {
+            const viewElement = selection.getSelectedElement() || null;
+            const key = viewElement !== null ? viewElement.getAttribute('key') || null : null;
+            const picker = viewElement !== null ? viewElement.getAttribute('picker') || null : null;
+            const uuid = viewElement !== null ? findParentBlock(viewElement) || null : null;
+            if (key !== null && picker !== null) {
+                onRequestPicker(picker, key, uuid);
+            }
+        }
     }
 
     refresh() {
-        // const { model } = this.editor;
-        // const { selection } = model.document;
-        // const isAllowed = model.schema.checkChild(selection.focus.parent, 'nicheComponent');
-        this.isEnabled = true; // isAllowed;
+        const { editor } = this;
+        const { onRequestPicker } = editor || {};
+        const { selection } = editor.model.document;
+        const viewElement = selection.getSelectedElement() || null;
+        this.isEnabled = viewElement !== null && onRequestPicker !== null; // isAllowed;
     }
 }

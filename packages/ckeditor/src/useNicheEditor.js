@@ -1,4 +1,5 @@
 // import { ClickObserver } from '@ckeditor/ckeditor5-engine';
+import { FocusObserver } from '@ckeditor/ckeditor5-engine';
 import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
 import { useEffect, useRef, useState } from 'react';
 
@@ -10,6 +11,8 @@ function useNicheEditor({
     onClick = null,
     onFocus = null,
     onRequestImageChange = null,
+    onRequestPicker = null,
+    onRequestRemove = null,
     debug = false,
     config = null,
 }) {
@@ -47,16 +50,23 @@ function useNicheEditor({
             .then((editor) => {
                 console.log('Editor was initialized', editor, body);
 
-                // const { view } = editor.editing;
-                // view.addObserver(ClickObserver);
-
                 editor.setData(body);
-                // eslint-disable-next-line no-param-reassign
-                editor.onRequestImageChange = onRequestImageChange;
 
                 if (debug) {
                     CKEditorInspector.attach(editor);
                 }
+
+                // editor.editing.view.document.on('change:isFocused', (evt, data, isFocused) => {
+                //     // if (!isFocused) {
+                //     //     evt.stop();
+                //     // }
+                //     console.log(`View document is focused: ${isFocused}. - ${body}`, evt, data);
+                //     console.log('document focus', editor.editing.view.document.isFocused);
+                // });
+
+                // const widgetTypeAroundPlugin = editor.plugins.get('WidgetTypeAround');
+                // Disable the widget type around plugin.
+                // widgetTypeAroundPlugin.forceDisabled('WidgetTypeAround');
 
                 editorRef.current = editor;
                 setReady(true);
@@ -99,10 +109,9 @@ function useNicheEditor({
         const finalOnFocus = (event) => {
             onFocus(event, currentEditor);
         };
-        const modelDocument = currentEditor.model.document;
-        modelDocument.on('focus', finalOnFocus);
+        currentEditor.editing.view.document.on('change:isFocused', finalOnFocus);
         return () => {
-            modelDocument.off('focus', finalOnFocus);
+            currentEditor.editing.view.document.off('change:isFocused', finalOnFocus);
         };
     }, [onFocus, ready]);
 
@@ -120,6 +129,40 @@ function useNicheEditor({
             modelDocument.off('change:data', finalOnChange);
         };
     }, [onChange, ready]);
+
+    useEffect(() => {
+        const { current: currentEditor = null } = editorRef || {};
+        if (!ready || currentEditor === null) {
+            return () => {};
+        }
+
+        const observer = currentEditor.editing.view.getObserver(FocusObserver);
+        const onBlur = () => {
+            observer.document.isFocused = false;
+            // eslint-disable-next-line no-underscore-dangle
+            observer._isFocusChanging = false;
+            observer.view.change(() => {});
+        };
+        observer.document.on('blur', onBlur);
+
+        return () => {
+            observer.document.off('blur', onBlur);
+        };
+    }, [ready]);
+
+    useEffect(() => {
+        const { current: currentEditor = null } = editorRef || {};
+        if (!ready || currentEditor === null) {
+            return () => {};
+        }
+        // eslint-disable-next-line no-param-reassign
+        currentEditor.onRequestImageChange = onRequestImageChange;
+        // eslint-disable-next-line no-param-reassign
+        currentEditor.onRequestPicker = onRequestPicker;
+        // eslint-disable-next-line no-param-reassign
+        currentEditor.onRequestRemove = onRequestRemove;
+        return () => {};
+    }, [ready, onRequestImageChange, onRequestPicker, onRequestRemove]);
 
     return { containerRef, editor: editorRef.current };
 }

@@ -1,11 +1,39 @@
 import fs from 'fs';
 import path from 'path';
 
+import { getJSON } from '@folklore/fetch';
 import dayjs from 'dayjs';
 import express from 'express';
 import { sync as globSync } from 'glob';
 import _ from 'lodash';
-import isString from 'lodash/isString';
+import queryString from 'query-string';
+
+const endpoint = 'https://v2.urbania.ca/api';
+
+const cache = {};
+
+const resources = {
+    authors: (response) => {
+        const { data } = response || {};
+        return (data || []).map((it) => ({ ...it, label: it.name, value: it.id }));
+    },
+    organisations: (response) => {
+        const { data } = response || {};
+        return (data || []).map((it) => ({ ...it, label: it.name, value: it.id }));
+    },
+    categories: (response) => {
+        const { data } = response || {};
+        return (data || []).map((it) => ({ ...it, label: it.label, value: it.id }));
+    },
+    tags: (response) => {
+        const { data } = response || {};
+        return (data || []).map((it) => ({ ...it, label: it.label, value: it.id }));
+    },
+    collections: (response) => {
+        const { data } = response || {};
+        return (data || []).map((it) => ({ ...it, label: it.title, value: it.id }));
+    },
+};
 
 export default () => {
     const router = express.Router();
@@ -20,22 +48,46 @@ export default () => {
     const updatedResources = {};
     const deletedResources = {};
 
-    const getResourceItems = (resource) => {
-        const updatedItems = updatedResources[resource] || [];
-        const deletedItems = deletedResources[resource] || [];
-        const updatedResourcesIds = updatedItems.map((it) => it.id);
-        const items = globSync(path.join(dataPath, `${resource}/*.{js,json}`))
-            .map((filePath) =>
+    async function getResourceItems(resource, page = null, count = null, query = null) {
+        const hasEndpoint = (resources[resource] || null) !== null;
+
+        let items = null;
+
+        if (hasEndpoint) {
+            const finalQuery = { page, count, ...query };
+            const url = `${endpoint}/${resource}?${queryString.stringify(finalQuery)}`;
+            console.log(url, 'cached', typeof cache[url] !== 'undefined');
+            if (typeof cache[url] !== 'undefined') {
+                items = cache[url];
+            } else {
+                items = await getJSON(url)
+                    .then(resources[resource])
+                    .catch((err) => {
+                        console.log('error', err);
+                        return [];
+                    });
+                cache[url] = items;
+            }
+        } else if (typeof cache[resource] !== 'undefined') {
+            items = cache[resource];
+        } else {
+            items = globSync(path.join(dataPath, `${resource}/*.{js,json}`)).map((filePath) =>
                 filePath.match(/\.json$/)
                     ? JSON.parse(fs.readFileSync(filePath))
                     : require(filePath),
-            )
-            .filter(
-                (it) =>
-                    updatedResourcesIds.indexOf(it.id) === -1 && deletedItems.indexOf(it.id) === -1,
             );
-        return [...items, ...updatedItems];
-    };
+            cache[resource] = items;
+        }
+
+        const updatedItems = updatedResources[resource] || [];
+        const deletedItems = deletedResources[resource] || [];
+        const updatedResourcesIds = updatedItems.map((it) => it.id);
+
+        const finalItems = items.filter(
+            (it) => updatedResourcesIds.indexOf(it.id) === -1 && deletedItems.indexOf(it.id) === -1,
+        );
+        return [...finalItems, ...updatedItems];
+    }
 
     const getItemsPage = (items, page, count) => {
         const startIndex = (page - 1) * count;
@@ -56,10 +108,13 @@ export default () => {
         return direction.toLowerCase() === 'desc' ? _.reverse(sortedItems) : sortedItems;
     };
 
-    const filterItems = (items, query = null) => {
-        if (query === null || Object.keys(query).length === 0) {
+    const filterItems = (resource, items, query = null) => {
+        const hasEndpoint = (resources[resource] || null) !== null;
+        if (hasEndpoint || query === null || Object.keys(query).length === 0) {
             return items;
         }
+
+        // console.log('items', items, 'query', query);
         const { source, search = null, ...queryWithoutSource } = query;
         if (search !== null) {
             return _.values(
@@ -145,7 +200,7 @@ export default () => {
     /**
      * Resource index
      */
-    router.get('/:resource', (req, res) => {
+    router.get('/:resource', async (req, res) => {
         const { resource } = req.params;
         if (!resourceExists(resource)) {
             res.sendStatus(404);
@@ -158,8 +213,9 @@ export default () => {
             sort_direction: sortDirection = 'asc',
             ...query
         } = req.query;
-        const items = getResourceItems(resource);
-        const filteredItems = sortItems(filterItems(items, query), sort, sortDirection);
+        console.log('q', query);
+        const items = await getResourceItems(resource, page, count, query);
+        const filteredItems = sortItems(filterItems(resource, items, query), sort, sortDirection);
         if (page !== null) {
             res.json(getItemsPage(filteredItems, parseInt(page, 10), parseInt(count, 10)));
         } else {

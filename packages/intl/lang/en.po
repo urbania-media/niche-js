@@ -22,3 +22,9 @@ msgstr "Image label"
 msgctxt "OPxJx/"
 msgid "Layout"
 msgstr "Layout"
+
+# Button message
+#: eU9cEI
+msgctxt "eU9cEI"
+msgid "Confirm"
+msgstr "Confirm"

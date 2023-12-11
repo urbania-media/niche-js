@@ -1,9 +1,16 @@
 /* eslint-disable react/no-danger */
 import classNames from 'classnames';
+import isString from 'lodash/isString';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { Editable, EditableImage, Widget } from '@niche-js/core/components';
+import {
+    Editable,
+    EditableImage,
+    EditableField,
+    Widget,
+    EditablePicker,
+} from '@niche-js/core/components';
 
 // import { useIsEditor } from '@niche-js/core/contexts';
 import styles from './styles.module.css';
@@ -33,7 +40,17 @@ const defaultProps = {
 
 function Article({ title, subtitle, surtitle, image, author, className }) {
     // const isEditor = useIsEditor();
-    const { url = null, alt = null } = image || {};
+    const { url: imageUrl = null, alt: imageAlt = null } = image || {};
+    const {
+        name: authorName = 'Auteur',
+        // url: authorUrl = null,
+        role: authorRole = null,
+    } = author || {};
+
+    const finalSurtitle = isString(surtitle) ? { label: surtitle } : surtitle || null;
+    const { label: surTitleLabel = null } = finalSurtitle || {};
+    // console.log('author', author);
+    // console.log('surtitle', finalSurtitle);
 
     return (
         <Widget
@@ -41,13 +58,20 @@ function Article({ title, subtitle, surtitle, image, author, className }) {
             className={classNames([styles.container, { [className]: className !== null }])}
         >
             <div className={styles.inner}>
-                <Editable
+                <EditablePicker
                     className={styles.surtitle}
                     tag="div"
                     name="surtitle"
-                    html={surtitle}
                     picker="categories"
-                />
+                >
+                    <EditableField
+                        className={styles.surtitle}
+                        tag="a"
+                        name="label"
+                        placeholder="Surtitle"
+                        html={surTitleLabel}
+                    />
+                </EditablePicker>
                 <div className={styles.inner}>
                     <Editable className={styles.title} tag="h1" name="title" html={title} inline />
                 </div>
@@ -56,16 +80,36 @@ function Article({ title, subtitle, surtitle, image, author, className }) {
                     tag="h4"
                     name="subtitle"
                     html={subtitle}
+                    placeholder="LOL"
                     inline
                 />
-                <EditableImage className={styles.image} name="image" src={url} alt={alt} />
-                <Editable
+                <EditableImage
                     className={styles.image}
+                    name="image"
+                    src={imageUrl}
+                    alt={imageAlt}
+                />
+                <EditablePicker
+                    className={styles.author}
+                    tag="div"
                     name="author"
                     placeholder="Author"
-                    // eslint-disable-next-line react/jsx-props-no-spreading
-                    {...author}
-                />
+                    picker="credits"
+                >
+                    <EditableField
+                        className={styles.authorName}
+                        tag="a"
+                        name="name"
+                        html={authorName}
+                    />
+                    <EditableField
+                        className={styles.authorRole}
+                        tag="div"
+                        name="role"
+                        placeholder="Rôle"
+                        html={authorRole}
+                    />
+                </EditablePicker>
             </div>
         </Widget>
     );

@@ -6,5 +6,9 @@
   "OPxJx/": {
     "defaultMessage": "Layout",
     "description": "Field label"
+  },
+  "eU9cEI": {
+    "defaultMessage": "Confirm",
+    "description": "Button message"
   }
 }

@@ -11,15 +11,13 @@ function normalizeDeclarativeConfig(config) {
 }
 
 function hasEditToolbar(viewElement) {
-    const author =
-        viewElement.getAttribute('data-niche-editable') ||
-        viewElement.getAttribute('data-niche-editable-inline') ||
-        null;
-    return author !== null;
+    const element = viewElement.getAttribute('data-niche-editable-picker') || null;
+    return element !== null;
 }
 
 function getClosestEditable(selection) {
     const selectionPosition = selection.getFirstPosition();
+    // console.log('selection', selection);
 
     if (!selectionPosition) {
         return null;
@@ -27,7 +25,14 @@ function getClosestEditable(selection) {
 
     const viewElement = selection.getSelectedElement();
 
-    if (viewElement && hasEditToolbar(viewElement)) {
+    // console.log('viewElement', viewElement);
+    // console.log('selectionPosition', selectionPosition);
+
+    const hasToolbar = viewElement ? hasEditToolbar(viewElement) : false;
+
+    // console.log('viewElement', viewElement);
+
+    if (viewElement && hasToolbar) {
         return viewElement;
     }
 
@@ -35,6 +40,7 @@ function getClosestEditable(selection) {
 
     while (parent) {
         if (parent.is('element') && hasEditToolbar(parent)) {
+            // console.log('parent match hasToolbar', parent, viewElement);
             return parent;
         }
         parent = parent.parent;
@@ -59,8 +65,6 @@ export default class NicheEditableToolbar extends Plugin {
         const { editor } = this;
         const { t } = editor;
         const widgetToolbarRepository = editor.plugins.get(WidgetToolbarRepository);
-
-        console.log('tool and die', editor.config.get('niche.editable.toolbar'));
 
         widgetToolbarRepository.register('NicheEditableToolbar', {
             ariaLabel: t('Edit toolbar'),

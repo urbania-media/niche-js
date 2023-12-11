@@ -2,6 +2,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 // import { ArticleDocument } from '@urbania-media/ui';
 // import FieldsProvider from '@panneau/fields';
+import { ModalProvider } from '@panneau/core/contexts';
 import React, { useState } from 'react';
 import { v4 as uuidV4 } from 'uuid';
 
@@ -15,6 +16,8 @@ import {
 } from '../../../packages/core/src/contexts/ComponentsContext';
 import FieldsProvider from '../../../packages/fields/src/FieldsProvider';
 import HeadersProvider from '../../../packages/headers/src/HeadersProvider';
+import ModalsProvider from '../../../packages/modals/src/ModalsProvider';
+import PickersProvider from '../../../packages/pickers/src/PickersProvider';
 import ViewersProvider from '../../../packages/viewers/src/ViewersProvider';
 import Article from './EditorArticle';
 
@@ -30,22 +33,28 @@ export default {
     decorators: [
         (Story) => (
             <FieldsProvider>
-                <HeadersProvider>
-                    <BlocksProvider>
-                        <ViewersProvider>
-                            <ComponentsProvider
-                                namespace={VIEWERS_NAMESPACE}
-                                components={
-                                    {
-                                        // Article: UrbaniaArticleDocumentViewer,
-                                    }
-                                }
-                            >
-                                <Story />
-                            </ComponentsProvider>
-                        </ViewersProvider>
-                    </BlocksProvider>
-                </HeadersProvider>
+                <PickersProvider>
+                    <ModalProvider>
+                        <ModalsProvider>
+                            <HeadersProvider>
+                                <BlocksProvider>
+                                    <ViewersProvider>
+                                        <ComponentsProvider
+                                            namespace={VIEWERS_NAMESPACE}
+                                            components={
+                                                {
+                                                    // Article: UrbaniaArticleDocumentViewer,
+                                                }
+                                            }
+                                        >
+                                            <Story />
+                                        </ComponentsProvider>
+                                    </ViewersProvider>
+                                </BlocksProvider>
+                            </HeadersProvider>
+                        </ModalsProvider>
+                    </ModalProvider>
+                </PickersProvider>
             </FieldsProvider>
         ),
     ],
