@@ -1,6 +1,6 @@
 {
     "name": "@niche-js/picker-medias",
-    "version": "0.0.81",
+    "version": "0.0.82",
     "private": false,
     "description": "Niche picker",
     "keywords": [
@@ -51,7 +51,7 @@
     },
     "dependencies": {
         "@niche-js/core": "^0.0.77",
-        "@niche-js/data": "^0.0.81",
+        "@niche-js/data": "^0.0.82",
         "@niche-js/fields": "^0.0.77",
         "@panneau/element-button": "^3.0.55",
         "@panneau/modal-dialog": "^3.0.67",
