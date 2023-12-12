@@ -398,6 +398,7 @@ function EditorArticle({
             const { selection: currentSelection = null } = editor.editing.model.document || {};
             const range = currentSelection.getFirstRange() || null;
             const target = range !== null ? range.getCommonAncestor() : null;
+            console.log('click content');
             if (target !== null) {
                 const blockUUID = findParentBlock(target);
                 if (blockUUID !== null) {
@@ -405,7 +406,6 @@ function EditorArticle({
                     const selected =
                         (documentComponents || []).find(({ uuid = null }) => uuid === blockUUID) ||
                         null;
-
                     selectComponent('content', selected);
                 }
             }
@@ -418,6 +418,7 @@ function EditorArticle({
             const { selection: currentSelection = null } = editor.editing.model.document || {};
             const range = currentSelection.getFirstRange() || null;
             const target = range !== null ? range.getCommonAncestor() : null;
+            console.log('click header');
             if (target !== null) {
                 const blockUUID = findParentBlock(target);
                 if (blockUUID !== null) {

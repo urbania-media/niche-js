@@ -1,5 +1,5 @@
 // import { ClickObserver } from '@ckeditor/ckeditor5-engine';
-import { FocusObserver } from '@ckeditor/ckeditor5-engine';
+import { FocusObserver, ClickObserver } from '@ckeditor/ckeditor5-engine';
 import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
 import { useEffect, useRef, useState } from 'react';
 
@@ -52,17 +52,11 @@ function useNicheEditor({
 
                 editor.setData(body);
 
+                editor.editing.view.addObserver(ClickObserver);
+
                 if (debug) {
                     CKEditorInspector.attach(editor);
                 }
-
-                // editor.editing.view.document.on('change:isFocused', (evt, data, isFocused) => {
-                //     // if (!isFocused) {
-                //     //     evt.stop();
-                //     // }
-                //     console.log(`View document is focused: ${isFocused}. - ${body}`, evt, data);
-                //     console.log('document focus', editor.editing.view.document.isFocused);
-                // });
 
                 // const widgetTypeAroundPlugin = editor.plugins.get('WidgetTypeAround');
                 // Disable the widget type around plugin.
