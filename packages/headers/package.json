@@ -1,6 +1,6 @@
 {
     "name": "@niche-js/headers",
-    "version": "0.0.82",
+    "version": "0.0.83",
     "private": false,
     "description": "",
     "keywords": [
@@ -63,8 +63,8 @@
     },
     "dependencies": {
         "@babel/runtime": "^7.12.5",
-        "@niche-js/core": "^0.0.82",
-        "@niche-js/header-article": "^0.0.82",
+        "@niche-js/core": "^0.0.83",
+        "@niche-js/header-article": "^0.0.83",
         "prop-types": "^15.7.2"
     },
     "publishConfig": {
