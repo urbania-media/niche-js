@@ -20,9 +20,10 @@ import { SimpleUploadAdapter } from '@ckeditor/ckeditor5-upload';
 // import { getCSRFHeaders } from '@folklore/fetch';
 import NicheDPPlugin from './NicheDataProcessorPlugin';
 import NichePlugin from './NichePlugin';
+
 // import WidgetTypeAround from './WidgetTypeAround';
-import NicheEditable from './editable/NicheEditable';
-import NicheEditableToolbar from './editable/NicheEditableToolbar';
+// import NicheEditable from './editable/NicheEditable';
+// import NicheEditableToolbar from './editable/NicheEditableToolbar';
 
 class NicheEditor extends BaseEditor {}
 
@@ -48,8 +49,8 @@ NicheEditor.builtinPlugins = [
 
     // Custom plugins
     NichePlugin,
-    NicheEditable,
-    NicheEditableToolbar,
+    // NicheEditable,
+    // NicheEditableToolbar,
     SimpleUploadAdapter,
     Undo,
 ];
