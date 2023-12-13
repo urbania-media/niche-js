@@ -1,5 +1,5 @@
 // import { ClickObserver } from '@ckeditor/ckeditor5-engine';
-import { FocusObserver, ClickObserver } from '@ckeditor/ckeditor5-engine';
+import { FocusObserver } from '@ckeditor/ckeditor5-engine';
 import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
 import { useEffect, useRef, useState } from 'react';
 
@@ -52,7 +52,7 @@ function useNicheEditor({
 
                 editor.setData(body);
 
-                editor.editing.view.addObserver(ClickObserver);
+                // editor.editing.view.addObserver(ClickObserver);
 
                 if (debug) {
                     CKEditorInspector.attach(editor);

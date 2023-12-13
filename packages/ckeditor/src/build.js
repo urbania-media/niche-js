@@ -3,12 +3,11 @@ import { BalloonEditor as BaseEditor } from '@ckeditor/ckeditor5-editor-balloon'
 import { Essentials } from '@ckeditor/ckeditor5-essentials';
 import { Heading } from '@ckeditor/ckeditor5-heading';
 import {
-    ImageUtils,
-    ImageBlock,
-    ImageResize,
-    ImageToolbar,
-    ImageInsert,
-    ImageEditing,
+    // ImageUtils,
+    ImageBlock, // ImageResize,
+    // ImageToolbar,
+    // ImageInsert,
+    // ImageEditing,
 } from '@ckeditor/ckeditor5-image';
 import { List } from '@ckeditor/ckeditor5-list';
 import { MediaEmbed } from '@ckeditor/ckeditor5-media-embed';
@@ -40,12 +39,13 @@ NicheEditor.builtinPlugins = [
     BlockToolbar,
     MediaEmbed,
 
-    ImageUtils,
+    // ImageUtils,
     ImageBlock,
-    ImageResize,
-    ImageToolbar,
-    ImageInsert,
-    ImageEditing,
+    // ImageResize,
+    // ImageToolbar,
+    // ImageInsert,
+    // ImageEditing,
+
     // Custom plugins
     NichePlugin,
     NicheEditable,
@@ -61,9 +61,9 @@ NicheEditor.defaultConfig = {
     mediaEmbed: {
         previewsInData: true,
     },
-    image: {
-        toolbar: ['toggleImageCaption', 'imageTextAlternative'],
-    },
+    // image: {
+    //     toolbar: ['toggleImageCaption', 'imageTextAlternative'],
+    // },
     niche: {
         editable: {
             toolbar: ['nicheEdit', 'nicheDelete'],
