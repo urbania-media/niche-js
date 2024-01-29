@@ -24,7 +24,7 @@ const defaultProps = {
 
 function Embed({ embed, className }) {
     const refEmbed = useRef();
-    const { iframeUrl = null } = embed || {};
+    const { iframeUrl = null, html = null } = embed || {};
     const finalFrameUrl = useMemo(() => iframeUrl || null, [iframeUrl]);
 
     return (
@@ -45,12 +45,12 @@ function Embed({ embed, className }) {
                     {/* <oembed url={finalFrameUrl} /> */}
                 </div>
             ) : null}
-            {/* {finalFrameUrl === null && html !== null ? (
+            {finalFrameUrl === null && html !== null ? (
                 <div
                     className={classNames([styles.iframeContainer])}
                     dangerouslySetInnerHTML={{ __html: html }}
                 />
-            ) : null} */}
+            ) : null}
         </Widget>
     );
 }
