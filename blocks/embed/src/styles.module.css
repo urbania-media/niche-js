@@ -1,12 +1,8 @@
-.container {
-    padding: 20px 0;
-}
-
 .iframeContainer {
     display: block;
     max-width: 100%;
-}
 
-.iframe {
-    border: 2px solid #ff0;
+    * > {
+        margin: auto;
+    }
 }
