@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import { Editable, EditableImage, Widget } from '@niche-js/core/components';
+import { useIsEditor } from '@niche-js/core/contexts';
 
 import styles from './styles.module.css';
 
@@ -20,12 +21,13 @@ const defaultProps = {
 
 function Image({ media, className }) {
     const { url = null, alt = 'Alternate text', caption = 'Image caption' } = media || {};
+    const isEditor = useIsEditor();
     return (
         <Widget
             tag="figure"
             className={classNames([styles.container, { [className]: className !== null }])}
         >
-            {url !== null ? (
+            {url !== null || isEditor ? (
                 <EditableImage
                     className={styles.img}
                     name="media"
@@ -34,7 +36,7 @@ function Image({ media, className }) {
                     alt={alt}
                 />
             ) : null}
-            {caption !== null ? (
+            {caption !== null || isEditor ? (
                 <Editable
                     className={styles.caption}
                     tag="figcaption"

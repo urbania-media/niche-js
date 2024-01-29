@@ -6,6 +6,7 @@ import React from 'react';
 import { Widget, Editable } from '@niche-js/core/components';
 
 import styles from './styles.module.css';
+import { useIsEditor } from '@niche-js/core/contexts';
 
 const propTypes = {
     body: PropTypes.string,
@@ -20,6 +21,7 @@ const defaultProps = {
 };
 
 function Quote({ body, caption, className }) {
+    const isEditor = useIsEditor();
     return (
         <Widget
             tag="figure"
@@ -32,14 +34,14 @@ function Quote({ body, caption, className }) {
                 html={body}
                 placeholder="Quote"
             />
-            <Editable
+            {caption !== null || isEditor ? <Editable
                 tag="figcaption"
                 name="caption"
                 className={styles.caption}
                 html={caption}
                 placeholder="Quote caption"
                 inline
-            />
+            /> : null}
         </Widget>
     );
 }
