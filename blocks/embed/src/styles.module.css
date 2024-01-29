@@ -1,8 +1,10 @@
 .iframeContainer {
-    display: block;
+    display: flex;
     max-width: 100%;
+    flex-direction: column;
 
     > * {
+        align-self: center;
         margin: auto;
     }
 }
