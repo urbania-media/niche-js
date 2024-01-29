@@ -1,7 +1,8 @@
 /* eslint-disable react/no-danger */
+import { loadTikTok, loadInstagram } from '@folklore/services';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, useEffect } from 'react';
 
 import { Widget } from '@niche-js/core/components';
 
@@ -24,8 +25,16 @@ const defaultProps = {
 
 function Embed({ embed, className }) {
     const refEmbed = useRef();
-    const { iframeUrl = null, html = null } = embed || {};
+    const { provider, iframeUrl = null, html = null } = embed || {};
     const finalFrameUrl = useMemo(() => iframeUrl || null, [iframeUrl]);
+
+    useEffect(() => {
+        if (provider === 'instagram') {
+            loadInstagram();
+        } else if (provider === 'tiktok') {
+            loadTikTok();
+        }
+    }, [provider]);
 
     return (
         <Widget className={classNames([styles.container, { [className]: className !== null }])}>
