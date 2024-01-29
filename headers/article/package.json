@@ -1,6 +1,6 @@
 {
     "name": "@niche-js/header-article",
-    "version": "0.0.88",
+    "version": "0.0.89",
     "private": false,
     "description": "Niche header",
     "keywords": [
@@ -54,7 +54,7 @@
         "react-dom": "^18.0.0"
     },
     "dependencies": {
-        "@niche-js/core": "^0.0.88",
+        "@niche-js/core": "^0.0.89",
         "classnames": "^2.2.6",
         "lodash": "^4.17.21",
         "prop-types": "^15.7.2",
