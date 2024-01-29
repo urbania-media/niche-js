@@ -1,6 +1,6 @@
 {
     "name": "@niche-js/modals",
-    "version": "0.0.90",
+    "version": "0.0.91",
     "private": false,
     "description": "",
     "keywords": [
@@ -60,7 +60,7 @@
     "dependencies": {
         "@babel/runtime": "^7.12.5",
         "@niche-js/core": "^0.0.77",
-        "@niche-js/modal-picker": "^0.0.90",
+        "@niche-js/modal-picker": "^0.0.91",
         "@panneau/modals": "^3.0.60",
         "prop-types": "^15.7.2"
     },
