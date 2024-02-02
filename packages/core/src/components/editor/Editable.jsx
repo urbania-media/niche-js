@@ -30,7 +30,17 @@ const defaultProps = {
     className: null,
 };
 
-function Editable({ name, tag, attributes, html, children, inline, placeholder, className }) {
+function Editable({
+    name,
+    tag,
+    attributes,
+    html,
+    children,
+    inline,
+    placeholder,
+    className,
+    ...props
+}) {
     const isEditor = useIsEditor();
     const Tag = tag || 'div';
     const title = name || tag || placeholder || null;
@@ -52,6 +62,7 @@ function Editable({ name, tag, attributes, html, children, inline, placeholder, 
             {...(finalPlaceholder !== null
                 ? { 'data-niche-editable-placeholder': finalPlaceholder }
                 : null)}
+            {...props}
         >
             {children}
         </Tag>
@@ -59,6 +70,7 @@ function Editable({ name, tag, attributes, html, children, inline, placeholder, 
         <Tag
             className={className}
             dangerouslySetInnerHTML={html !== null ? { __html: html } : null}
+            {...props}
         >
             {children}
         </Tag>
