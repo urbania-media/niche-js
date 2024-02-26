@@ -51,7 +51,7 @@
     },
     "dependencies": {
         "@niche-js/core": "^0.0.77",
-        "@panneau/modal-dialog": "^3.0.61",
+        "@panneau/modal-dialog": "^3.0.119",
         "classnames": "^2.2.6",
         "lodash": "^4.17.21",
         "prop-types": "^15.7.2",

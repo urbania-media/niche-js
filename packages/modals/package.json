@@ -61,7 +61,7 @@
         "@babel/runtime": "^7.12.5",
         "@niche-js/core": "^0.0.77",
         "@niche-js/modal-picker": "^0.0.92",
-        "@panneau/modals": "^3.0.60",
+        "@panneau/modals": "^3.0.120",
         "prop-types": "^15.7.2"
     },
     "publishConfig": {
