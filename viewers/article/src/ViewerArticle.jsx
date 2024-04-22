@@ -10,10 +10,7 @@ import { useHeadersComponentsManager, useBlocksComponentsManager } from '@niche-
 import styles from './styles.module.css';
 
 const propTypes = {
-    document: PropTypes.shape({
-        components: NichePropTypes.components,
-        metadata: NichePropTypes.metadata,
-    }),
+    document: NichePropTypes.document,
     sectionOnly: PropTypes.oneOf([null, 'header', 'content']),
     className: PropTypes.string,
     contentClassName: PropTypes.string,

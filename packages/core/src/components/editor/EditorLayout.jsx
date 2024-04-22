@@ -4,7 +4,7 @@ import React from 'react';
 
 import Preview from './Preview';
 
-import styles from '../../styles/editor/editor.module.css';
+import styles from '../../styles/editor/editor-layout.module.css';
 
 const propTypes = {
     platformId: PropTypes.string,
@@ -26,7 +26,7 @@ const defaultProps = {
     children: null,
 };
 
-function Editor({
+function EditorLayout({
     platformId,
     platforms,
     onPlatformChange,
@@ -59,7 +59,7 @@ function Editor({
     );
 }
 
-Editor.propTypes = propTypes;
-Editor.defaultProps = defaultProps;
+EditorLayout.propTypes = propTypes;
+EditorLayout.defaultProps = defaultProps;
 
-export default Editor;
+export default EditorLayout;

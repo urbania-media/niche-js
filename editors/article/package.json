@@ -50,12 +50,17 @@
         "react-dom": "^18.0.0"
     },
     "dependencies": {
-        "@niche-js/ckeditor": "^0.0.93",
+        "@lexical/html": "^0.14.5",
+        "@lexical/link": "^0.14.5",
+        "@lexical/react": "^0.14.5",
+        "@lexical/rich-text": "^0.14.5",
         "@niche-js/core": "^0.0.93",
+        "@niche-js/editor-lexical": "^0.0.93",
         "@niche-js/fields": "^0.0.93",
         "@panneau/core": "^3.0.119",
         "@panneau/element-modal": "^3.0.119",
         "classnames": "^2.2.6",
+        "lexical": "^0.14.5",
         "lodash": "^4.17.21",
         "prop-types": "^15.7.2",
         "react-intl": "^6.4.4",
@@ -66,7 +71,6 @@
         "registry": "https://registry.npmjs.org/"
     },
     "devDependencies": {
-        "@ckeditor/ckeditor5-inspector": "^4.1.0",
         "uuid": "^9.0.0"
     },
     "gitHead": "20d90b4bd105f37036fd40b29345c9ccd1373cca"

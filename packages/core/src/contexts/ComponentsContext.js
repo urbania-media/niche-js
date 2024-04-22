@@ -16,7 +16,15 @@ export const HEADERS_NAMESPACE = 'headers';
 export const PICKERS_NAMESPACE = 'pickers';
 export const MODALS_NAMESPACE = 'modals';
 
-export { ComponentsProvider, useFieldComponent, FIELDS_NAMESPACE, useFieldsComponentsManager };
+export {
+    ComponentsProvider,
+    useFieldComponent,
+    FIELDS_NAMESPACE,
+    useFieldsComponentsManager,
+    useComponent,
+    useComponents,
+    useComponentsManager,
+};
 
 /**
  * Editors hooks

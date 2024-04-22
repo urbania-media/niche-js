@@ -65,7 +65,6 @@
         "registry": "https://registry.npmjs.org/"
     },
     "devDependencies": {
-        "@ckeditor/ckeditor5-inspector": "^4.1.0",
         "uuid": "^9.0.0"
     },
     "gitHead": "25cb59e59eeeacd37e795964e64b07f7aa359977"

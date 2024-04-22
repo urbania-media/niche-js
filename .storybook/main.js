@@ -1,7 +1,6 @@
 /* eslint-disable no-param-reassign */
 import path from 'path';
 
-import { styles } from '@ckeditor/ckeditor5-dev-utils';
 import getCSSModuleLocalIdent from 'react-dev-utils/getCSSModuleLocalIdent';
 import { DefinePlugin } from 'webpack';
 
@@ -17,67 +16,73 @@ function getAbsolutePath(value) {
 }
 
 export default {
+    framework: getAbsolutePath('@storybook/react-webpack5'),
+
     stories: getPackagesPaths()
         .filter((it) => it.match(/\/cli$/) === null)
-        .map((packagePath) => path.join(packagePath, './src/**/*.stories.@(jsx|mdx)')),
+        .map((packagePath) => path.join(packagePath, './src/**/*.stories.@(jsx)')),
+
     addons: [
         getAbsolutePath('@storybook/addon-essentials'),
         getAbsolutePath('@storybook/addon-links'),
         getAbsolutePath('@storybook/addon-interactions'),
+        getAbsolutePath('@storybook/addon-webpack5-compiler-babel'),
         {
-            name: '@storybook/addon-styling',
+            name: getAbsolutePath('@storybook/addon-styling-webpack'),
             options: {
-                cssBuildRule: {
-                    test: /\.css$/,
-                    oneOf: [
-                        {
-                            test: /\.module\.css$/,
-                            use: [
-                                'style-loader',
-                                {
-                                    loader: 'css-loader',
-                                    options: {
-                                        importLoaders: 1,
-                                        modules: {
-                                            mode: 'local',
-                                            getLocalIdent: getCSSModuleLocalIdent,
+                rules: [
+                    {
+                        test: /\.css$/,
+                        oneOf: [
+                            {
+                                test: /\.module\.css$/,
+                                use: [
+                                    'style-loader',
+                                    {
+                                        loader: 'css-loader',
+                                        options: {
+                                            importLoaders: 1,
+                                            esModule: false,
+                                            modules: {
+                                                mode: 'local',
+                                                getLocalIdent: getCSSModuleLocalIdent,
+                                            },
                                         },
                                     },
-                                },
-                                'postcss-loader',
-                            ],
-                        },
-                        {
-                            test: /\.css$/,
-                            use: [
-                                'style-loader',
-                                {
-                                    loader: 'css-loader',
-                                    options: {
-                                        importLoaders: 1,
-                                        modules: {
-                                            mode: 'icss',
+                                    'postcss-loader',
+                                ],
+                            },
+                            {
+                                test: /\.css$/,
+                                use: [
+                                    'style-loader',
+                                    {
+                                        loader: 'css-loader',
+                                        options: {
+                                            importLoaders: 1,
+                                            modules: {
+                                                mode: 'icss',
+                                            },
                                         },
                                     },
-                                },
-                                'postcss-loader',
-                            ],
-                        },
-                    ],
-                },
+                                    'postcss-loader',
+                                ],
+                            },
+                        ],
+                    },
+                ],
             },
         },
     ],
-    framework: {
-        name: getAbsolutePath('@storybook/react-webpack5'),
-        options: {},
-    },
+
     docs: {
-        autodocs: 'tag',
+        autodocs: true,
     },
+
     async babel(config, { configType }) {
         return {
             ...config,
+            configFile: path.join(__dirname, '../babel.config.js'),
             babelrc: false,
             plugins: [
                 [
@@ -89,6 +94,7 @@ export default {
             ],
         };
     },
+
     async webpackFinal(config, { configType }) {
         config.resolve = {
             ...config.resolve,
@@ -100,52 +106,9 @@ export default {
                 // '@uppy/core/dist/style.css': require.resolve('@uppy/core/dist/style.css'),
                 // '@uppy/core': require.resolve('@uppy/core'),
                 // '@uppy/react': require.resolve('@uppy/react'),
-                '@niche-js/ckeditor/build': path.resolve(
-                    process.cwd(),
-                    './packages/ckeditor/src/build',
-                ),
                 ...getPackagesAliases(),
             },
         };
-        config.module.rules = [
-            {
-                oneOf: [
-                    {
-                        test: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
-                        use: ['raw-loader'],
-                    },
-                    {
-                        test: /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
-                        use: [
-                            {
-                                loader: 'style-loader',
-                                options: {
-                                    injectType: 'singletonStyleTag',
-                                    attributes: {
-                                        'data-cke': true,
-                                    },
-                                },
-                            },
-                            'css-loader',
-                            {
-                                loader: 'postcss-loader',
-                                options: {
-                                    postcssOptions: styles.getPostCssConfig({
-                                        themeImporter: {
-                                            themePath: require.resolve(
-                                                '@ckeditor/ckeditor5-theme-lark',
-                                            ),
-                                        },
-                                        minify: true,
-                                    }),
-                                },
-                            },
-                        ],
-                    },
-                    ...config.module.rules,
-                ],
-            },
-        ];
         config.plugins = [
             new DefinePlugin({
                 __EDITOR__: JSON.stringify(true),

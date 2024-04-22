@@ -7,6 +7,8 @@ import React from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useIsEditor } from '@niche-js/core/contexts';
 
+import { useEditorsComponentsManager } from '../../contexts';
+
 import styles from '../../styles/editor/editable.module.css';
 
 const propTypes = {
@@ -42,10 +44,25 @@ function Editable({
     ...props
 }) {
     const isEditor = useIsEditor();
+    const editorsComponentsManager = isEditor ? useEditorsComponentsManager() : null;
     const Tag = tag || 'div';
     const title = name || tag || placeholder || null;
     const finalPlaceholder = placeholder || name || null;
     const emptyHtml = children === null && (isEmpty(html) || html === '&nbsp;');
+
+    if (isEditor) {
+        const EditorComponent = editorsComponentsManager.getComponent('html');
+        return EditorComponent !== null ? (
+            <Tag
+                className={classNames([
+                    styles.container,
+                    { [styles.empty]: emptyHtml, [className]: className !== null },
+                ])}
+            >
+                <EditorComponent value={html} inline={inline} nested />
+            </Tag>
+        ) : null;
+    }
 
     return isEditor ? (
         <Tag

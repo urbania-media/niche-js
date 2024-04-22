@@ -14,6 +14,7 @@ import {
     ComponentsProvider,
     VIEWERS_NAMESPACE,
 } from '../../../packages/core/src/contexts/ComponentsContext';
+import EditorsProvider from '../../../packages/editors/src/EditorsProvider';
 import FieldsProvider from '../../../packages/fields/src/FieldsProvider';
 import HeadersProvider from '../../../packages/headers/src/HeadersProvider';
 import ModalsProvider from '../../../packages/modals/src/ModalsProvider';
@@ -33,28 +34,30 @@ export default {
     decorators: [
         (Story) => (
             <FieldsProvider>
-                <PickersProvider>
-                    <ModalProvider>
-                        <ModalsProvider>
-                            <HeadersProvider>
-                                <BlocksProvider>
-                                    <ViewersProvider>
-                                        <ComponentsProvider
-                                            namespace={VIEWERS_NAMESPACE}
-                                            components={
-                                                {
-                                                    // Article: UrbaniaArticleDocumentViewer,
+                <EditorsProvider>
+                    <PickersProvider>
+                        <ModalProvider>
+                            <ModalsProvider>
+                                <HeadersProvider>
+                                    <BlocksProvider>
+                                        <ViewersProvider>
+                                            <ComponentsProvider
+                                                namespace={VIEWERS_NAMESPACE}
+                                                components={
+                                                    {
+                                                        // Article: UrbaniaArticleDocumentViewer,
+                                                    }
                                                 }
-                                            }
-                                        >
-                                            <Story />
-                                        </ComponentsProvider>
-                                    </ViewersProvider>
-                                </BlocksProvider>
-                            </HeadersProvider>
-                        </ModalsProvider>
-                    </ModalProvider>
-                </PickersProvider>
+                                            >
+                                                <Story />
+                                            </ComponentsProvider>
+                                        </ViewersProvider>
+                                    </BlocksProvider>
+                                </HeadersProvider>
+                            </ModalsProvider>
+                        </ModalProvider>
+                    </PickersProvider>
+                </EditorsProvider>
             </FieldsProvider>
         ),
     ],

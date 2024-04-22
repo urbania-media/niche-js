@@ -42,24 +42,8 @@ export const label = PropTypes.oneOfType([message, PropTypes.node]);
 export const statusCode = PropTypes.oneOf([401, 403, 404, 500]);
 
 /**
- * Site
+ * Components
  */
-export const user = PropTypes.shape({
-    id: PropTypes.number,
-    firstname: PropTypes.string,
-    lastname: PropTypes.string,
-    email: PropTypes.string,
-});
-
-export const menuItem = PropTypes.shape({
-    id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    label,
-    url: PropTypes.string,
-    external: PropTypes.bool,
-    active: PropTypes.bool,
-});
-export const menuItems = PropTypes.arrayOf(menuItem);
-
 export const componentNames = (Components) =>
     PropTypes.oneOf(Object.keys(Components).map((it) => snakeCase(it)));
 
@@ -71,3 +55,15 @@ export const component = PropTypes.shape({
 });
 
 export const components = PropTypes.arrayOf(component);
+
+/**
+ * Documents
+ */
+
+export const document = PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    type: PropTypes.string,
+    components,
+});
+
+export const documents = PropTypes.arrayOf(document);

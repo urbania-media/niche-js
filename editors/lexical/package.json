@@ -1,9 +1,10 @@
 {
-    "name": "@niche-js/editors",
+    "name": "@niche-js/editor-lexical",
     "version": "0.0.93",
     "private": false,
-    "description": "",
+    "description": "Niche editor",
     "keywords": [
+        "niche",
         "javascript"
     ],
     "homepage": "https://github.com/urbania-media/niche-js",
@@ -34,39 +35,42 @@
             "require": "./lib/index.js",
             "import": "./es/index.js"
         },
-        "./css/styles": "./css/styles.css",
-        "./css/styles.css": "./css/styles.css",
         "./assets/css/styles.css": "./assets/css/styles.css"
     },
     "files": [
         "lib",
         "es",
-        "assets",
-        "css"
+        "assets"
     ],
     "scripts": {
-        "styles": "../../scripts/build-packages-styles.js --pattern='@niche-js/editor-*' ./src/styles.css.ejs ./css/styles.css",
-        "css": "../../scripts/build-css.js ./css/styles.css ./assets/css/styles.css",
-        "prepare": "../../scripts/prepare-package.sh && npm run styles && npm run css"
-    },
-    "devDependencies": {
-        "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
-        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
+        "prepare": "../../scripts/prepare-package.sh"
     },
     "peerDependencies": {
-        "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
-        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
+        "react": "^18.0.0",
+        "react-dom": "^18.0.0"
     },
     "dependencies": {
-        "@babel/runtime": "^7.12.5",
+        "@lexical/html": "^0.14.5",
+        "@lexical/link": "^0.14.5",
+        "@lexical/react": "^0.14.5",
+        "@lexical/rich-text": "^0.14.5",
         "@niche-js/core": "^0.0.93",
-        "@niche-js/editor-article": "^0.0.93",
-        "@niche-js/editor-lexical": "^0.0.93",
-        "prop-types": "^15.7.2"
+        "@niche-js/fields": "^0.0.93",
+        "@panneau/core": "^3.0.119",
+        "@panneau/element-modal": "^3.0.119",
+        "classnames": "^2.2.6",
+        "lexical": "^0.14.5",
+        "lodash": "^4.17.21",
+        "prop-types": "^15.7.2",
+        "react-intl": "^6.4.4",
+        "uuid": "^9.0.0"
     },
     "publishConfig": {
         "access": "public",
         "registry": "https://registry.npmjs.org/"
+    },
+    "devDependencies": {
+        "uuid": "^9.0.0"
     },
     "gitHead": "20d90b4bd105f37036fd40b29345c9ccd1373cca"
 }
