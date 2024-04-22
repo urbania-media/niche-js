@@ -1,6 +1,6 @@
 import { $generateNodesFromDOM } from '@lexical/html';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { $getRoot, $getSelection } from 'lexical';
+import { $getRoot, $getSelection, $insertNodes } from 'lexical';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 
@@ -22,20 +22,13 @@ function DocumentPlugin({ document }) {
                 const { components = [] } = document || {};
                 const parser = new DOMParser();
 
-                const root = $getRoot();
-
-                console.log('AAAA', DOMParser);
-
-                console.log('AA');
-
-                components.forEach((component) => {
+                const newNodes = components.reduce((allNodes, component) => {
                     const { role, type } = component;
                     if (role === 'block' && type === 'text') {
                         const { body } = component;
                         const dom = parser.parseFromString(body, 'text/html');
-                        const newNodes = $generateNodesFromDOM(editor, dom);
-                        root.append(...newNodes);
-                        return;
+                        const componentNodes = $generateNodesFromDOM(editor, dom);
+                        return [...allNodes, ...componentNodes];
                     }
                     if (role === 'block' && type === 'heading') {
                         const { body, size } = component;
@@ -43,27 +36,18 @@ function DocumentPlugin({ document }) {
                             `<h${size || 6}>${body}</h${size || 6}>`,
                             'text/html',
                         );
-                        const newNodes = $generateNodesFromDOM(editor, dom);
-                        console.log(newNodes);
-                        root.append(...newNodes);
-                        return;
+                        const componentNodes = $generateNodesFromDOM(editor, dom);
+                        return [...allNodes, ...componentNodes];
                     }
-                    root.append($createComponentNode(component));
+
+                    return [...allNodes, $createComponentNode(component)];
                 }, []);
 
-                console.log(root);
+                // Select the root
+                $getRoot().select();
 
-                // const newState = {
-                //     root: {
-                //         type: 'root',
-                //         children: ,
-                //     },
-                // };
-
-                // console.log(newState);
-
-                // const editorState = editor.parseEditorState(newState);
-                // editor.setEditorState(editorState);
+                // Insert them at a selection.
+                $insertNodes(newNodes);
             }),
         [editor, document],
     );
