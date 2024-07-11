@@ -44,11 +44,19 @@ export class ComponentNode extends DecoratorBlockNode {
     }
 
     isInline() {
+        return true;
+    }
+
+    isIsolated() {
         return false;
     }
 
     getTextContent() {
         return `https://www.figma.com/file/${this.__id}`;
+    }
+
+    getComponent() {
+        return this.__component;
     }
 
     decorate(editor, config) {

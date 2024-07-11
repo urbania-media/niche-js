@@ -41,10 +41,14 @@ function DocumentEditor({ value, theme, onChange, onError, className }) {
         nodes: [LinkNode, ComponentNode, HeadingNode],
     };
     console.log(value);
-    const onEditorChange = useCallback((newEditorState) => {
-        console.log(newEditorState.selection);
-        console.log(newEditorState.toJSON());
-    }, []);
+    const onDocumentChange = useCallback((newDocument) => {
+        if (onChange !== null) {
+            onChange(newDocument);
+        }
+        // const newEditorValue =
+        // console.log(newEditorState.selection);
+        // console.log(newEditorState.toJSON());
+    }, [onChange]);
     return (
         <LexicalComposer initialConfig={initialConfig}>
             <RichTextPlugin
@@ -55,8 +59,7 @@ function DocumentEditor({ value, theme, onChange, onError, className }) {
             <HistoryPlugin />
             <LinkPlugin />
             <AutoFocusPlugin />
-            <OnChangePlugin onChange={onEditorChange} />
-            <DocumentPlugin document={value} />
+            <DocumentPlugin document={value} onChange={onDocumentChange} />
         </LexicalComposer>
     );
 }

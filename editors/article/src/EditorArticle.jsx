@@ -318,7 +318,7 @@ function EditorArticle({
                         </div>
                     }
                 >
-                    <DocumentEditor value={document} />
+                    <DocumentEditor value={document} onChange={onChange} />
                 </EditorLayout>
             </div>
             <Modals />
