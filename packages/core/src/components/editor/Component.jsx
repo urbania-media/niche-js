@@ -25,7 +25,15 @@ const defaultProps = {
 
 function Component({ component, tag, inline, className, children }) {
     const isEditor = useIsEditor();
-    const { id = null, uuid = null, role = null, type = null, platform = null } = component || {};
+    const {
+        id = null,
+        uuid = null,
+        role = null,
+        type = null,
+        platform = null,
+        theme = null,
+        presentation = null,
+    } = component || {};
     const Tag = tag || 'div';
 
     return (
@@ -41,6 +49,8 @@ function Component({ component, tag, inline, className, children }) {
                       'data-niche-platform': platform,
                   }
                 : null)}
+            data-presentation={presentation}
+            data-theme={theme}
         >
             {children}
         </Tag>
