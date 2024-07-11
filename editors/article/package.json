@@ -1,6 +1,6 @@
 {
     "name": "@niche-js/editor-article",
-    "version": "0.0.93",
+    "version": "0.0.94",
     "private": false,
     "description": "Niche editor",
     "keywords": [
@@ -50,9 +50,9 @@
         "react-dom": "^18.0.0"
     },
     "dependencies": {
-        "@niche-js/ckeditor": "^0.0.93",
-        "@niche-js/core": "^0.0.93",
-        "@niche-js/fields": "^0.0.93",
+        "@niche-js/ckeditor": "^0.0.94",
+        "@niche-js/core": "^0.0.94",
+        "@niche-js/fields": "^0.0.94",
         "@panneau/core": "^3.0.119",
         "@panneau/element-modal": "^3.0.119",
         "classnames": "^2.2.6",
