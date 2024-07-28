@@ -83,7 +83,7 @@ function Embed({ embed, loading, className }) {
             {finalFrameUrl === null && html !== null ? (
                 <div
                     className={classNames([styles.iframeContainer])}
-                    dangerouslySetInnerHTML={shouldLoad ? { __html: html } : null}
+                    dangerouslySetInnerHTML={{ __html: html }}
                     ref={iframeContainerRef}
                 />
             ) : null}
