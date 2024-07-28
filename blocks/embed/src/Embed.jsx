@@ -80,10 +80,10 @@ function Embed({ embed, loading, className }) {
                     ) : null}
                 </div>
             ) : null}
-            {finalFrameUrl === null && html !== null && shouldLoad ? (
+            {finalFrameUrl === null && html !== null ? (
                 <div
                     className={classNames([styles.iframeContainer])}
-                    dangerouslySetInnerHTML={{ __html: html }}
+                    dangerouslySetInnerHTML={shouldLoad ? { __html: html } : null}
                     ref={iframeContainerRef}
                 />
             ) : null}
