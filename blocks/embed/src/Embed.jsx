@@ -1,5 +1,6 @@
 /* eslint-disable react/no-danger */
-import { loadTikTok, loadInstagram } from '@folklore/services';
+import { useIsVisible } from '@folklore/hooks';
+import { loadTikTok, loadInstagram, loadTwitter } from '@folklore/services';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { useRef, useMemo, useEffect } from 'react';
@@ -15,49 +16,75 @@ const propTypes = {
         iframeUrl: PropTypes.string,
         html: PropTypes.string,
     }),
+    loading: PropTypes.string,
     className: PropTypes.string,
 };
 
 const defaultProps = {
     embed: null,
+    loading: 'lazy',
     className: null,
 };
 
-function Embed({ embed, className }) {
+function Embed({ embed, loading, className }) {
     const refEmbed = useRef();
     const { provider, iframeUrl = null, html = null } = embed || {};
     const finalFrameUrl = useMemo(() => iframeUrl || null, [iframeUrl]);
+    const iframeContainerRef = useRef(null);
+    const { ref: visibleRef, visible: isVisible } = useIsVisible({
+        rootMargin: '200px',
+        persist: true,
+        disabled: loading !== 'lazy',
+    });
+
+    const shouldLoad = loading !== 'lazy' || isVisible;
 
     useEffect(() => {
-        if (provider === 'instagram') {
-            loadInstagram();
-        } else if (provider === 'tiktok') {
+        const { current: element = null } = iframeContainerRef;
+        if (provider === 'twitter' && shouldLoad) {
+            loadTwitter().then((twttr) => {
+                if (element !== null) {
+                    twttr.widgets.load(element);
+                }
+            });
+        } else if (provider === 'instagram' && shouldLoad) {
+            loadInstagram().then(() => {
+                if (typeof window !== 'undefined' && typeof window.instgrm !== 'undefined') {
+                    window.instgrm.Embeds.process();
+                }
+            });
+        } else if (provider === 'tiktok' && shouldLoad) {
             loadTikTok();
         }
-    }, [provider]);
+    }, [provider, shouldLoad]);
 
     return (
-        <Widget className={classNames([styles.container, { [className]: className !== null }])}>
+        <Widget
+            ref={visibleRef}
+            className={classNames([styles.container, { [className]: className !== null }])}
+        >
             {finalFrameUrl !== null ? (
-                <div className={styles.iframeContainer}>
-                    <iframe
-                        src={finalFrameUrl}
-                        ref={refEmbed}
-                        className={styles.iframe}
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                        title="Embed"
-                        width="320"
-                        height="240"
-                    />
-                    {/* <oembed url={finalFrameUrl} /> */}
+                <div className={styles.iframeContainer} ref={iframeContainerRef}>
+                    {shouldLoad ? (
+                        <iframe
+                            src={finalFrameUrl}
+                            ref={refEmbed}
+                            className={styles.iframe}
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            title="Embed"
+                            width="320"
+                            height="240"
+                        />
+                    ) : null}
                 </div>
             ) : null}
-            {finalFrameUrl === null && html !== null ? (
+            {finalFrameUrl === null && html !== null && shouldLoad ? (
                 <div
                     className={classNames([styles.iframeContainer])}
                     dangerouslySetInnerHTML={{ __html: html }}
+                    ref={iframeContainerRef}
                 />
             ) : null}
         </Widget>
