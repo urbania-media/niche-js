@@ -1,6 +1,6 @@
 {
     "name": "@niche-js/block-embed",
-    "version": "0.0.97",
+    "version": "0.0.98",
     "private": false,
     "description": "Niche block",
     "keywords": [
@@ -56,7 +56,7 @@
     "dependencies": {
         "@folklore/hooks": "~0.0.44",
         "@folklore/services": "^0.1.38",
-        "@niche-js/core": "^0.0.97",
+        "@niche-js/core": "^0.0.98",
         "classnames": "^2.2.6",
         "prop-types": "^15.7.2",
         "react-intl": "^6.4.4"
