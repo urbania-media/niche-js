@@ -32,7 +32,7 @@ function Embed({ embed, loading, className }) {
     const finalFrameUrl = useMemo(() => iframeUrl || null, [iframeUrl]);
     const iframeContainerRef = useRef(null);
     const { ref: visibleRef, visible: isVisible } = useIsVisible({
-        rootMargin: '500px',
+        rootMargin: '200px',
         persist: true,
         disabled: loading !== 'lazy',
     });
