@@ -15,6 +15,8 @@ const propTypes = {
         provider: PropTypes.string,
         iframeUrl: PropTypes.string,
         html: PropTypes.string,
+        width: PropTypes.number,
+        height: PropTypes.number,
     }),
     loading: PropTypes.string,
     className: PropTypes.string,
@@ -28,7 +30,7 @@ const defaultProps = {
 
 function Embed({ embed, loading, className }) {
     const refEmbed = useRef();
-    const { provider, iframeUrl = null, html = null } = embed || {};
+    const { provider, iframeUrl = null, html = null, width, height } = embed || {};
     const finalFrameUrl = useMemo(() => iframeUrl || null, [iframeUrl]);
     const iframeContainerRef = useRef(null);
     const { ref: visibleRef, visible: isVisible } = useIsVisible({
@@ -69,13 +71,13 @@ function Embed({ embed, loading, className }) {
                         <iframe
                             src={finalFrameUrl}
                             ref={refEmbed}
-                            className={styles.iframe}
+                            className={classNames([styles.iframe, `iframe-${provider}`])}
                             frameBorder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowFullScreen
                             title="Embed"
-                            width="320"
-                            height="240"
+                            width={width || '100%'}
+                            height={height || '100%'}
                         />
                     ) : null}
                 </div>
