@@ -1,6 +1,6 @@
 {
     "name": "@niche-js/ckeditor",
-    "version": "0.0.99",
+    "version": "0.0.100",
     "private": false,
     "description": "",
     "keywords": [
@@ -79,8 +79,8 @@
         "@ckeditor/ckeditor5-utils": "^40.2.0",
         "@ckeditor/ckeditor5-widget": "^40.2.0",
         "@folklore/fetch": "^0.1.17",
-        "@niche-js/block-image": "^0.0.99",
-        "@niche-js/core": "^0.0.99",
+        "@niche-js/block-image": "^0.0.100",
+        "@niche-js/core": "^0.0.100",
         "ckeditor5": "^40.2.0",
         "lodash": "^4.17.21",
         "uuid": "^9.0.0"
